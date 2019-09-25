@@ -58,3 +58,6 @@ buck-out/
 # CocoaPods
 Routinely/ios/Pods/
 Routinely/ios/Podfile.lock
+
+#Packagelock
+Routinely/package-lock.json
