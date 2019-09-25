@@ -35,7 +35,7 @@ target 'Routinely' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'FBSDKLoginKit'
-  pod ‘Firebase/Analytics’
+  pod 'Firebase/Analytics'
 
   target 'RoutinelyTests' do
     inherit! :search_paths
