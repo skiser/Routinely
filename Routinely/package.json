@@ -1,4 +1,3 @@
-
 {
   "name": "Routinely",
   "version": "0.0.1",
@@ -12,7 +11,9 @@
   },
   "dependencies": {
     "react": "16.9.0",
-    "react-native": "0.61.0"
+    "react-native": "0.61.0",
+    "react-native-elements": "^1.2.3",
+    "react-native-vector-icons": "^6.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
