@@ -7,17 +7,12 @@
  */
 
 import React, {Component} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar,} from 'react-native';
+import {Divider} from 'react-native-elements';
 
 import Login from './app/components/login';
-import DayPicker from './app/components/DayPicker';
+import DayPicker from './app/components/repeat/DayPicker';
+import RepeatDiv from './app/components/repeat/RepeatDiv';
 
 const App: () => React$Node = () => {
   return (
@@ -27,7 +22,10 @@ const App: () => React$Node = () => {
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Login/>
+              <Divider/>
+              <RepeatDiv/>
               <DayPicker/>
+              <Divider/>
           </View>
           </View>
       </SafeAreaView>
