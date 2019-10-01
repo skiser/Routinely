@@ -4,41 +4,38 @@
  *
  * @format
  * @flow
- */
-
+ 
 import React, {Component} from 'react';
-import {SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar,} from 'react-native';
-import {Divider} from 'react-native-elements';
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  StatusBar,
+} from 'react-native';
 
-import Login from './app/components/login';
-import DayPicker from './app/components/repeat/DayPicker';
-import RepeatDiv from './app/components/repeat/RepeatDiv';
-import SnoozeDuration from './app/components/repeat/SnoozeDuration';
-import TimePicker from './app/components/TimePicker';
+import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+*/
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Login/>
-              <Divider/>
-              <RepeatDiv/>
-              <DayPicker/>
-              <Divider/>
-              <SnoozeDuration/>
-              <Divider/>
-              <TimePicker/>
-          </View>
-          </View>
-      </SafeAreaView>
-    </>
-  );
-};
+import AppContainer from './Navigation';
+import React from 'react';
+export default class App extends React.Component {
+  render() {
+    return (
+      <AppContainer />
+    )
+  }
+}
 
-const styles = StyleSheet.create({
+
+/*const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: 'black',
   },
@@ -77,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default App; */
