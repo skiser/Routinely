@@ -34,6 +34,24 @@ export default class App extends React.Component {
   }
 }
 
+<<<<<<< HEAD
+=======
+const App: () => React$Node = () => {
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView>
+          <Header />
+          <View style={styles.body}>
+            <View style={styles.sectionContainer}>
+              <Login/>
+          </View>
+          </View>
+      </SafeAreaView>
+    </>
+  );
+};
+>>>>>>> master
 
 /*const styles = StyleSheet.create({
   scrollView: {

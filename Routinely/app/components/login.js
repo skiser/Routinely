@@ -24,10 +24,6 @@ class LoginScreen extends Component {
           style = {styles.passIn}
           placeholder = "Pa55w0rd"
         />
-         <Button
-          title="Calendar"
-          onPress={() => this.props.navigation.navigate('Calendar')}
-        />
       </View>
 
     );
