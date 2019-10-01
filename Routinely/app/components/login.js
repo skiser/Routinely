@@ -14,7 +14,7 @@ class LoginScreen extends Component {
 
         <TextInput
         style = {styles.emailIn}
-          placeholder = "bsoto@ycp.edu"
+          placeholder = "Enter Valid Email"
         />
         <Text
         style = {styles.password}
