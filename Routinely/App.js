@@ -13,6 +13,8 @@ import {Divider} from 'react-native-elements';
 import Login from './app/components/login';
 import DayPicker from './app/components/repeat/DayPicker';
 import RepeatDiv from './app/components/repeat/RepeatDiv';
+import SnoozeDuration from './app/components/repeat/SnoozeDuration';
+import TimePicker from './app/components/TimePicker';
 
 const App: () => React$Node = () => {
   return (
@@ -26,6 +28,9 @@ const App: () => React$Node = () => {
               <RepeatDiv/>
               <DayPicker/>
               <Divider/>
+              <SnoozeDuration/>
+              <Divider/>
+              <TimePicker/>
           </View>
           </View>
       </SafeAreaView>
