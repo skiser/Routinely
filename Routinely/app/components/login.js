@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet } from 'react-native';
+import { AppRegistry, Text, View, TextInput, StyleSheet, Button } from 'react-native';
 
-export default class Login extends Component {
+
+class LoginScreen extends Component {
   render() {
     return (
       <View>
@@ -23,11 +24,15 @@ export default class Login extends Component {
           style = {styles.passIn}
           placeholder = "Pa55w0rd"
         />
+        <Button
+          title="Calendar"
+          onPress={() => this.props.navigation.navigate('Calendar')}
+        />
       </View>
+
     );
   }
 }
-AppRegistry.registerComponent('Login', () => Login);
 
 const styles = StyleSheet.create({
   login:{
@@ -61,3 +66,5 @@ const styles = StyleSheet.create({
   }
 
 });
+
+export default LoginScreen;

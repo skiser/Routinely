@@ -4,8 +4,7 @@
  *
  * @format
  * @flow
- */
-
+ 
 import React, {Component} from 'react';
 import {
   SafeAreaView,
@@ -23,26 +22,20 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+*/
 
-import Login from './app/components/login';
+import AppContainer from './Navigation';
+import React from 'react';
+export default class App extends React.Component {
+  render() {
+    return (
+      <AppContainer />
+    )
+  }
+}
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-          <Header />
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Login/>
-          </View>
-          </View>
-      </SafeAreaView>
-    </>
-  );
-};
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: Colors.lighter,
   },
@@ -81,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default App; */

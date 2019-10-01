@@ -291,6 +291,8 @@ PODS:
     - React-cxxreact (= 0.61.0)
     - React-jsi (= 0.61.0)
     - ReactCommon/jscallinvoker (= 0.61.0)
+  - RNGestureHandler (1.4.1):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -323,6 +325,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -391,6 +394,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -433,6 +438,7 @@ SPEC CHECKSUMS:
   React-RCTText: beb19a6c50072a1a2f617490ea967237c98d1dfc
   React-RCTVibration: c8e67f140a83a14a1ad9042950cca08ab29423fd
   ReactCommon: 584ef683c340894c1c82be43ce760390493ae8bf
+  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   Yoga: 3f70bbd9aa01e04eefec36e2a085b2fc0ff1dd98
 
 PODFILE CHECKSUM: 3bc29821cb63b2f7a101ab4d501524bac9e9d46b
