@@ -5,6 +5,7 @@ import RepeatDiv from './alarm_components/RepeatDiv';
 import SnoozeDuration from './alarm_components/SnoozeDuration';
 import TimePicker from './alarm_components/TimePicker';
 import {Divider} from 'react-native-elements';
+import ColorPicker from './alarm_components/ColorPicker';
 
 class AlarmScreen extends Component {
   render() {
@@ -17,6 +18,8 @@ class AlarmScreen extends Component {
         <Divider/>
         <SnoozeDuration/>
         <Divider/> 
+        <ColorPicker/>
+        <Divider/>
         <Button
           title="Calendar"
           onPress={() => this.props.navigation.navigate('Calendar')}
