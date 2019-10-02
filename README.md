@@ -8,5 +8,6 @@ After a pull from master
 	npm install
 	cd ios
 	pod install
+	cd ../
 	react-native link
 	react-native run-ios
