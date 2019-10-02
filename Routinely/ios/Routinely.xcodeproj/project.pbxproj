@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RoutinelyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RoutinelyTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -15,6 +16,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* RoutinelyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RoutinelyTests.m */; };
+		4A5F22DB2345545B0070FB92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4A5F22DA2345545B0070FB92 /* GoogleService-Info.plist */; };
 		A13FA4D6E9C793C2D59E7AFA /* libPods-RoutinelyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789B5D8FC153432F9A2ED4F1 /* libPods-RoutinelyTests.a */; };
 		B136854571599B48F6E8A1A5 /* libPods-Routinely-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CF17C64158138B1861F4D5 /* libPods-Routinely-tvOS.a */; };
 		CCC4ED79BDF46A907668A238 /* libPods-Routinely.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5BD5BB2A79E1D1AFF1E9D6F /* libPods-Routinely.a */; };
@@ -55,6 +57,7 @@
 		2D02E47B1E0B4A5D006451C7 /* Routinely-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Routinely-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Routinely-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Routinely-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		445390DAE3F542379FF4FC74 /* Pods-RoutinelyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoutinelyTests.release.xcconfig"; path = "Target Support Files/Pods-RoutinelyTests/Pods-RoutinelyTests.release.xcconfig"; sourceTree = "<group>"; };
+		4A5F22DA2345545B0070FB92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		584ACA3C0F5B6F122FA50638 /* Pods-RoutinelyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RoutinelyTests.debug.xcconfig"; path = "Target Support Files/Pods-RoutinelyTests/Pods-RoutinelyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		67A384FA900BFB127AD94358 /* Pods-Routinely-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routinely-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Routinely-tvOSTests/Pods-Routinely-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		6FC1B266FABFD3A2AC837897 /* libPods-Routinely-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Routinely-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,7 +163,6 @@
 				584ACA3C0F5B6F122FA50638 /* Pods-RoutinelyTests.debug.xcconfig */,
 				445390DAE3F542379FF4FC74 /* Pods-RoutinelyTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -174,6 +176,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4A5F22DA2345545B0070FB92 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Routinely */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RoutinelyTests */,
@@ -203,7 +206,6 @@
 			children = (
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,6 +349,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				4A5F22DB2345545B0070FB92 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +429,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Routinely/Pods-Routinely-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -446,6 +450,7 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -694,7 +699,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.routinelyinc.routinely;
 				PRODUCT_NAME = Routinely;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -713,7 +718,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.routinelyinc.routinely;
 				PRODUCT_NAME = Routinely;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
