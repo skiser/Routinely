@@ -122,16 +122,49 @@ class LoginScreen extends Component {
                 onPress={this.firebaseGoogleLogin}
                 disabled={this.state.isSigninInProgress} />
             </View>
-              <View>
-              <Button
-                title="Calendar"
-                onPress={() => this.props.navigation.navigate('Calendar')}
-              />
-              <Button
-                title="Alarm"
-                onPress={() => this.props.navigation.navigate('Alarm')}
-              />
+            <View style={styles.buttonContainer}>
+                {!this.state.loggedIn && <Text>You are currently logged out</Text>}
+                {this.state.loggedIn && <Button onPress={this.signOut}
+                  title="Signout"
+                  color="#841584">
+                </Button>}
             </View>
+            <View>
+            {!this.state.loggedIn}
+              {this.state.loggedIn && <View>
+                <View style={styles.listHeader}>
+                  <Text>User Info</Text>
+                </View>
+                <View style={styles.dp}>
+                  <Image
+                    style={{ width: 100, height: 100 }}
+                    source={{ uri: this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.photo }}
+                  />
+                </View>
+                <View style={styles.detailContainer}>
+                  <Text style={styles.title}>Name</Text>
+                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.name}</Text>
+                </View>
+                <View style={styles.detailContainer}>
+                  <Text style={styles.title}>Email</Text>
+                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.email}</Text>
+                </View>
+                <View style={styles.detailContainer}>
+                  <Text style={styles.title}>ID</Text>
+                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
+                </View>
+                <View>
+                  <Button
+                    title="Calendar"
+                    onPress={() => this.props.navigation.navigate('Calendar')}
+                  />
+                  <Button
+                    title="Alarm"
+                    onPress={() => this.props.navigation.navigate('Alarm')}
+                  />
+                </View>
+              </View>}
+              </View>
           </View>
     );
   }
