@@ -8,9 +8,9 @@ export default class SnoozeDuration extends Component {
       <View style = {styles.container}>
         <Text style = {styles.snooze}>Snooze</Text>
         <Divider/>
-        <Button buttonStyle = {styles.dayBox} title='2 min'></Button>
-        <Button buttonStyle = {styles.dayBox} title='5 min'></Button>
-        <Button buttonStyle = {styles.dayBox} title='10 min'></Button>
+        <Button buttonStyle = {styles.snoozeBox} title='2 min'></Button>
+        <Button buttonStyle = {styles.snoozeBox} title='5 min'></Button>
+        <Button buttonStyle = {styles.snoozeBox} title='10 min'></Button>
       </View>
     );
   }
@@ -18,7 +18,7 @@ export default class SnoozeDuration extends Component {
 AppRegistry.registerComponent('SnoozeDuration', () => SnoozeDuration);
 
 const styles = StyleSheet.create({
-  dayBox:{
+  snoozeBox:{
     backgroundColor: 'lightgrey',
     borderColor: 'white',
     borderWidth: 1,
