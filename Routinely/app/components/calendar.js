@@ -184,6 +184,10 @@ class CalendarScreen extends Component {
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />
+        <Button
+          title="Login"
+          onPress={() => this.props.navigation.navigate('Login')}
+        />
       </CalendarProvider>
     );
   }

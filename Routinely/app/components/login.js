@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, TextInput, StyleSheet, Button } from 'react-native';
-
+import DayPicker from './repeat/DayPicker';
+import RepeatDiv from './repeat/RepeatDiv';
+import SnoozeDuration from './repeat/SnoozeDuration';
+import TimePicker from './TimePicker';
+import {Divider} from 'react-native-elements';
 
 class LoginScreen extends Component {
   render() {
@@ -28,11 +32,18 @@ class LoginScreen extends Component {
           title="Calendar"
           onPress={() => this.props.navigation.navigate('Calendar')}
         />
+        <TimePicker/>
+        <RepeatDiv/>
+        <Divider/>
+        <DayPicker/>      
+        <Divider/>
+        <SnoozeDuration/>
+        <Divider/> 
       </View>
 
     );
   }
-}
+} 
 
 const styles = StyleSheet.create({
   login:{
