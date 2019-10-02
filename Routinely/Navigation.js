@@ -2,7 +2,7 @@ import {createAppContainer, createSwitchNavigator } from 'react-navigation';
 import LoginScreen from './app/components/login';
 import {createStackNavigator} from 'react-navigation-stack';
 import CalendarScreen from './app/components/calendar';
-import AlarmScreen from './app/components/alarm/alarm';
+import AlarmScreen from './app/components/alarm';
 
 const AuthStack = createStackNavigator(
     {

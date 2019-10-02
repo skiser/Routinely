@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, TextInput, StyleSheet, Button } from 'react-native';
-import DayPicker from './DayPicker';
-import RepeatDiv from './RepeatDiv';
-import SnoozeDuration from './SnoozeDuration';
-import TimePicker from './TimePicker';
+import DayPicker from './alarm_components/DayPicker';
+import RepeatDiv from './alarm_components/RepeatDiv';
+import SnoozeDuration from './alarm_components/SnoozeDuration';
+import TimePicker from './alarm_components/TimePicker';
 import {Divider} from 'react-native-elements';
 
 class AlarmScreen extends Component {
