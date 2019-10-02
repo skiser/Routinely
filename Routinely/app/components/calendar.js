@@ -167,8 +167,14 @@ class CalendarScreen extends Component {
           firstDay={1}
           markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
+
+          /*
+          //TODO: Image Link
+          //Linked locally to Sam's laptop, must be linked properly
           leftArrowImageSource={require('/Users/samanthakiser/Documents/GitHub/Routinely/Routinely/app/components/img/previous.png')}
           rightArrowImageSource={require('/Users/samanthakiser/Documents/GitHub/Routinely/Routinely/app/components/img/next.png')}
+         */
+
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
         />
@@ -177,6 +183,14 @@ class CalendarScreen extends Component {
           extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
+        />
+        <Button
+          title="Logout"
+          onPress={() => this.props.navigation.navigate('Login')}
+        />
+        <Button
+          title="Alarm"
+          onPress={() => this.props.navigation.navigate('Alarm')}
         />
       </CalendarProvider>
     );

@@ -37,14 +37,14 @@ export default class App extends React.Component {
 
 /*const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: Colors.lighter,
+    backgroundColor: 'black',
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'white',
   },
   sectionContainer: {
     marginTop: 32,
@@ -53,19 +53,19 @@ export default class App extends React.Component {
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
-    color: Colors.black,
+    color: 'black',
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
-    color: Colors.dark,
+    color: 'black',
   },
   highlight: {
     fontWeight: '700',
   },
   footer: {
-    color: Colors.dark,
+    color: 'black',
     fontSize: 12,
     fontWeight: '600',
     padding: 4,
