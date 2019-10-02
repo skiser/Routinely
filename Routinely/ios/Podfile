@@ -37,7 +37,7 @@ target 'Routinely' do
 
   pod 'FBSDKLoginKit'
   pod 'Firebase/Analytics'
-
+  pod 'Firebase/Auth'
 
 
   pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
