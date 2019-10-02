@@ -39,10 +39,10 @@ export default class TimePicker extends Component {
     return (
       <View>
         <View>
-          <Button onPress={this.datepicker} title="Show date picker!" />
+          <Button onPress={this.datepicker} title="Show  Date" />
         </View>
         <View>
-          <Button onPress={this.timepicker} title="Show time picker!" />
+          <Button onPress={this.timepicker} title="Select Time" />
         </View>
         { show && <DateTimePicker value={date}
                     mode={mode}

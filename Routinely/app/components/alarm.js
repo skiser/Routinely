@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, TextInput, StyleSheet, Button } from 'react-native';
-import DayPicker from './repeat/DayPicker';
-import RepeatDiv from './repeat/RepeatDiv';
-import SnoozeDuration from './repeat/SnoozeDuration';
-import TimePicker from './TimePicker';
+import DayPicker from './alarm_components/DayPicker';
+import RepeatDiv from './alarm_components/RepeatDiv';
+import SnoozeDuration from './alarm_components/SnoozeDuration';
+import TimePicker from './alarm_components/TimePicker';
 import {Divider} from 'react-native-elements';
+import ColorPicker from './alarm_components/ColorPicker';
 
 class AlarmScreen extends Component {
   render() {
@@ -17,6 +18,8 @@ class AlarmScreen extends Component {
         <Divider/>
         <SnoozeDuration/>
         <Divider/> 
+        <ColorPicker/>
+        <Divider/>
         <Button
           title="Calendar"
           onPress={() => this.props.navigation.navigate('Calendar')}
