@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, TextInput, StyleSheet, Button } from 'react-native';
-import DayPicker from './repeat/DayPicker';
-import RepeatDiv from './repeat/RepeatDiv';
-import SnoozeDuration from './repeat/SnoozeDuration';
+import DayPicker from './DayPicker';
+import RepeatDiv from './RepeatDiv';
+import SnoozeDuration from './SnoozeDuration';
 import TimePicker from './TimePicker';
 import {Divider} from 'react-native-elements';
 
