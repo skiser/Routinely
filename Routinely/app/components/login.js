@@ -12,33 +12,18 @@ class LoginScreen extends Component {
       <View>
         <Text
         style = {styles.login}>Login</Text>
-        <Text
-        style = {styles.email}
-        > Enter Email </Text>
-
-        <TextInput
-        style = {styles.emailIn}
-          placeholder = "Enter Valid Email"
-        />
-        <Text
-        style = {styles.password}
-        >
-        Enter Password </Text>
-        <TextInput
-          style = {styles.passIn}
-          placeholder = "Pa55w0rd"
-        />
+        <Text style = {styles.email}> Enter Email </Text>
+        <TextInput style = {styles.emailIn} placeholder = "Enter Valid Email"/>
+        <Text style = {styles.password}> Enter Password </Text>
+        <TextInput style = {styles.passIn} placeholder = "Pa55w0rd"/>
         <Button
           title="Calendar"
           onPress={() => this.props.navigation.navigate('Calendar')}
         />
-        <TimePicker/>
-        <RepeatDiv/>
-        <Divider/>
-        <DayPicker/>      
-        <Divider/>
-        <SnoozeDuration/>
-        <Divider/> 
+        <Button
+          title="Alarm"
+          onPress={() => this.props.navigation.navigate('Alarm')}
+        />
       </View>
 
     );
