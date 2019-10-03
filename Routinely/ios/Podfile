@@ -3,6 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 target 'Routinely' do
   # Pods for Routinely
+  pod 'GoogleSignIn', '~> 4.4.0'
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -36,8 +37,10 @@ target 'Routinely' do
 
   pod 'FBSDKLoginKit'
   pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
 
 
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
 
   target 'RoutinelyTests' do
     inherit! :search_paths
