@@ -42,7 +42,7 @@ class LoginScreen extends Component {
       // login with credential
       const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
 
-      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+      //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
       console.log(error)
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -115,12 +115,13 @@ class LoginScreen extends Component {
     return (
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
+            {!this.state.loggedIn &&
               <GoogleSigninButton
                 style={{ width: 192, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={this.firebaseGoogleLogin}
-                disabled={this.state.isSigninInProgress} />
+                disabled={this.state.isSigninInProgress} />}
             </View>
             <View style={styles.buttonContainer}>
                 {!this.state.loggedIn && <Text>You are currently logged out</Text>}
