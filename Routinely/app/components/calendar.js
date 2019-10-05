@@ -185,12 +185,12 @@ class CalendarScreen extends Component {
           // sectionStyle={styles.section}
         />
         <Button
-          title="Logout"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
-        <Button
           title="Alarm"
           onPress={() => this.props.navigation.navigate('Alarm')}
+        />
+        <Button
+          title="Logout"
+          onPress={() => this.props.navigation.navigate('Login')}
         />
       </CalendarProvider>
     );

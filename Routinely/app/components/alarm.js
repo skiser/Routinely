@@ -29,7 +29,6 @@ class AlarmScreen extends Component {
           onPress={() => this.props.navigation.navigate('Login')}
         />
       </View>
-
     );
   }
 } 
