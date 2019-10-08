@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image } from '../../node_modules/react-native';
+import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from '../../node_modules/react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '../../node_modules/react-native-google-signin';
 import firebase from '../../node_modules/react-native-firebase';
 import DayPicker from './alarm_components/DayPicker';
