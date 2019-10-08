@@ -154,24 +154,47 @@ class LoginScreen extends Component {
                   <Text style={styles.title}>ID</Text>
                   <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
                 </View>
-                <View>
-                  <Button
-                    title="Calendar"
-                    onPress={() => this.props.navigation.navigate('Calendar')}
-                  />
-                  <Button
-                    title="Alarm"
-                    onPress={() => this.props.navigation.navigate('Alarm')}
-                  />
-                </View>
-              </View>}
-              </View>
-          </View>
+                <View style={styles.container}>
+        <View style={{flexDirection:"row"}}>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/calendar.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/alarm.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/logout.png')}
+          />
+        </TouchableHighlight>
+        </View>
+        </View>
+        </View>}
+        </View>
+      </View>
     );
   }
 } 
 
 const styles = StyleSheet.create({
+  container:{
+    paddingTop: 10,
+    paddingLeft: 40, 
+    paddingRight: 20,
+    paddingBottom: 5,
+  },
+  contain: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
   login:{
     textAlign: 'center',
     padding: 500,
