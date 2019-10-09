@@ -63,7 +63,6 @@ class AlarmScreen extends Component {
         </View>
 >>>>>>> cb3e52e2da9d8829c9f583957a959a568f4378e8
       </View>
-
     );
   }
 }

@@ -1,14 +1,10 @@
 import {createAppContainer, createSwitchNavigator } from 'react-navigation';
 import LoginScreen from './components/login';
 import {createStackNavigator} from 'react-navigation-stack';
-<<<<<<< HEAD:Routinely/Navigation.js
 import CalendarScreen from './app/components/calendar';
 import AlarmScreen from './app/components/alarm';
 import AlarmRingingScreen from './app/components/alarmRinging';
-=======
-import CalendarScreen from './components/calendar';
-import AlarmScreen from './components/alarm';
->>>>>>> cb3e52e2da9d8829c9f583957a959a568f4378e8:Routinely/app/navigation.js
+import EventScreen from './components/event';
 
 const AuthStack = createStackNavigator(
     {
@@ -25,6 +21,7 @@ const AppStack = createStackNavigator(
     Alarm: AlarmScreen,
     AlarmRinging: AlarmRingingScreen,
     Calendar: CalendarScreen,
+    Event: EventScreen,
 },
 {
     initialRouteName: "Alarm",
@@ -43,7 +40,7 @@ export default createAppContainer(
         //Calendar: CalendarScreen,
       },
       {
-        initialRouteName: "Auth"
+        initialRouteName: "App"
       }
     )
   );
