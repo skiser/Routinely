@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from '../../node_modules/react-native';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '../../node_modules/react-native-google-signin';
-import firebase from '../../node_modules/react-native-firebase';
+import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from 'react-native';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/auth';
 import DayPicker from './alarm_components/DayPicker';
 import RepeatDiv from './alarm_components/RepeatDiv';
 import SnoozeDuration from './alarm_components/SnoozeDuration';
@@ -38,10 +40,9 @@ class LoginScreen extends Component {
       this.setState({ userInfo: userInfo, loggedIn: true });
       console.log(userInfo);
       // create a new firebase credential with the token
-      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken)
+      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
       // login with credential
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-
+      await firebase.auth().signInWithCredential(credential);
       //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
       console.log(error)

@@ -24,7 +24,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 */
 
-import AppContainer from './Navigation';
+import AppContainer from './app/navigation';
 import React from 'react';
 export default class App extends React.Component {
   render() {
