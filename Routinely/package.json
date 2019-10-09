@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^2.1.0",
+    "moment": "^2.24.0",
     "react": "16.9.0",
     "react-dom": "^16.10.1",
     "react-native": "0.61.0",
+    "react-native-add-calendar-event": "^2.3.1",
     "react-native-calendars": "^1.212.0",
     "react-native-elements": "^1.2.4",
     "react-native-firebase": "^5.5.6",
