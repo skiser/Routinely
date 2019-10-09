@@ -43,7 +43,6 @@ class AlarmScreen extends Component {
         </View>
         </View>
       </View>
-
     );
   }
 } 
