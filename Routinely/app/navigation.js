@@ -3,6 +3,7 @@ import LoginScreen from './components/login';
 import {createStackNavigator} from 'react-navigation-stack';
 import CalendarScreen from './components/calendar';
 import AlarmScreen from './components/alarm';
+import EventScreen from './components/event';
 
 const AuthStack = createStackNavigator(
     {
@@ -18,6 +19,7 @@ const AppStack = createStackNavigator(
 {
     Alarm: AlarmScreen,
     Calendar: CalendarScreen,
+    Event: EventScreen,
 },
 {
     initialRouteName: "Alarm",
@@ -35,7 +37,7 @@ export default createAppContainer(
         //Calendar: CalendarScreen,
       },
       {
-        initialRouteName: "Auth"
+        initialRouteName: "App"
       }
     )
   );
