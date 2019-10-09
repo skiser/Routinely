@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from '../../node_modules/react-native';
-import
+import {Text, View} from '../../node_modules/react-native';
 
 
 class EventScreen extends Component{
