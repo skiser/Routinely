@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^2.1.0",
-    "@react-native-firebase/app": "^6.0.1",,
+    "@react-native-firebase/app": "^6.0.1",
     "@react-native-firebase/auth": "^6.0.1",
     "@react-native-firebase/firestore": "^6.0.1",
     "@smarterservices/smarterclock": "^2.0.1",
