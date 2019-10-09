@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import AppContainer from './Navigation';
-=======
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -28,7 +25,6 @@ import {
 */
 
 import AppContainer from './app/navigation';
->>>>>>> cb3e52e2da9d8829c9f583957a959a568f4378e8
 import React from 'react';
 export default class App extends React.Component {
   render() {
