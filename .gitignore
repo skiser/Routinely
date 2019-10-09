@@ -61,3 +61,6 @@ Routinely/ios/Podfile.lock
 
 #Packagelock
 Routinely/package-lock.json
+
+#xcode
+/Routinely/ios/Routinely.xcodeproj/project.pbxproj

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image } from '../../node_modules/react-native';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '../../node_modules/react-native-google-signin';
-import firebase from '../../node_modules/react-native-firebase';
+import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from 'react-native';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/auth';
 import DayPicker from './alarm_components/DayPicker';
 import RepeatDiv from './alarm_components/RepeatDiv';
 import SnoozeDuration from './alarm_components/SnoozeDuration';
@@ -41,10 +43,9 @@ class LoginScreen extends Component {
       this.setState({ userInfo: userInfo, loggedIn: true });
       console.log(userInfo);
       // create a new firebase credential with the token
-      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken)
+      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
       // login with credential
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-
+      await firebase.auth().signInWithCredential(credential);
       //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
       console.log(error)
@@ -164,24 +165,47 @@ class LoginScreen extends Component {
                   <Text style={styles.title}>ID</Text>
                   <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
                 </View>
-                <View>
-                  <Button
-                    title="Calendar"
-                    onPress={() => this.props.navigation.navigate('Calendar')}
-                  />
-                  <Button
-                    title="Alarm"
-                    onPress={() => this.props.navigation.navigate('Alarm')}
-                  />
-                </View>
-              </View>}
-              </View>
-          </View>
+                <View style={styles.container}>
+        <View style={{flexDirection:"row"}}>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/calendar.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/alarm.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/logout.png')}
+          />
+        </TouchableHighlight>
+        </View>
+        </View>
+        </View>}
+        </View>
+      </View>
     );
   }
 } 
 
 const styles = StyleSheet.create({
+  container:{
+    paddingTop: 10,
+    paddingLeft: 40, 
+    paddingRight: 20,
+    paddingBottom: 5,
+  },
+  contain: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
   login:{
     textAlign: 'center',
     padding: 500,

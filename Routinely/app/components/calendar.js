@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Platform,
-  Alert,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Button
-} from 'react-native';
+import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button, TouchableHighlight, Image,} from 'react-native';
 import { CalendarProvider, ExpandableCalendar, AgendaList} from 'react-native-calendars';
 import  _ from 'lodash';
 
@@ -30,7 +22,7 @@ function getPastDate(days) {
   return new Date(Date.now() - (864e5 * days)).toISOString().split('T')[0];
 }
 
-const ITEMS = [
+ const ITEMS = [
   {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
   {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
   {title: dates[2], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
@@ -42,7 +34,7 @@ const ITEMS = [
   {title: dates[8], data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
   {title: dates[9], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
   {title: dates[10], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]}
-];
+]; 
 
 class CalendarScreen extends Component {
 
@@ -184,20 +176,51 @@ class CalendarScreen extends Component {
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />
-        <Button
-          title="Alarm"
-          onPress={() => this.props.navigation.navigate('Alarm')}
-        />
-        <Button
-          title="Logout"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
+        <View style={styles.container}>
+        <View style={{flexDirection:"row"}}>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/calendar.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/alarm.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/logout.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Event')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/calendar.png')}
+          />
+        </TouchableHighlight>
+        </View>
+        </View>
       </CalendarProvider>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container:{
+    paddingTop: 10,
+    paddingLeft: 40, 
+    paddingRight: 20,
+    paddingBottom: 5,
+  },
+  contain: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
   calendar: {
     paddingLeft: 20, 
     paddingRight: 20
