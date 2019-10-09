@@ -35,8 +35,6 @@ target 'Routinely' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'FBSDKLoginKit'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Auth'
 
   pod 'GoogleSignIn', '~> 5.0.0'
 
