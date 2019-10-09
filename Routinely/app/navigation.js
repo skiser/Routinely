@@ -1,8 +1,8 @@
 import {createAppContainer, createSwitchNavigator } from 'react-navigation';
 import LoginScreen from './components/login';
 import {createStackNavigator} from 'react-navigation-stack';
-import CalendarScreen from './app/components/calendar';
-import AlarmScreen from './app/components/alarm';
+import CalendarScreen from './components/calendar';
+import AlarmScreen from './components/alarm';
 import AlarmRingingScreen from './app/components/alarmRinging';
 import EventScreen from './components/event';
 
