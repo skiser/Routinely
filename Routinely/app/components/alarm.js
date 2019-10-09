@@ -22,23 +22,6 @@ class AlarmScreen extends Component {
         <Divider/> 
         <ColorPicker/>
         <Divider/>
-<<<<<<< HEAD
-        <Button
-          buttonStyle = {styles.bottomLinks}
-          title="Calendar"
-          onPress={() => this.props.navigation.navigate('Calendar')}
-        />
-         <Button
-          buttonStyle = {styles.bottomLinks}
-          title="Logout"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
-        <Button
-          buttonStyle = {styles.bottomLinks}
-          title="Alarm Ringing"
-          onPress={() => this.props.navigation.navigate('AlarmRinging')}
-        />
-=======
         <View style={styles.container}>
         <View style={{flexDirection:"row"}}>
         <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
@@ -61,18 +44,11 @@ class AlarmScreen extends Component {
         </TouchableHighlight>
         </View>
         </View>
->>>>>>> cb3e52e2da9d8829c9f583957a959a568f4378e8
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
-<<<<<<< HEAD
-    bottomLinks:{
-      flexDirection: 'row',
-      color: 'red',
-    }
-=======
   container:{
     paddingTop: 10,
     paddingLeft: 40, 
@@ -84,7 +60,6 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
   },
->>>>>>> cb3e52e2da9d8829c9f583957a959a568f4378e8
 });
 
 export default AlarmScreen;
