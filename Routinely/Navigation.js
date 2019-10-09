@@ -3,6 +3,7 @@ import LoginScreen from './app/components/login';
 import {createStackNavigator} from 'react-navigation-stack';
 import CalendarScreen from './app/components/calendar';
 import AlarmScreen from './app/components/alarm';
+import AlarmRingingScreen from './app/components/alarmRinging';
 
 const AuthStack = createStackNavigator(
     {
@@ -17,10 +18,12 @@ const AuthStack = createStackNavigator(
 const AppStack = createStackNavigator(
 {
     Alarm: AlarmScreen,
+    AlarmRinging: AlarmRingingScreen,
     Calendar: CalendarScreen,
 },
 {
     initialRouteName: "Alarm",
+    initialRouteName: "AlarmRinging",
     initialRouteName: "Calendar",
     //aheaderMode: "none"
 }
