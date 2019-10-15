@@ -106,33 +106,41 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <ImageBackground source={require('./img/RoutinelyLoginBackground.png')} style={{ width: '100%', height: '100%' }}>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              {!this.state.loggedIn && <View>
-              <View style={styles.dp}>
-              <Image
-                style={{ width: 150, height: 150 }}
-                source={require('./img/RoutinelyR.png')}
-              />
-              </View>
-              <View style={styles.buttonContainer}>
-              <GoogleSigninButton
-                style={{ width: 192, height: 48 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={this.firebaseGoogleLogin}
-                disabled={this.state.isSigninInProgress}/>
+      <ImageBackground
+        source={require('./img/RoutinelyLoginBackground.png')}
+        style={{width: '100%', height: '100%'}}>
+        <View style={styles.body}>
+          <View style={styles.sectionContainer}>
+            {!this.state.loggedIn && (
+              <View>
+                <View style={styles.dp}>
+                  <Image
+                    style={{width: 150, height: 150}}
+                    source={require('./img/RoutinelyR.png')}
+                  />
                 </View>
-                </View>}
-            </View>
-            <View>
-                {!this.state.loggedIn && <Text style={styles.textInputEnter}>You are currently logged out</Text>}
-                {this.state.loggedIn && <Button onPress={this.signOut}
-                  title="Signout"
-                  color="#841584">
-                </Button>}
-            </View>
+                <View style={styles.buttonContainer}>
+                  <GoogleSigninButton
+                    style={{width: 192, height: 48}}
+                    size={GoogleSigninButton.Size.Wide}
+                    color={GoogleSigninButton.Color.Dark}
+                    onPress={this.firebaseGoogleLogin}
+                    disabled={this.state.isSigninInProgress}
+                  />
+                </View>
+              </View>
+            )}
+          </View>
+          <View>
+            {!this.state.loggedIn && (
+              <Text style={styles.textInputEnter}>
+                You are currently logged out
+              </Text>
+            )}
+            {this.state.loggedIn && (
+              <Button onPress={this.signOut} title="Signout" color="#841584" />
+            )}
+          </View>
           )}
         </View>
         <View style={styles.buttonContainer}>
