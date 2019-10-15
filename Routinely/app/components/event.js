@@ -4,6 +4,7 @@ import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 import TimePicker from './alarm_components/TimePicker';
 import DayPicker from './alarm_components/DayPicker';
+import eventController from './eventController';
 
 const utcDateToString = (momentInUTC: moment): string => {
   let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -12,11 +13,8 @@ const utcDateToString = (momentInUTC: moment): string => {
 };
 
 class EventScreen extends Component {
-  state = {title: ''};
-  state = {id: ''};
   render() {
-    //const eventTitle = 'Lunch';
-    const nowUTC = moment.utc();
+    const {title, startTime, endTime, notes, backgroundColor,tintColor, titleColor} = this.state
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Event title: </Text>

@@ -20,6 +20,7 @@ import '@react-native-firebase/auth';
 import moment from 'moment';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
+
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
@@ -141,8 +142,8 @@ class CalendarScreen extends Component {
     );
   }
 
-  renderItem = ({calendarItems}) => {
-    if (_.isEmpty(this.calendarItems)) {
+  renderItem = (events) => {
+    if (_.isEmpty(this.events)) {
       return this.renderEmptyItem();
     }
     return (
@@ -247,7 +248,7 @@ class CalendarScreen extends Component {
           // headerStyle={styles.calendar} // for horizontal only
         />
         <AgendaList
-          sections={this.calendarItems}
+          sections={this.events}
           extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}

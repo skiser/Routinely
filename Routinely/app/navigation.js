@@ -31,6 +31,19 @@ const AppStack = createStackNavigator(
 );
 
 export default createAppContainer(
+<<<<<<< HEAD
+    createSwitchNavigator(
+      {
+        App: AppStack,
+        Auth: AuthStack,
+        //Calendar: CalendarScreen,
+      },
+      {
+        initialRouteName: "Auth"
+      }
+    )
+  );
+=======
   createSwitchNavigator(
     {
       App: AppStack,
@@ -42,3 +55,4 @@ export default createAppContainer(
     },
   ),
 );
+>>>>>>> c3eb9904c6552e68d1228b82b9cc3102a266db37
