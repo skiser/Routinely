@@ -1,8 +1,10 @@
 import {createAppContainer, createSwitchNavigator } from 'react-navigation';
-import LoginScreen from './app/components/login';
+import LoginScreen from './components/login';
 import {createStackNavigator} from 'react-navigation-stack';
-import CalendarScreen from './app/components/calendar';
-import AlarmScreen from './app/components/alarm';
+import CalendarScreen from './components/calendar';
+import AlarmScreen from './components/alarm';
+import AlarmRingingScreen from './components/alarmRinging';
+import EventScreen from './components/event';
 
 const AuthStack = createStackNavigator(
     {
@@ -17,10 +19,13 @@ const AuthStack = createStackNavigator(
 const AppStack = createStackNavigator(
 {
     Alarm: AlarmScreen,
+    AlarmRinging: AlarmRingingScreen,
     Calendar: CalendarScreen,
+    Event: EventScreen,
 },
 {
     initialRouteName: "Alarm",
+    initialRouteName: "AlarmRinging",
     initialRouteName: "Calendar",
     //aheaderMode: "none"
 }

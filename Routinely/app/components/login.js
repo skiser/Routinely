@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image } from '../../node_modules/react-native';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '../../node_modules/react-native-google-signin';
-import firebase from '../../node_modules/react-native-firebase';
+import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, ImageBackground, TouchableHighlight} from 'react-native';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/auth';
 import DayPicker from './alarm_components/DayPicker';
 import RepeatDiv from './alarm_components/RepeatDiv';
 import SnoozeDuration from './alarm_components/SnoozeDuration';
@@ -41,10 +43,9 @@ class LoginScreen extends Component {
       this.setState({ userInfo: userInfo, loggedIn: true });
       console.log(userInfo);
       // create a new firebase credential with the token
-      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken)
+      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
       // login with credential
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-
+      await firebase.auth().signInWithCredential(credential);
       //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
       console.log(error)
@@ -93,38 +94,17 @@ class LoginScreen extends Component {
 
   render() {
     return (
+      <ImageBackground source={require('./img/RoutinelyLoginBackground.png')} style={{ width: '100%', height: '100%' }}>
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               {!this.state.loggedIn && <View>
               <View style={styles.dp}>
               <Image
-                style={{ width: 125, height: 125 }}
+                style={{ width: 150, height: 150 }}
                 source={require('./img/RoutinelyR.png')}
               />
               </View>
-              <View>
-              <TextInput style={styles.textInputEnter}
-                placeholder="Enter Email Address"
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}>
-              </TextInput>
-              </View>
-              <View>
-              <TextInput style={styles.textInputEnter}
-                placeholder="Enter Password"
-                onChangeText={(password) => this.setState({password})}
-                value={this.state.password}>
-              </TextInput>
-              </View>
-              <View style={{textAlign: 'center'}}>
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text style={{ fontSize:24 }}>Login</Text>
-              </TouchableOpacity>
-              </View>
-              <View>
-              <Text style={{ textAlign: 'center', paddingTop: 30 }}>OR</Text>
-              </View>
-              <View style={styles.sectionContainer}>
+              <View style={styles.buttonContainer}>
               <GoogleSigninButton
                 style={{ width: 192, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
@@ -134,8 +114,8 @@ class LoginScreen extends Component {
                 </View>
                 </View>}
             </View>
-            <View style={styles.buttonContainer}>
-                {!this.state.loggedIn && <Text>You are currently logged out</Text>}
+            <View>
+                {!this.state.loggedIn && <Text style={styles.textInputEnter}>You are currently logged out</Text>}
                 {this.state.loggedIn && <Button onPress={this.signOut}
                   title="Signout"
                   color="#841584">
@@ -153,30 +133,43 @@ class LoginScreen extends Component {
                   />
                 </View>
                 <View style={styles.detailContainer}>
-                  <Text style={styles.title}>Name</Text>
-                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.name}</Text>
+                  <Text style={styles.textInputEnter}>Name</Text>
+                  <Text style={styles.textInputEnter}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.name}</Text>
                 </View>
                 <View style={styles.detailContainer}>
-                  <Text style={styles.title}>Email</Text>
-                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.email}</Text>
+                  <Text style={styles.textInputEnter}>Email</Text>
+                  <Text style={styles.textInputEnter}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.email}</Text>
                 </View>
                 <View style={styles.detailContainer}>
-                  <Text style={styles.title}>ID</Text>
-                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
+                  <Text style={styles.textInputEnter}>ID</Text>
+                  <Text style={styles.textInputEnter}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
                 </View>
-                <View>
-                  <Button
-                    title="Calendar"
-                    onPress={() => this.props.navigation.navigate('Calendar')}
-                  />
-                  <Button
-                    title="Alarm"
-                    onPress={() => this.props.navigation.navigate('Alarm')}
-                  />
-                </View>
-              </View>}
-              </View>
-          </View>
+                <View style={styles.container}>
+        <View style={{flexDirection:"row"}}>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/calendar.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/alarm.png')}
+          />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
+          <Image
+            style={styles.contain}
+            source={require('./img/logout.png')}
+          />
+        </TouchableHighlight>
+        </View>
+        </View>
+        </View>}
+        </View>
+      </View>
+      </ImageBackground>
     );
   }
 } 
@@ -189,14 +182,11 @@ const styles = StyleSheet.create({
     fontWeight:'700',
   },
   body: {
-    backgroundColor: 'rgba(245, 245, 245, 1)',
     alignItems: 'center',
-    paddingTop: 200,
-    paddingBottom: 200,
+    padding: 15,
   },
   textInputEnter: {
     width: 300,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     borderRadius: 35,
     paddingHorizontal: 16,
     fontSize: 16,
@@ -245,26 +235,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   dp: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-    flexDirection: 'row',
+    height: 44,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
   sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-    flexDirection: 'row',
+    paddingTop: 150,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonContainer: {
-    marginTop: 32,
+    paddingTop: 20,
+    marginTop: 420,
     paddingHorizontal: 24,
-    flexDirection: 'row',
     justifyContent: 'center',
     fontSize: 24,
   },
@@ -281,6 +268,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   footer: {
+    fontSize: 12,
+    fontWeight: '600',
+    padding: 50,
+    paddingLeft: 12,
+    textAlign: 'left',
+  },
+  footerTwo: {
     fontSize: 12,
     fontWeight: '600',
     padding: 50,
