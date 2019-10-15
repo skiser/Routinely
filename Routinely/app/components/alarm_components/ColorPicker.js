@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-import { Button, Divider, ButtonGroup } from 'react-native-elements';
+import React, {Component} from 'react';
+import {AppRegistry, Text, View, StyleSheet} from 'react-native';
+import {Button, Divider} from 'react-native-elements';
 
 export default class colorPicker extends Component {
-    render() {
+  render() {
     return (
-      <View style = {styles.container}>
-        <Text style = {styles.colorTitle}>Color</Text>
-        <Divider/>
-        <Button buttonStyle = {styles.colorCircleYellow} title=''></Button>
-        <Button buttonStyle = {styles.colorCircleRed} title=''></Button>
-        <Button buttonStyle = {styles.colorCircleGreen} title=''></Button>
-        <Button buttonStyle = {styles.colorCirclePink} title=''></Button>
-        <Button buttonStyle = {styles.colorCircleBlue} title=''></Button>
+      <View style={styles.container}>
+        <Text style={styles.colorTitle}>Color</Text>
+        <Divider />
+        <Button buttonStyle={styles.colorCircleYellow} title="" />
+        <Button buttonStyle={styles.colorCircleRed} title="" />
+        <Button buttonStyle={styles.colorCircleGreen} title="" />
+        <Button buttonStyle={styles.colorCirclePink} title="" />
+        <Button buttonStyle={styles.colorCircleBlue} title="" />
       </View>
     );
   }
@@ -20,7 +20,7 @@ export default class colorPicker extends Component {
 AppRegistry.registerComponent('colorPicker', () => colorPicker);
 
 const styles = StyleSheet.create({
-  colorCircleRed:{
+  colorCircleRed: {
     backgroundColor: 'red',
     borderColor: 'white',
     borderRadius: 100,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
   },
-  colorCircleBlue:{
+  colorCircleBlue: {
     backgroundColor: 'blue',
     borderColor: 'white',
     borderRadius: 100,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
   },
-  colorCircleGreen:{
+  colorCircleGreen: {
     backgroundColor: 'limegreen',
     borderColor: 'white',
     borderRadius: 100,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
   },
-  colorCircleYellow:{
+  colorCircleYellow: {
     backgroundColor: 'yellow',
     borderColor: 'white',
     borderRadius: 100,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
   },
-  colorCirclePink:{
+  colorCirclePink: {
     backgroundColor: 'pink',
     borderColor: 'white',
     borderRadius: 100,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
   },
-  colorTitle:{
+  colorTitle: {
     fontSize: 20,
     color: 'darkgrey',
     fontWeight: '600',
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10
-  }
+    padding: 10,
+  },
 });
