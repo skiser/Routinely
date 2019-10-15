@@ -6,6 +6,7 @@ import TimePicker from './alarm_components/TimePicker';
 import DayPicker from './alarm_components/DayPicker';
 import eventController from './eventController';
 
+
 const utcDateToString = (momentInUTC: moment): string => {
   let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.warn(s);
