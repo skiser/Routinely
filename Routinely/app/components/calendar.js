@@ -37,19 +37,10 @@ const dates = [fastDate, today].concat(futureDates);
 //const events = {calendarId, timeMin, showDeleted, singleEvents, maxResults, orderBy};
 //setCalendar(newCalendar: string: void)
 
-const events = [
-  {
-    title: null,
-    startDate: moment,
-    endDate: moment,
-    notes: null,
-    navigationBarIOS: {
-      tintColor: 'orange',
-      backgroundColor: 'green',
-      titleColor: 'blue',
-    },
+/* const events = [
+  {title: null, notes: null, 
   },
-];
+];  */
 
 const utcDateToString = (momentInUTC: moment): string => {
   let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
