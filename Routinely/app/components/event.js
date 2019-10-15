@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 import TimePicker from './alarm_components/TimePicker';
@@ -12,8 +12,8 @@ const utcDateToString = (momentInUTC: moment): string => {
 };
 
 class EventScreen extends Component {
-  state = { title: '' };
-  state = { id: '' };
+  state = {title: ''};
+  state = {id: ''};
   render() {
     //const eventTitle = 'Lunch';
     const nowUTC = moment.utc();
@@ -21,25 +21,35 @@ class EventScreen extends Component {
       <View style={styles.container}>
         <Text style={styles.welcome}>Event title: </Text>
         <View style={styles.text}>
-        <TextInput
-          style={{ height: 40, width: '100%', marginTop: 30, marginHorizontal: 15 }}
-          placeholder="enter event title"
-          onChangeText={title => this.setState({ title})}
-          value={this.state.title}
-        />
+          <TextInput
+            style={{
+              height: 40,
+              width: '100%',
+              marginTop: 30,
+              marginHorizontal: 15,
+            }}
+            placeholder="enter event title"
+            onChangeText={title => this.setState({title})}
+            value={this.state.title}
+          />
         </View>
         <Text style={styles.welcome}>Event ID: </Text>
         <View style={styles.text}>
-        <TextInput
-          style={{ height: 40, width: '100%', marginTop: 30, marginHorizontal: 15 }}
-          placeholder="enter event id"
-          onChangeText={id => this.setState({ id })}
-          value={this.state.id}
-        />
-         </View>
+          <TextInput
+            style={{
+              height: 40,
+              width: '100%',
+              marginTop: 30,
+              marginHorizontal: 15,
+            }}
+            placeholder="enter event id"
+            onChangeText={id => this.setState({id})}
+            value={this.state.id}
+          />
+        </View>
         <View style={styles.picker}>
-        <DayPicker/>
-        <TimePicker/>
+          <DayPicker />
+          <TimePicker />
         </View>
         <Button
           onPress={() => {
@@ -77,13 +87,18 @@ class EventScreen extends Component {
     };
 
     AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-      .then((eventInfo: { calendarItemIdentifier: string, eventIdentifier: string }) => {
-        // handle success - receives an object with `calendarItemIdentifier` and `eventIdentifier` keys, both of type string.
-        // These are two different identifiers on iOS.
-        // On Android, where they are both equal and represent the event id, also strings.
-        // when { action: 'CANCELED' } is returned, the dialog was dismissed
-        console.warn(JSON.stringify(eventInfo));
-      })
+      .then(
+        (eventInfo: {
+          calendarItemIdentifier: string,
+          eventIdentifier: string,
+        }) => {
+          // handle success - receives an object with `calendarItemIdentifier` and `eventIdentifier` keys, both of type string.
+          // These are two different identifiers on iOS.
+          // On Android, where they are both equal and represent the event id, also strings.
+          // when { action: 'CANCELED' } is returned, the dialog was dismissed
+          console.warn(JSON.stringify(eventInfo));
+        },
+      )
       .catch((error: string) => {
         // handle error such as when user rejected permissions
         console.warn(error);
@@ -107,7 +122,7 @@ class EventScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  pick:{
+  pick: {
     width: 600,
   },
   container: {

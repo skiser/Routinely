@@ -1,10 +1,16 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import React, {Component} from 'react';
+import {
+  AppRegistry,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
 export default class RepeatDiv extends Component {
-    render() {
+  render() {
     return (
-      <View style = {styles.container}>
-        <Text style = {styles.repeat}> Repeat</Text>
+      <View style={styles.container}>
+        <Text style={styles.repeat}> Repeat</Text>
       </View>
     );
   }
@@ -12,7 +18,7 @@ export default class RepeatDiv extends Component {
 AppRegistry.registerComponent('RepeatDiv', () => RepeatDiv);
 
 const styles = StyleSheet.create({
-  repeat:{
+  repeat: {
     fontSize: 20,
     color: 'darkgrey',
     fontWeight: '600',

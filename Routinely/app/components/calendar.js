@@ -1,14 +1,27 @@
-import React, { Component } from 'react';
-import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button, TouchableHighlight, Image} from 'react-native';
-import { CalendarProvider, ExpandableCalendar, AgendaList} from 'react-native-calendars';
-import  _ from 'lodash';
+import React, {Component} from 'react';
+import {
+  Platform,
+  Alert,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Button,
+  TouchableHighlight,
+  Image,
+} from 'react-native';
+import {
+  CalendarProvider,
+  ExpandableCalendar,
+  AgendaList,
+} from 'react-native-calendars';
+import _ from 'lodash';
 import '@react-native-firebase/auth';
-import { Observable } from 'rxjs';
 import moment from 'moment';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
 const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3); 
+const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 /* const event = ({
@@ -23,28 +36,30 @@ const dates = [fastDate, today].concat(futureDates);
 //const events = {calendarId, timeMin, showDeleted, singleEvents, maxResults, orderBy};
 //setCalendar(newCalendar: string: void)
 
-const events = [{
-  title: null,
-  startDate: moment,
-  endDate: moment,
-  notes: null, 
-  navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-        titleColor: 'blue',
+const events = [
+  {
+    title: null,
+    startDate: moment,
+    endDate: moment,
+    notes: null,
+    navigationBarIOS: {
+      tintColor: 'orange',
+      backgroundColor: 'green',
+      titleColor: 'blue',
+    },
   },
-}];
+];
 
 const utcDateToString = (momentInUTC: moment): string => {
-    let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-    // console.warn(s);
-    return s;
-  };
+  let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  // console.warn(s);
+  return s;
+};
 
 function getFutureDates(days) {
   const array = [];
   for (let index = 1; index <= days; index++) {
-    const date = new Date(Date.now() + (864e5 * index)); // 864e5 == 86400000 == 24*60*60*1000
+    const date = new Date(Date.now() + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
     const dateString = date.toISOString().split('T')[0];
     array.push(dateString);
   }
@@ -52,7 +67,7 @@ function getFutureDates(days) {
 }
 
 function getPastDate(days) {
-  return new Date(Date.now() - (864e5 * days)).toISOString().split('T')[0];
+  return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
 
 //listUpcomingEvents(maxResults: number, calendarId: string = this.calendar): any
@@ -72,9 +87,10 @@ function getPastDate(days) {
   this.calendarItems= events.results.items;
 } */
 
-const hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60 ).toISOString();
+const hoursFromNow = n =>
+  new Date(Date.now() + n * 1000 * 60 * 60).toISOString();
 
-/* 
+/*
 componentDidMount(){
   const newEvent = this.props.event;
   events.getEventData(data => {
@@ -87,7 +103,6 @@ componentDidMount(){
     });
 } */
 
-
 class CalendarScreen extends Component {
   state = {
     date: new Date('2020-06-12T14:42:42'),
@@ -95,16 +110,16 @@ class CalendarScreen extends Component {
     show: false,
     title: null,
     notes: null,
-  }
+  };
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
-  }
+  };
 
   onMonthChange = (/* month, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
-  }
-  
+  };
+
   buttonPressed() {
     Alert.alert('show more');
   }
@@ -117,7 +132,6 @@ class CalendarScreen extends Component {
     .then(({result}: any) => {
       console.log(result.items);
   }); */
-
 
   renderEmptyItem() {
     return (
@@ -132,21 +146,20 @@ class CalendarScreen extends Component {
       return this.renderEmptyItem();
     }
     return (
-      <TouchableOpacity 
-        onPress={() => this.itemPressed(item.title)} 
-        style={styles.item}
-      >
+      <TouchableOpacity
+        onPress={() => this.itemPressed(item.title)}
+        style={styles.item}>
         <View>
           <Text style={styles.itemHourText}>{item.hour}</Text>
           <Text style={styles.itemDurationText}>{item.duration}</Text>
         </View>
         <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
-          <Button title={'Info'} onPress={this.buttonPressed}/>
+          <Button title={'Info'} onPress={this.buttonPressed} />
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
   /* getMarkedDates = () => {
     const marked = {};
@@ -165,7 +178,7 @@ class CalendarScreen extends Component {
     const disabledColor = '#a6acb1';
     const black = '#20303c';
     const white = '#ffffff';
-    
+
     return {
       // arrows
       arrowColor: black,
@@ -198,28 +211,28 @@ class CalendarScreen extends Component {
       dotColor: themeColor,
       selectedDotColor: white,
       disabledDotColor: disabledColor,
-      dotStyle: {marginTop: -2}
+      dotStyle: {marginTop: -2},
     };
-  }
+  };
 
-  render() {    
+  render() {
     return (
-      <CalendarProvider 
-        date={today} 
-        onDateChanged={this.onDateChanged} 
+      <CalendarProvider
+        date={today}
+        onDateChanged={this.onDateChanged}
         onMonthChange={this.onMonthChange}
-        theme={{todayButtonTextColor: '#0059ff'}} 
-        showTodayButton 
+        theme={{todayButtonTextColor: '#0059ff'}}
+        showTodayButton
         disabledOpacity={0.6}
         // todayBottomMargin={16}
       >
-        <TouchableHighlight onPress={() => {CalendarScreen.addToCalendar(this.title, this.time);}}>
-          <Image
-            style={styles.plus}
-            source={require('./img/plus.png')}
-          />
+        <TouchableHighlight
+          onPress={() => {
+            CalendarScreen.addToCalendar(this.title, this.time);
+          }}>
+          <Image style={styles.plus} source={require('./img/plus.png')} />
         </TouchableHighlight>
-        <ExpandableCalendar 
+        <ExpandableCalendar
           // horizontal={false}
           // hideArrows
           // disablePan
@@ -240,40 +253,43 @@ class CalendarScreen extends Component {
           // sectionStyle={styles.section}
         />
         <View style={styles.container}>
-        <View style={{flexDirection:"row"}}>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/calendar.png')}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/alarm.png')}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => {this.signOut}}>
-          <Image
-            style={styles.contain}
-            source={require('./img/logout.png')}
-          />
-        </TouchableHighlight>
-<<<<<<< HEAD
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Event')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/plus.png')}
-          />
-        </TouchableHighlight>
-=======
->>>>>>> fdc5f85b02e1b6760c476e49dba901f56de6fe33
-        </View>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Calendar')}>
+              <Image
+                style={styles.contain}
+                source={require('./img/calendar.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Alarm')}>
+              <Image
+                style={styles.contain}
+                source={require('./img/alarm.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => {
+                this.signOut;
+              }}>
+              <Image
+                style={styles.contain}
+                source={require('./img/logout.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Event')}>
+              <Image
+                style={styles.contain}
+                source={require('./img/plus.png')}
+              />
+            </TouchableHighlight>
+          </View>
         </View>
       </CalendarProvider>
     );
   }
-static addToCalendar = (title: string, date: moment, notes: string) => {
+  static addToCalendar = (title: string, date: moment, notes: string) => {
     const eventConfig = {
       title: title,
       startDate: date,
@@ -288,13 +304,18 @@ static addToCalendar = (title: string, date: moment, notes: string) => {
     events.push(eventConfig);
 
     AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-      .then((eventInfo: { calendarItemIdentifier: string, eventIdentifier: string }) => {
-        // handle success - receives an object with `calendarItemIdentifier` and `eventIdentifier` keys, both of type string.
-        // These are two different identifiers on iOS.
-        // On Android, where they are both equal and represent the event id, also strings.
-        // when { action: 'CANCELED' } is returned, the dialog was dismissed
-        console.warn(JSON.stringify(eventInfo));
-      })
+      .then(
+        (eventInfo: {
+          calendarItemIdentifier: string,
+          eventIdentifier: string,
+        }) => {
+          // handle success - receives an object with `calendarItemIdentifier` and `eventIdentifier` keys, both of type string.
+          // These are two different identifiers on iOS.
+          // On Android, where they are both equal and represent the event id, also strings.
+          // when { action: 'CANCELED' } is returned, the dialog was dismissed
+          console.warn(JSON.stringify(eventInfo));
+        },
+      )
       .catch((error: string) => {
         // handle error such as when user rejected permissions
         console.warn(error);
@@ -302,17 +323,15 @@ static addToCalendar = (title: string, date: moment, notes: string) => {
   };
 }
 
-
-
 const styles = StyleSheet.create({
-  plus:{
+  plus: {
     width: 20,
     height: 20,
     marginLeft: 350,
   },
-  container:{
+  container: {
     paddingTop: 10,
-    paddingLeft: 40, 
+    paddingLeft: 40,
     paddingRight: 20,
     paddingBottom: 5,
     alignItems: 'center',
@@ -323,50 +342,50 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   calendar: {
-    paddingLeft: 20, 
-    paddingRight: 20
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   section: {
-    backgroundColor: '#f0f4f7', 
-    color: '#79838a'
+    backgroundColor: '#f0f4f7',
+    color: '#79838a',
   },
   item: {
-    padding: 20, 
-    backgroundColor: 'white', 
-    borderBottomWidth: 1, 
-    borderBottomColor: '#e8ecf0', 
-    flexDirection: 'row'
+    padding: 20,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e8ecf0',
+    flexDirection: 'row',
   },
   itemHourText: {
-    color: 'black'
+    color: 'black',
   },
   itemDurationText: {
-    color: 'grey', 
-    fontSize: 12, 
+    color: 'grey',
+    fontSize: 12,
     marginTop: 4,
-    marginLeft: 4
+    marginLeft: 4,
   },
   itemTitleText: {
-    color: 'black', 
-    marginLeft: 16, 
-    fontWeight: 'bold', 
-    fontSize: 16
+    color: 'black',
+    marginLeft: 16,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   itemButtonContainer: {
-    flex: 1, 
-    alignItems: 'flex-end'
+    flex: 1,
+    alignItems: 'flex-end',
   },
   emptyItem: {
     paddingLeft: 20,
-    height: 52, 
+    height: 52,
     justifyContent: 'center',
-    borderBottomWidth: 1, 
-    borderBottomColor: '#e8ecf0' 
+    borderBottomWidth: 1,
+    borderBottomColor: '#e8ecf0',
   },
   emptyItemText: {
     color: '#79838a',
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });
 
 export default CalendarScreen;

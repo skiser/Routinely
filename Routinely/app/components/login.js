@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from 'react-native';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import React, {Component} from 'react';
+import {
+  Text,
+  View,
+  TextInput,
+  StyleSheet,
+  Button,
+  Image,
+  TouchableHighlight,
+} from 'react-native';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from 'react-native-google-signin';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-import DayPicker from './alarm_components/DayPicker';
-import RepeatDiv from './alarm_components/RepeatDiv';
-import SnoozeDuration from './alarm_components/SnoozeDuration';
-import TimePicker from './alarm_components/TimePicker';
-import {Divider} from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -18,14 +25,15 @@ class LoginScreen extends Component {
       pushData: [],
       loggedIn: false,
       email: '',
-      password: ''
-    }
+      password: '',
+    };
   }
 
   componentDidMount() {
     GoogleSignin.configure({
       // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: '900148831632-ddbara9s24u173ao7bteg73kpe845lta.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      webClientId:
+        '900148831632-ddbara9s24u173ao7bteg73kpe845lta.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       hostedDomain: '', // specifies a hosted domain restriction
       loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
@@ -40,44 +48,47 @@ class LoginScreen extends Component {
       // add any configuration settings here:
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      this.setState({ userInfo: userInfo, loggedIn: true });
+      this.setState({userInfo: userInfo, loggedIn: true});
       console.log(userInfo);
       // create a new firebase credential with the token
-      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        userInfo.idToken,
+        userInfo.accessToken,
+      );
       // login with credential
       await firebase.auth().signInWithCredential(credential);
       //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        console.log("user cancelled the login flow");
+        console.log('user cancelled the login flow');
       } else if (error.code === statusCodes.IN_PROGRESS) {
         // operation (f.e. sign in) is in progress already
-        console.log("operation (f.e. sign in) is in progress already");
+        console.log('operation (f.e. sign in) is in progress already');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
-        console.log("play services not available or outdated");
+        console.log('play services not available or outdated');
       } else {
         // some other error happened
-        console.log("some other error happened");
+        console.log('some other error happened');
       }
     }
-  }
+  };
 
   getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.signInSilently();
-      this.setState({ userInfo });
+      this.setState({userInfo});
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // user has not signed in yet
-        console.log("user has not signed in yet");
-        this.setState({ loggedIn: false });
+        console.log('user has not signed in yet');
+        this.setState({loggedIn: false});
       } else {
         // some other error
-        console.log("some other error happened");
-        this.setState({ loggedIn: false });
+        console.log('some other error happened');
+        this.setState({loggedIn: false});
       }
     }
   };
@@ -86,7 +97,7 @@ class LoginScreen extends Component {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      this.setState({ user: null, loggedIn: false }); // Remember to remove the user from your app's state as well
+      this.setState({user: null, loggedIn: false}); // Remember to remove the user from your app's state as well
     } catch (error) {
       console.error(error);
     }
@@ -94,110 +105,136 @@ class LoginScreen extends Component {
 
   render() {
     return (
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              {!this.state.loggedIn && <View>
+      <View style={styles.body}>
+        <View style={styles.sectionContainer}>
+          {!this.state.loggedIn && (
+            <View>
               <View style={styles.dp}>
-              <Image
-                style={{ width: 125, height: 125 }}
-                source={require('./img/RoutinelyR.png')}
-              />
+                <Image
+                  style={{width: 125, height: 125}}
+                  source={require('./img/RoutinelyR.png')}
+                />
               </View>
               <View>
-              <TextInput style={styles.textInputEnter}
-                placeholder="Enter Email Address"
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}>
-              </TextInput>
+                <TextInput
+                  style={styles.textInputEnter}
+                  placeholder="Enter Email Address"
+                  onChangeText={email => this.setState({email})}
+                  value={this.state.email}
+                />
               </View>
               <View>
-              <TextInput style={styles.textInputEnter}
-                placeholder="Enter Password"
-                onChangeText={(password) => this.setState({password})}
-                value={this.state.password}>
-              </TextInput>
+                <TextInput
+                  style={styles.textInputEnter}
+                  placeholder="Enter Password"
+                  onChangeText={password => this.setState({password})}
+                  value={this.state.password}
+                />
               </View>
               <View style={{textAlign: 'center'}}>
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text style={{ fontSize:24 }}>Login</Text>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonContainer}>
+                  <Text style={{fontSize: 24}}>Login</Text>
+                </TouchableOpacity>
               </View>
               <View>
-              <Text style={{ textAlign: 'center', paddingTop: 30 }}>OR</Text>
+                <Text style={{textAlign: 'center', paddingTop: 30}}>OR</Text>
               </View>
               <View style={styles.sectionContainer}>
-              <GoogleSigninButton
-                style={{ width: 192, height: 48 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={this.firebaseGoogleLogin}
-                disabled={this.state.isSigninInProgress}/>
-                </View>
-                </View>}
+                <GoogleSigninButton
+                  style={{width: 192, height: 48}}
+                  size={GoogleSigninButton.Size.Wide}
+                  color={GoogleSigninButton.Color.Dark}
+                  onPress={this.firebaseGoogleLogin}
+                  disabled={this.state.isSigninInProgress}
+                />
+              </View>
             </View>
-            <View style={styles.buttonContainer}>
-                {!this.state.loggedIn && <Text>You are currently logged out</Text>}
-                {this.state.loggedIn && <Button onPress={this.signOut}
-                  title="Signout"
-                  color="#841584">
-                </Button>}
-            </View>
+          )}
+        </View>
+        <View style={styles.buttonContainer}>
+          {!this.state.loggedIn && <Text>You are currently logged out</Text>}
+          {this.state.loggedIn && (
+            <Button onPress={this.signOut} title="Signout" color="#841584" />
+          )}
+        </View>
+        <View>
+          {this.state.loggedIn && (
             <View>
-              {this.state.loggedIn && <View>
-                <View style={styles.listHeader}>
-                  <Text>User Info</Text>
+              <View style={styles.listHeader}>
+                <Text>User Info</Text>
+              </View>
+              <View style={styles.dp}>
+                <Image
+                  style={{width: 100, height: 100}}
+                  source={{
+                    uri:
+                      this.state.userInfo &&
+                      this.state.userInfo.user &&
+                      this.state.userInfo.user.photo,
+                  }}
+                />
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.title}>Name</Text>
+                <Text style={styles.message}>
+                  {this.state.userInfo &&
+                    this.state.userInfo.user &&
+                    this.state.userInfo.user.name}
+                </Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.title}>Email</Text>
+                <Text style={styles.message}>
+                  {this.state.userInfo &&
+                    this.state.userInfo.user &&
+                    this.state.userInfo.user.email}
+                </Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.title}>ID</Text>
+                <Text style={styles.message}>
+                  {this.state.userInfo &&
+                    this.state.userInfo.user &&
+                    this.state.userInfo.user.id}
+                </Text>
+              </View>
+              <View style={styles.container}>
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableHighlight
+                    onPress={() => this.props.navigation.navigate('Calendar')}>
+                    <Image
+                      style={styles.contain}
+                      source={require('./img/calendar.png')}
+                    />
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    onPress={() => this.props.navigation.navigate('Alarm')}>
+                    <Image
+                      style={styles.contain}
+                      source={require('./img/alarm.png')}
+                    />
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    onPress={() => this.props.navigation.navigate('Logout')}>
+                    <Image
+                      style={styles.contain}
+                      source={require('./img/logout.png')}
+                    />
+                  </TouchableHighlight>
                 </View>
-                <View style={styles.dp}>
-                  <Image
-                    style={{ width: 100, height: 100 }}
-                    source={{ uri: this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.photo }}
-                  />
-                </View>
-                <View style={styles.detailContainer}>
-                  <Text style={styles.title}>Name</Text>
-                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.name}</Text>
-                </View>
-                <View style={styles.detailContainer}>
-                  <Text style={styles.title}>Email</Text>
-                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.email}</Text>
-                </View>
-                <View style={styles.detailContainer}>
-                  <Text style={styles.title}>ID</Text>
-                  <Text style={styles.message}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
-                </View>
-                <View style={styles.container}>
-        <View style={{flexDirection:"row"}}>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/calendar.png')}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/alarm.png')}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/logout.png')}
-          />
-        </TouchableHighlight>
-        </View>
-        </View>
-        </View>}
+              </View>
+            </View>
+          )}
         </View>
       </View>
     );
   }
-} 
+}
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     paddingTop: 10,
-    paddingLeft: 40, 
+    paddingLeft: 40,
     paddingRight: 20,
     paddingBottom: 5,
   },
@@ -206,11 +243,11 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
   },
-  login:{
+  login: {
     textAlign: 'center',
     padding: 500,
     fontSize: 30,
-    fontWeight:'700',
+    fontWeight: '700',
   },
   body: {
     backgroundColor: 'rgba(245, 245, 245, 1)',
@@ -229,28 +266,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 16,
   },
-  email:{
+  email: {
     fontSize: 24,
     fontWeight: '600',
   },
-  emailIn:{
+  emailIn: {
     padding: 5,
     fontSize: 14,
     fontWeight: '600',
   },
-  password:{
+  password: {
     paddingTop: 20,
     fontSize: 24,
     fontWeight: '600',
   },
-  passIn:{
+  passIn: {
     padding: 5,
     fontSize: 14,
     fontWeight: '600',
   },
   listHeader: {
     backgroundColor: '#eee',
-    color: "#222",
+    color: '#222',
     height: 44,
     padding: 12,
   },
@@ -265,7 +302,7 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 14,
     paddingBottom: 15,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
     borderBottomWidth: 1,
   },
   dp: {
@@ -326,8 +363,7 @@ const styles = StyleSheet.create({
     marginVertical: 50,
     fontSize: 12,
     color: 'rgba(43, 43, 206, 1)',
-  }
-
+  },
 });
 
 export default LoginScreen;

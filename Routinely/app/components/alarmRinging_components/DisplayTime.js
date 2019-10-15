@@ -1,14 +1,21 @@
-
-import React, { Component } from 'react';
-import { AppRegistry, View, Text, StyleSheet, Platform } from 'react-native';
+import React, {Component} from 'react';
+import {AppRegistry, View, Text, StyleSheet, Platform} from 'react-native';
 
 export default class DisplayTime extends Component {
-
   constructor() {
     super();
 
-    this.state = { currentTime: null, currentDay: null }
-    this.daysArray = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    this.state = {currentTime: null, currentDay: null};
+    this.daysArray = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ];
   }
 
   componentDidMount() {
@@ -33,7 +40,7 @@ export default class DisplayTime extends Component {
       hour = hour - 12;
     }
 
-    if (hour == 0) {
+    if (hour === 0) {
       hour = 12;
     }
 
@@ -41,16 +48,17 @@ export default class DisplayTime extends Component {
       am_pm = 'am';
     }
 
-    this.setState({ currentTime: hour + ':' + minutes + ':' + seconds + ' ' + am_pm });
+    this.setState({
+      currentTime: hour + ':' + minutes + ':' + seconds + ' ' + am_pm,
+    });
 
     this.daysArray.map((item, key) => {
-      if (key == new Date().getDay()) {
-        this.setState({ currentDay: item.toUpperCase() });
+      if (key === new Date().getDay()) {
+        this.setState({currentDay: item.toUpperCase()});
       }
-    })
-  }
+    });
+  };
   render() {
-
     return (
       <View style={styles.container}>
         <View>
@@ -63,29 +71,27 @@ export default class DisplayTime extends Component {
   }
 }
 AppRegistry.registerComponent('DisplayTime', () => DisplayTime);
-const styles = StyleSheet.create(
-  {
-    container: {
-      flex: 1,
-      paddingTop: (Platform.OS === 'ios') ? 20 : 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    headerText: {
-      fontSize: 30,
-      textAlign: "center",
-      margin: 10,
-      color: 'black',
-      fontWeight: "bold"
-    },
-    timeText: {
-      fontSize: 50,
-      color: '#f44336'
-    },
-    daysText: {
-      color: '#2196f3',
-      fontSize: 25,
-      paddingBottom: 0
-    }
-
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 30,
+    textAlign: 'center',
+    margin: 10,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  timeText: {
+    fontSize: 50,
+    color: '#f44336',
+  },
+  daysText: {
+    color: '#2196f3',
+    fontSize: 25,
+    paddingBottom: 0,
+  },
+});
