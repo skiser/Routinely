@@ -104,40 +104,15 @@ class EventScreen extends Component {
         console.warn(error);
       });
   };
-
-  static showCalendarEventWithId = (eventId: string) => {
-    const eventConfig = {
-      eventId,
-      allowsEditing: true,
-      allowsCalendarPreview: true,
-      navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-      },
-    };
-
-    AddCalendarEvent.presentEventViewingDialog(eventConfig)
-      .then(eventInfo => {
-        console.warn(JSON.stringify(eventInfo));
-      })
-      .catch((error: string) => {
-        // handle error such as when user rejected permissions
-        console.warn(error);
-      });
-  };
 }
 
 const styles = StyleSheet.create({
-  text:{
-    textAlign: 'center',
-  },
-  picker:{
-    marginRight: 10,
-    marginLeft: 10,
+  pick:{
+    width: 600,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    //justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
@@ -151,6 +126,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  card1: {
+    paddingVertical: 16,
+    width: 350,
   },
 });
 export default EventScreen;

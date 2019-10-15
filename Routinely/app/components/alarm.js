@@ -6,11 +6,13 @@ import SnoozeDuration from './alarm_components/SnoozeDuration';
 import TimePicker from './alarm_components/TimePicker';
 import {Divider} from 'react-native-elements';
 import ColorPicker from './alarm_components/ColorPicker';
+import TitleInput from './alarm_components/TitleInput';
 
 class AlarmScreen extends Component {
   render() {
     return (
       <View>
+        <TitleInput/>
         <TimePicker/>
         <RepeatDiv/>
         <Divider/>
@@ -34,7 +36,7 @@ class AlarmScreen extends Component {
             source={require('./img/alarm.png')}
           />
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
+        <TouchableHighlight onPress={() => {this.signOut}}>
           <Image
             style={styles.contain}
             source={require('./img/logout.png')}
@@ -43,11 +45,9 @@ class AlarmScreen extends Component {
         </View>
         </View>
       </View>
-
     );
   }
-} 
-
+}
 const styles = StyleSheet.create({
   container:{
     paddingTop: 10,

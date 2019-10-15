@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from '../../node_modules/react-native';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '../../node_modules/react-native-google-signin';
-import firebase from '../../node_modules/react-native-firebase';
+import { AppRegistry, Text, View, TextInput, StyleSheet, Button, SafeAreaView, Image, TouchableHighlight} from 'react-native';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/auth';
 import DayPicker from './alarm_components/DayPicker';
 import RepeatDiv from './alarm_components/RepeatDiv';
 import SnoozeDuration from './alarm_components/SnoozeDuration';
 import TimePicker from './alarm_components/TimePicker';
 import {Divider} from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pushData: [],
-      loggedIn: false
+      loggedIn: false,
+      email: '',
+      password: ''
     }
   }
 
@@ -38,10 +43,9 @@ class LoginScreen extends Component {
       this.setState({ userInfo: userInfo, loggedIn: true });
       console.log(userInfo);
       // create a new firebase credential with the token
-      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken)
+      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
       // login with credential
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-
+      await firebase.auth().signInWithCredential(credential);
       //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
       console.log(error)
@@ -60,29 +64,6 @@ class LoginScreen extends Component {
       }
     }
   }
-
-  _signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      this.setState({ userInfo: userInfo, loggedIn: true });
-      console.log(userInfo);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-        console.log("user cancelled the login flow");
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (f.e. sign in) is in progress already
-        console.log("operation (f.e. sign in) is in progress already");
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        console.log("play services not available or outdated");
-      } else {
-        // some other error happened
-        console.log("some other error happened");
-      }
-    }
-  };
 
   getCurrentUserInfo = async () => {
     try {
@@ -115,13 +96,44 @@ class LoginScreen extends Component {
     return (
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-            {!this.state.loggedIn &&
+              {!this.state.loggedIn && <View>
+              <View style={styles.dp}>
+              <Image
+                style={{ width: 125, height: 125 }}
+                source={require('./img/RoutinelyR.png')}
+              />
+              </View>
+              <View>
+              <TextInput style={styles.textInputEnter}
+                placeholder="Enter Email Address"
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}>
+              </TextInput>
+              </View>
+              <View>
+              <TextInput style={styles.textInputEnter}
+                placeholder="Enter Password"
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}>
+              </TextInput>
+              </View>
+              <View style={{textAlign: 'center'}}>
+              <TouchableOpacity style={styles.buttonContainer}>
+                <Text style={{ fontSize:24 }}>Login</Text>
+              </TouchableOpacity>
+              </View>
+              <View>
+              <Text style={{ textAlign: 'center', paddingTop: 30 }}>OR</Text>
+              </View>
+              <View style={styles.sectionContainer}>
               <GoogleSigninButton
                 style={{ width: 192, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={this.firebaseGoogleLogin}
-                disabled={this.state.isSigninInProgress} />}
+                disabled={this.state.isSigninInProgress}/>
+                </View>
+                </View>}
             </View>
             <View style={styles.buttonContainer}>
                 {!this.state.loggedIn && <Text>You are currently logged out</Text>}
@@ -131,7 +143,6 @@ class LoginScreen extends Component {
                 </Button>}
             </View>
             <View>
-            {!this.state.loggedIn}
               {this.state.loggedIn && <View>
                 <View style={styles.listHeader}>
                   <Text>User Info</Text>
@@ -201,72 +212,85 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight:'700',
   },
-
+  body: {
+    backgroundColor: 'rgba(245, 245, 245, 1)',
+    alignItems: 'center',
+    paddingTop: 200,
+    paddingBottom: 200,
+  },
+  textInputEnter: {
+    width: 300,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderRadius: 35,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: '#ffffff',
+    marginVertical: 10,
+    textAlign: 'center',
+    paddingVertical: 16,
+  },
   email:{
     fontSize: 24,
     fontWeight: '600',
   },
-
   emailIn:{
     padding: 5,
     fontSize: 14,
     fontWeight: '600',
   },
-
   password:{
     paddingTop: 20,
     fontSize: 24,
     fontWeight: '600',
   },
-
   passIn:{
     padding: 5,
     fontSize: 14,
     fontWeight: '600',
   },
-
   listHeader: {
     backgroundColor: '#eee',
     color: "#222",
     height: 44,
-    padding: 12
+    padding: 12,
   },
   detailContainer: {
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    paddingTop: 10
+    paddingTop: 10,
   },
   message: {
     fontSize: 14,
     paddingBottom: 15,
     borderBottomColor: "#ccc",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   dp: {
     marginTop: 32,
     paddingHorizontal: 24,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
-  
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontSize: 24,
   },
   sectionTitle: {
     fontSize: 24,
@@ -286,6 +310,22 @@ const styles = StyleSheet.create({
     padding: 50,
     paddingRight: 12,
     textAlign: 'right',
+  },
+  logoText: {
+    marginVertical: 50,
+    fontSize: 18,
+    color: 'rgba(0, 0, 0, 1)',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'rgba(0,0,0,1)',
+  },
+  note: {
+    marginVertical: 50,
+    fontSize: 12,
+    color: 'rgba(43, 43, 206, 1)',
   }
 
 });

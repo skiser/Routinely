@@ -32,7 +32,9 @@ export default class TimePicker extends Component {
   timepicker = () => {
     this.show('time');
   }
-
+  componentDidMount(){
+    this.time;
+  }
   render() {
     const { show, date, mode } = this.state;
 
