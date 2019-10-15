@@ -231,7 +231,7 @@ class CalendarScreen extends Component {
             onPress={() => this.props.navigation.navigate('Event')}>
               <Image
                 style={styles.plus}
-                source={require('./img/plus.png')}
+                source={require('../components/img/plus.png')}
               />
         </TouchableHighlight>
 
@@ -244,8 +244,8 @@ class CalendarScreen extends Component {
           firstDay={1}
           //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
-          leftArrowImageSource={require('./img/previous.png')}
-          rightArrowImageSource={require('./img/next.png')}
+          leftArrowImageSource={require('../components/img/previous.png')}
+          rightArrowImageSource={require('../components/img/next.png')}
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
         />
@@ -261,14 +261,14 @@ class CalendarScreen extends Component {
               onPress={() => this.props.navigation.navigate('Calendar')}>
               <Image
                 style={styles.contain}
-                source={require('./img/calendar.png')}
+                source={require('../components/img/calendar.png')}
               />
             </TouchableHighlight>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Alarm')}>
               <Image
                 style={styles.contain}
-                source={require('./img/alarm.png')}
+                source={require('../components/img/alarm.png')}
               />
             </TouchableHighlight>
             <TouchableHighlight
@@ -277,14 +277,14 @@ class CalendarScreen extends Component {
               }}>
               <Image
                 style={styles.contain}
-                source={require('./img/logout.png')}
+                source={require('../components/img/logout.png')}
               />
             </TouchableHighlight>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Event')}>
               <Image
                 style={styles.contain}
-                source={require('./img/plus.png')}
+                source={require('../components/img/plus.png')}
               />
             </TouchableHighlight>
           </View>

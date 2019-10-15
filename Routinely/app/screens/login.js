@@ -107,7 +107,7 @@ class LoginScreen extends Component {
   render() {
     return (
       <ImageBackground
-        source={require('./img/RoutinelyLoginBackground.png')}
+        source={require('../components/img/RoutinelyLoginBackground.png')}
         style={{width: '100%', height: '100%'}}>
         <View style={styles.body}>
           <View style={styles.sectionContainer}>
@@ -116,7 +116,7 @@ class LoginScreen extends Component {
                 <View style={styles.dp}>
                   <Image
                     style={{width: 150, height: 150}}
-                    source={require('./img/RoutinelyR.png')}
+                    source={require('../components/img/RoutinelyR.png')}
                   />
                 </View>
                 <View style={styles.buttonContainer}>
@@ -196,21 +196,21 @@ class LoginScreen extends Component {
                     onPress={() => this.props.navigation.navigate('Calendar')}>
                     <Image
                       style={styles.contain}
-                      source={require('./img/calendar.png')}
+                      source={require('../components/img/calendar.png')}
                     />
                   </TouchableHighlight>
                   <TouchableHighlight
                     onPress={() => this.props.navigation.navigate('Alarm')}>
                     <Image
                       style={styles.contain}
-                      source={require('./img/alarm.png')}
+                      source={require('../components/img/alarm.png')}
                     />
                   </TouchableHighlight>
                   <TouchableHighlight
                     onPress={() => this.props.navigation.navigate('Logout')}>
                     <Image
                       style={styles.contain}
-                      source={require('./img/logout.png')}
+                      source={require('../components/img/logout.png')}
                     />
                   </TouchableHighlight>
                 </View>
