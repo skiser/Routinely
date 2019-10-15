@@ -123,7 +123,7 @@ class LoginScreen extends Component {
             </View>
             <View>
               {this.state.loggedIn && <View>
-                <View style={styles.listHeader}>
+                {/* <View style={styles.listHeader}>
                   <Text>User Info</Text>
                 </View>
                 <View style={styles.dp}>
@@ -132,40 +132,40 @@ class LoginScreen extends Component {
                     source={{ uri: this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.photo }}
                   />
                 </View>
-                <View style={styles.detailContainer}>
+                <View>
                   <Text style={styles.textInputEnter}>Name</Text>
                   <Text style={styles.textInputEnter}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.name}</Text>
                 </View>
-                <View style={styles.detailContainer}>
+                <View>
                   <Text style={styles.textInputEnter}>Email</Text>
                   <Text style={styles.textInputEnter}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.email}</Text>
                 </View>
-                <View style={styles.detailContainer}>
+                <View>
                   <Text style={styles.textInputEnter}>ID</Text>
                   <Text style={styles.textInputEnter}>{this.state.userInfo && this.state.userInfo.user && this.state.userInfo.user.id}</Text>
-                </View>
-                <View style={styles.container}>
-        <View style={{flexDirection:"row"}}>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/calendar.png')}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/alarm.png')}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/logout.png')}
-          />
-        </TouchableHighlight>
-        </View>
-        </View>
+                </View> */}
+            <View style={styles.container}>
+              <View>
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('Calendar')}>
+                  <Image
+                    style={styles.contain}
+                    source={require('./img/calendar.png')}
+                  />
+                </TouchableHighlight>
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('Alarm')}>
+                  <Image
+                    style={styles.contain}
+                    source={require('./img/alarm.png')}
+                  />
+                </TouchableHighlight>
+                <TouchableHighlight onPress={() => {this.signOut}}>
+                  <Image
+                    style={styles.contain}
+                    source={require('./img/logout.png')}
+                  />
+                </TouchableHighlight>
+              </View>
+            </View>
         </View>}
         </View>
       </View>
@@ -175,11 +175,16 @@ class LoginScreen extends Component {
 } 
 
 const styles = StyleSheet.create({
-  login:{
-    textAlign: 'center',
-    padding: 500,
-    fontSize: 30,
-    fontWeight:'700',
+  container:{
+    paddingTop: 10,
+    paddingLeft: 40, 
+    paddingRight: 20,
+    paddingBottom: 5,
+  },
+  contain: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
   body: {
     alignItems: 'center',
