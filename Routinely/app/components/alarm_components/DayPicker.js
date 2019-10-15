@@ -1,18 +1,24 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-import { Button, Divider, ButtonGroup } from 'react-native-elements';
+import React, {Component} from 'react';
+import {
+  AppRegistry,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
+import {Button, Divider, ButtonGroup} from 'react-native-elements';
 
 export default class DayPicker extends Component {
-    render() {
+  render() {
     return (
-      <View style = {styles.container}>
-        <Button buttonStyle = {styles.dayBox} title='S'></Button>
-        <Button buttonStyle = {styles.dayBox} title='M'></Button>
-        <Button buttonStyle = {styles.dayBox} title='T'></Button>
-        <Button buttonStyle = {styles.dayBox} title='W'></Button>
-        <Button buttonStyle = {styles.dayBox} title='T'></Button>
-        <Button buttonStyle = {styles.dayBox} title='F'></Button>
-        <Button buttonStyle = {styles.dayBox} title='S'></Button>
+      <View style={styles.container}>
+        <Button buttonStyle={styles.dayBox} title="S" />
+        <Button buttonStyle={styles.dayBox} title="M" />
+        <Button buttonStyle={styles.dayBox} title="T" />
+        <Button buttonStyle={styles.dayBox} title="W" />
+        <Button buttonStyle={styles.dayBox} title="T" />
+        <Button buttonStyle={styles.dayBox} title="F" />
+        <Button buttonStyle={styles.dayBox} title="S" />
       </View>
     );
   }
@@ -20,7 +26,7 @@ export default class DayPicker extends Component {
 AppRegistry.registerComponent('DayPicker', () => DayPicker);
 
 const styles = StyleSheet.create({
-  dayBox:{
+  dayBox: {
     backgroundColor: 'lightgrey',
     borderColor: 'white',
     borderWidth: 1,
@@ -30,15 +36,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     overflow: 'hidden',
     padding: 8,
-    textAlign:'center',
+    textAlign: 'center',
     width: 40,
     height: 40,
     flexDirection: 'row',
-   
   },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10
-  }
+    padding: 10,
+  },
 });

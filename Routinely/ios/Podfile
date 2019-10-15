@@ -38,6 +38,8 @@ target 'Routinely' do
 
   pod 'GoogleSignIn', '~> 5.0.0'
 
+  pod 'react-native-add-calendar-event', :path => '../node_modules/react-native-add-calendar-event'
+
   target 'RoutinelyTests' do
     inherit! :search_paths
     # Pods for testing

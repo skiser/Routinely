@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
-import { Button, Divider, ButtonGroup } from 'react-native-elements';
-import { Hoshi } from 'react-native-textinput-effects';
+import React, {Component} from 'react';
+import {AppRegistry, View, StyleSheet} from 'react-native';
+import {Hoshi} from 'react-native-textinput-effects';
 
 export default class TitleInput extends Component {
-    render() {
+  render() {
     return (
-      <View style = {styles.container}>
-          <View style={styles.card1}>
-            <Hoshi label={'Title'} borderColor={'#2E68FF'} maskColor={'#blue'} />
-          </View>
+      <View style={styles.container}>
+        <View style={styles.card1}>
+          <Hoshi label={'Title'} borderColor={'#2E68FF'} maskColor={'#blue'} />
+        </View>
       </View>
     );
   }
@@ -31,6 +30,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+<<<<<<< HEAD
     padding: 10
   }
+=======
+    padding: 10,
+  },
+>>>>>>> 80a47c46bb76690e1d08aa6cb4de99dc71757ede
 });
