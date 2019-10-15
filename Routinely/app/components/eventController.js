@@ -13,7 +13,7 @@ const utcDateToString = (momentInUTC: moment): string => {
 
 export default class eventController extends Component{
     state = {
-        title: "",
+        title: "title",
        /*  startTime: "",
         endTime: "",
         notes: "",

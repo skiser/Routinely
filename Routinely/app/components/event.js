@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component, useState } from 'react';
 import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 import TimePicker from './alarm_components/TimePicker';
 import DayPicker from './alarm_components/DayPicker';
-import eventController from './eventController';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/auth';
 
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -14,62 +16,56 @@ const utcDateToString = (momentInUTC: moment): string => {
 };
 
 class EventScreen extends Component {
-  render() {
-    const {title, startTime, endTime, notes, backgroundColor,tintColor, titleColor} = this.state
+  constructor(props) {
+    super(props);
+    this.state = {
+      title:'',
+      notes:'',
+    };
+  }
+
+  addEvent = async () => {
+    const addEvent = firestore().collection('users').doc('skiser').collection('event')
+    try{
+      await addEvent.add({
+      title: this.state.title,
+      notes: this.state.notes,
+    }).then(ref => {
+      console.log('Added doc w ID: ', ref.id);
+    })
+    }catch(error){
+      console.error(error)
+    }
+  };
+
+
+  render(){
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Event title: </Text>
-        <View style={styles.text}>
           <TextInput
-            style={{
-              height: 40,
-              width: '100%',
-              marginTop: 30,
-              marginHorizontal: 15,
-            }}
             placeholder="enter event title"
-            onChangeText={title => this.setState({title})}
+            onChangeText = {title => this.setState({title})}
             value={this.state.title}
           />
-        </View>
-        <Text style={styles.welcome}>Event ID: </Text>
-        <View style={styles.text}>
+        <Text style={styles.welcome}>Event Notes: </Text>
           <TextInput
-            style={{
-              height: 40,
-              width: '100%',
-              marginTop: 30,
-              marginHorizontal: 15,
-            }}
-            placeholder="enter event id"
-            onChangeText={id => this.setState({id})}
-            value={this.state.id}
+            placeholder="enter event event"
+            onChangeText = {notes => this.setState({notes})}
+            value={this.state.notes}
           />
-        </View>
-        <View style={styles.picker}>
+        {/* <View style={styles.picker}>
           <DayPicker />
           <TimePicker />
-        </View>
-        <Button
-          onPress={() => {
-            EventScreen.addToCalendar(eventTitle, nowUTC);
-          }}
-          title="Add to calendar"
-        />
-        <Button
-          onPress={() => {
-            EventScreen.editCalendarEventWithId(this.state.id);
-          }}
-          title="Edit event with this id"
-        />
-        <Button
-          onPress={() => {
-            EventScreen.showCalendarEventWithId(this.state.text);
-          }}
-          title="Show event with this id"
-        />
+        </View> */}
+        <Button 
+        title= "addEvent"
+        onPress={()=> this.addEvent()}
+        >
+        </Button>
       </View>
     );
+  
   }
 
   static addToCalendar = (title: string, startDateUTC: moment) => {
