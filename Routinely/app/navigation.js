@@ -40,7 +40,7 @@ export default createAppContainer(
         //Calendar: CalendarScreen,
       },
       {
-        initialRouteName: "Auth"
+        initialRouteName: "App"
       }
     )
   );

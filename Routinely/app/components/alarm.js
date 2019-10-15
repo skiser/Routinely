@@ -36,7 +36,7 @@ class AlarmScreen extends Component {
             source={require('./img/alarm.png')}
           />
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Logout')}>
+        <TouchableHighlight onPress={() => {this.signOut}}>
           <Image
             style={styles.contain}
             source={require('./img/logout.png')}
