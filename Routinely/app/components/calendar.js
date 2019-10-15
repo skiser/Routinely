@@ -228,11 +228,13 @@ class CalendarScreen extends Component {
         // todayBottomMargin={16}
       >
         <TouchableHighlight
-          onPress={() => {
-            CalendarScreen.addToCalendar(this.title, this.time);
-          }}>
-          <Image style={styles.plus} source={require('./img/plus.png')} />
+            onPress={() => this.props.navigation.navigate('Event')}>
+              <Image
+                style={styles.plus}
+                source={require('./img/plus.png')}
+              />
         </TouchableHighlight>
+
         <ExpandableCalendar
           // horizontal={false}
           // hideArrows
@@ -290,6 +292,7 @@ class CalendarScreen extends Component {
       </CalendarProvider>
     );
   }
+
   static addToCalendar = (title: string, date: moment, notes: string) => {
     const eventConfig = {
       title: title,
