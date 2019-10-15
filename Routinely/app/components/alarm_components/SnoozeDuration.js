@@ -1,16 +1,22 @@
-import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-import { Button, Divider, ButtonGroup } from 'react-native-elements';
+import React, {Component} from 'react';
+import {
+  AppRegistry,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
+import {Button, Divider} from 'react-native-elements';
 
 export default class SnoozeDuration extends Component {
-    render() {
+  render() {
     return (
-      <View style = {styles.container}>
-        <Text style = {styles.snooze}>Snooze</Text>
-        <Divider/>
-        <Button buttonStyle = {styles.snoozeBox} title='2 min'></Button>
-        <Button buttonStyle = {styles.snoozeBox} title='5 min'></Button>
-        <Button buttonStyle = {styles.snoozeBox} title='10 min'></Button>
+      <View style={styles.container}>
+        <Text style={styles.snooze}>Snooze</Text>
+        <Divider />
+        <Button buttonStyle={styles.snoozeBox} title="2 min" />
+        <Button buttonStyle={styles.snoozeBox} title="5 min" />
+        <Button buttonStyle={styles.snoozeBox} title="10 min" />
       </View>
     );
   }
@@ -18,7 +24,7 @@ export default class SnoozeDuration extends Component {
 AppRegistry.registerComponent('SnoozeDuration', () => SnoozeDuration);
 
 const styles = StyleSheet.create({
-  snoozeBox:{
+  snoozeBox: {
     backgroundColor: 'lightgrey',
     borderColor: 'white',
     borderWidth: 1,
@@ -28,13 +34,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     overflow: 'hidden',
     padding: 8,
-    textAlign:'center',
+    textAlign: 'center',
     width: 80,
     height: 40,
     flexDirection: 'row',
-   
   },
-  snooze:{
+  snooze: {
     fontSize: 20,
     color: 'darkgrey',
     fontWeight: '600',
@@ -43,6 +48,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10
-  }
+    padding: 10,
+  },
 });
