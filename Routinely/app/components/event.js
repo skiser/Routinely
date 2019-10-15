@@ -2,84 +2,62 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
-import DayPicker from './alarm_components/DayPicker';
 import TimePicker from './alarm_components/TimePicker';
-import {Divider} from 'react-native-elements';
-import TitleInput from './alarm_components/TitleInput';
-import { Hoshi } from 'react-native-textinput-effects';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import events from './calendar';
+import DayPicker from './alarm_components/DayPicker';
 
 const utcDateToString = (momentInUTC: moment): string => {
-    let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-    // console.warn(s);
-    return s;
-  };
+  let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  // console.warn(s);
+  return s;
+};
 
 class EventScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {date: new Date('2020-06-12T14:42:42'),
-    mode: 'date',
-    show: false,
-    title: null,
-    notes: null,};
-  }
-
-  setDate = (event, date) => {
-    date = date || this.state.date;
-
-    this.setState({
-      show: Platform.OS === 'ios' ? true : false,
-      date,
-    });
-  }
-
-  show = mode => {
-    this.setState({
-      show: true,
-      mode,
-    });
-  }
-
-  datepicker = () => {
-    this.show('date');
-  }
-
-  timepicker = () => {
-    this.show('time');
-  }
-  componentDidMount(){
-    this.time;
-  }
+  state = { title: '' };
+  state = { id: '' };
   render() {
-    const { show, date, mode, title, notes} = this.state;
+    //const eventTitle = 'Lunch';
+    const nowUTC = moment.utc();
     return (
       <View style={styles.container}>
-        <View style={styles.card1}>
-            <Hoshi label={'Title'} borderColor={'#2E68FF'} maskColor={'#blue'} value={title} />
+        <Text style={styles.welcome}>Event title: </Text>
+        <View style={styles.text}>
+        <TextInput
+          style={{ height: 40, width: '100%', marginTop: 30, marginHorizontal: 15 }}
+          placeholder="enter event title"
+          onChangeText={title => this.setState({ title})}
+          value={this.state.title}
+        />
         </View>
-        <View style={styles.card1}>
-            <Hoshi label={'Notes'} borderColor={'#2E68FF'} maskColor={'#blue'} value={notes} />
+        <Text style={styles.welcome}>Event ID: </Text>
+        <View style={styles.text}>
+        <TextInput
+          style={{ height: 40, width: '100%', marginTop: 30, marginHorizontal: 15 }}
+          placeholder="enter event id"
+          onChangeText={id => this.setState({ id })}
+          value={this.state.id}
+        />
+         </View>
+        <View style={styles.picker}>
+        <DayPicker/>
+        <TimePicker/>
         </View>
-        <View style={styles.pick}>
-        <View>
-          <Button onPress={this.datepicker} title="Show  Date" />
-        </View>
-        <View>
-          <Button onPress={this.timepicker} title="Select Time" />
-        </View>
-        { show && <DateTimePicker value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={this.setDate} />
-        }
-      </View>
         <Button
           onPress={() => {
-            EventScreen.addToCalendar(this.title, this.time);}}
+            EventScreen.addToCalendar(eventTitle, nowUTC);
+          }}
           title="Add to calendar"
+        />
+        <Button
+          onPress={() => {
+            EventScreen.editCalendarEventWithId(this.state.id);
+          }}
+          title="Edit event with this id"
+        />
+        <Button
+          onPress={() => {
+            EventScreen.showCalendarEventWithId(this.state.text);
+          }}
+          title="Show event with this id"
         />
       </View>
     );
@@ -142,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    marginBottom: 10,
   },
   instructions: {
     textAlign: 'center',
