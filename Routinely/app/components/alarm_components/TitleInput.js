@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+<<<<<<< HEAD
+    padding: 10
+  }
+=======
     padding: 10,
   },
+>>>>>>> 80a47c46bb76690e1d08aa6cb4de99dc71757ede
 });

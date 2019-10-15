@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   TouchableHighlight,
+  ImageBackground,
 } from 'react-native';
 import {
   GoogleSignin,
@@ -105,49 +106,32 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={styles.body}>
-        <View style={styles.sectionContainer}>
-          {!this.state.loggedIn && (
-            <View>
+      <ImageBackground source={require('./img/RoutinelyLoginBackground.png')} style={{ width: '100%', height: '100%' }}>
+          <View style={styles.body}>
+            <View style={styles.sectionContainer}>
+              {!this.state.loggedIn && <View>
               <View style={styles.dp}>
-                <Image
-                  style={{width: 125, height: 125}}
-                  source={require('./img/RoutinelyR.png')}
-                />
+              <Image
+                style={{ width: 150, height: 150 }}
+                source={require('./img/RoutinelyR.png')}
+              />
               </View>
-              <View>
-                <TextInput
-                  style={styles.textInputEnter}
-                  placeholder="Enter Email Address"
-                  onChangeText={email => this.setState({email})}
-                  value={this.state.email}
-                />
-              </View>
-              <View>
-                <TextInput
-                  style={styles.textInputEnter}
-                  placeholder="Enter Password"
-                  onChangeText={password => this.setState({password})}
-                  value={this.state.password}
-                />
-              </View>
-              <View style={{textAlign: 'center'}}>
-                <TouchableOpacity style={styles.buttonContainer}>
-                  <Text style={{fontSize: 24}}>Login</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Text style={{textAlign: 'center', paddingTop: 30}}>OR</Text>
-              </View>
-              <View style={styles.sectionContainer}>
-                <GoogleSigninButton
-                  style={{width: 192, height: 48}}
-                  size={GoogleSigninButton.Size.Wide}
-                  color={GoogleSigninButton.Color.Dark}
-                  onPress={this.firebaseGoogleLogin}
-                  disabled={this.state.isSigninInProgress}
-                />
-              </View>
+              <View style={styles.buttonContainer}>
+              <GoogleSigninButton
+                style={{ width: 192, height: 48 }}
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Dark}
+                onPress={this.firebaseGoogleLogin}
+                disabled={this.state.isSigninInProgress}/>
+                </View>
+                </View>}
+            </View>
+            <View>
+                {!this.state.loggedIn && <Text style={styles.textInputEnter}>You are currently logged out</Text>}
+                {this.state.loggedIn && <Button onPress={this.signOut}
+                  title="Signout"
+                  color="#841584">
+                </Button>}
             </View>
           )}
         </View>
@@ -226,7 +210,7 @@ class LoginScreen extends Component {
             </View>
           )}
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
@@ -250,14 +234,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   body: {
-    backgroundColor: 'rgba(245, 245, 245, 1)',
     alignItems: 'center',
-    paddingTop: 200,
-    paddingBottom: 200,
+    padding: 15,
   },
   textInputEnter: {
     width: 300,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     borderRadius: 35,
     paddingHorizontal: 16,
     fontSize: 16,
@@ -306,26 +287,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   dp: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-    flexDirection: 'row',
+    height: 44,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
   sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-    flexDirection: 'row',
+    paddingTop: 150,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonContainer: {
-    marginTop: 32,
+    paddingTop: 20,
+    marginTop: 420,
     paddingHorizontal: 24,
-    flexDirection: 'row',
     justifyContent: 'center',
     fontSize: 24,
   },
@@ -342,6 +320,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   footer: {
+    fontSize: 12,
+    fontWeight: '600',
+    padding: 50,
+    paddingLeft: 12,
+    textAlign: 'left',
+  },
+  footerTwo: {
     fontSize: 12,
     fontWeight: '600',
     padding: 50,
