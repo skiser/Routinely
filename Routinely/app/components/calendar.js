@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import {Platform, Alert, StyleSheet, View, Text, TouchableOpacity, Button, TouchableHighlight, Image} from 'react-native';
 import { CalendarProvider, ExpandableCalendar, AgendaList} from 'react-native-calendars';
 import  _ from 'lodash';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import { Observable } from 'rxjs';
 import moment from 'moment';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
+
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3); 
@@ -25,14 +28,6 @@ const dates = [fastDate, today].concat(futureDates);
 
 const events = [{
   title: null,
-  startDate: moment,
-  endDate: moment,
-  notes: null, 
-  navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-        titleColor: 'blue',
-  },
 }];
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -89,13 +84,6 @@ componentDidMount(){
 
 
 class CalendarScreen extends Component {
-  state = {
-    date: new Date('2020-06-12T14:42:42'),
-    mode: 'date',
-    show: false,
-    title: null,
-    notes: null,
-  }
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -127,8 +115,8 @@ class CalendarScreen extends Component {
     );
   }
 
-  renderItem = ({calendarItems}) => {
-    if (_.isEmpty(this.calendarItems)) {
+  renderItem = (events) => {
+    if (_.isEmpty(this.events)) {
       return this.renderEmptyItem();
     }
     return (
@@ -234,7 +222,7 @@ class CalendarScreen extends Component {
           // headerStyle={styles.calendar} // for horizontal only
         />
         <AgendaList
-          sections={this.calendarItems}
+          sections={this.events}
           extraData={this.state}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
@@ -259,15 +247,6 @@ class CalendarScreen extends Component {
             source={require('./img/logout.png')}
           />
         </TouchableHighlight>
-<<<<<<< HEAD
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Event')}>
-          <Image
-            style={styles.contain}
-            source={require('./img/plus.png')}
-          />
-        </TouchableHighlight>
-=======
->>>>>>> fdc5f85b02e1b6760c476e49dba901f56de6fe33
         </View>
         </View>
       </CalendarProvider>
