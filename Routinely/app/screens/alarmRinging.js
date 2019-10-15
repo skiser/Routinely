@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {AppRegistry, Text, View, StyleSheet, Button} from 'react-native';
-import DisplayTime from './alarmRinging_components/DisplayTime';
+import {View, StyleSheet, Button} from 'react-native';
+import DisplayTime from '../components/alarmRinging_components/DisplayTime';
 
 class AlarmRingingScreen extends Component {
   render() {
