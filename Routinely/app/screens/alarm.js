@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableHighlight, Image} from 'react-native';
-import DayPicker from './alarm_components/DayPicker';
-import RepeatDiv from './alarm_components/RepeatDiv';
-import SnoozeDuration from './alarm_components/SnoozeDuration';
-import TimePicker from './alarm_components/TimePicker';
+import DayPicker from '../components/alarm_components/DayPicker';
+import RepeatDiv from '../components/alarm_components/RepeatDiv';
+import SnoozeDuration from '../components/alarm_components/SnoozeDuration';
+import TimePicker from '../components/alarm_components/TimePicker';
 import {Divider} from 'react-native-elements';
-import ColorPicker from './alarm_components/ColorPicker';
-import TitleInput from './alarm_components/TitleInput';
+import ColorPicker from '../components/alarm_components/ColorPicker';
+import TitleInput from '../components/alarm_components/TitleInput';
 
 class AlarmScreen extends Component {
   render() {
@@ -28,14 +28,14 @@ class AlarmScreen extends Component {
               onPress={() => this.props.navigation.navigate('Calendar')}>
               <Image
                 style={styles.contain}
-                source={require('./img/calendar.png')}
+                source={require('../components/img/calendar.png')}
               />
             </TouchableHighlight>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Alarm')}>
               <Image
                 style={styles.contain}
-                source={require('./img/alarm.png')}
+                source={require('../components/img/alarm.png')}
               />
             </TouchableHighlight>
             <TouchableHighlight
@@ -44,7 +44,7 @@ class AlarmScreen extends Component {
               }}>
               <Image
                 style={styles.contain}
-                source={require('./img/logout.png')}
+                source={require('../components/img/logout.png')}
               />
             </TouchableHighlight>
           </View>
