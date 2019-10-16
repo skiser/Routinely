@@ -70,7 +70,7 @@ class tasks extends React.Component {
         />
         <TextInput
           style={styles.container}
-          placeholder="Enter Password"
+          placeholder="Enter Task Name"
           onChangeText={task => this.setState({task})}
           value={this.state.task}
         />

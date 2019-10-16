@@ -1,14 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  Button,
-  Image,
-  TouchableHighlight,
-  ImageBackground,
-} from 'react-native';
+import {Text, View, StyleSheet, Image, ImageBackground} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -24,7 +15,7 @@ class LoginScreen extends Component {
       pushData: [],
       loggedIn: false,
       email: '',
-      password: ''
+      password: '',
     };
   }
 
@@ -107,10 +98,27 @@ class LoginScreen extends Component {
       <ImageBackground
         source={require('../components/img/RoutinelyLoginBackground.png')}
         style={{width: '100%', height: '100%'}}>
-          <View style={styles.body}>
+        <View style={styles.body}>
           <View style={styles.sectionContainer}>
             {!this.state.loggedIn && (
-                this.props.navigation.navigate('Calendar'))}
+              <View>
+                <View style={styles.dp}>
+                  <Image
+                    style={{width: 150, height: 150}}
+                    source={require('../components/img/RoutinelyR.png')}
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <GoogleSigninButton
+                    style={{width: 192, height: 48}}
+                    size={GoogleSigninButton.Size.Wide}
+                    color={GoogleSigninButton.Color.Dark}
+                    onPress={this.firebaseGoogleLogin}
+                    disabled={this.state.isSigninInProgress}
+                  />
+                </View>
+              </View>
+            )}
           </View>
           <View>
             {!this.state.loggedIn && (
@@ -121,6 +129,7 @@ class LoginScreen extends Component {
           </View>
         </View>
         <View>
+          {this.state.loggedIn && this.props.navigation.navigate('Calendar')}
         </View>
       </ImageBackground>
     );
