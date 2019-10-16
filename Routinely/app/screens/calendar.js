@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Platform,
+import {Platform,
   Alert,
   StyleSheet,
   View,
@@ -16,40 +15,35 @@ import {
   AgendaList,
 } from 'react-native-calendars';
 import _ from 'lodash';
-import '@react-native-firebase/auth';
 import moment from 'moment';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
-
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/auth';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
-/* const event = ({
-    calendarId: 'primary',
-    timeMin: new Date().toISOString(),
-    showDeleted: false,
-    singleEvents: true,
-    maxResults: 10,
-    orderBy: 'startTime'
-}); */
 
-//const events = {calendarId, timeMin, showDeleted, singleEvents, maxResults, orderBy};
-//setCalendar(newCalendar: string: void)
+var events = [
+  {title: '', notes: '', startTime: moment} 
+];  
 
-const events = [
-  {
-    title: null,
-    startDate: moment,
-    endDate: moment,
-    notes: null,
-    navigationBarIOS: {
-      tintColor: 'orange',
-      backgroundColor: 'green',
-      titleColor: 'blue',
-    },
-  },
-];
+var events = [
+  {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}, {hour: '5pm', duration: '1h', title: 'Vinyasa Yoga'}]},
+  {title: dates[2], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {title: dates[3], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[4], data: [{}]},
+  {title: dates[5], data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {title: dates[6], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[7], data: [{}]},
+  {title: dates[8], data: [{hour: '9pm', duration: '1h', title: 'Pilates Reformer'}, {hour: '10pm', duration: '1h', title: 'Ashtanga'}, {hour: '11pm', duration: '1h', title: 'TRX'}, {hour: '12pm', duration: '1h', title: 'Running Group'}]},
+  {title: dates[9], data: [{hour: '1pm', duration: '1h', title: 'Ashtanga Yoga'}, {hour: '2pm', duration: '1h', title: 'Deep Streches'}, {hour: '3pm', duration: '1h', title: 'Private Yoga'}]},
+  {title: dates[10], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]}
+]; 
+
 
 const utcDateToString = (momentInUTC: moment): string => {
   let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -71,47 +65,9 @@ function getPastDate(days) {
   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
 
-//listUpcomingEvents(maxResults: number, calendarId: string = this.calendar): any
-
-/* getCalendar = async () => {
-  const events = await gapi.client.calendar.events.list({
-    calendarId: 'primary',
-    timeMin: new Date().toISOString(),
-    showDeleted: false,
-    singleEvents: true,
-    maxResults: 10,
-    orderBy: 'startTime'
-  })
-
-  console.log(events)
-
-  this.calendarItems= events.results.items;
-} */
-
-const hoursFromNow = n =>
-  new Date(Date.now() + n * 1000 * 60 * 60).toISOString();
-
-/*
-componentDidMount(){
-  const newEvent = this.props.event;
-  events.getEventData(data => {
-      this.setState({date: data,
-      mode: data,
-      show: data,
-      title: data,
-      notes: data
-      })
-    });
-} */
 
 class CalendarScreen extends Component {
-  state = {
-    date: new Date('2020-06-12T14:42:42'),
-    mode: 'date',
-    show: false,
-    title: null,
-    notes: null,
-  };
+
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -122,17 +78,26 @@ class CalendarScreen extends Component {
   };
 
   buttonPressed() {
-    Alert.alert('show more');
+    Alert.alert(item.notes);
   }
 
   itemPressed(id) {
     Alert.alert(id);
   }
 
-  /* ApiCalendar.listUpcomingEvents(10)
-    .then(({result}: any) => {
-      console.log(result.items);
-  }); */
+  getallEvents(){
+    const eventsRef = firestore().collection('users').doc('skiser').collection('event');
+    const allEvents = eventsRef.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+        events.push(doc);
+        console.log(doc.id, '=>', doc.data());
+        });
+      })
+      .catch(err => {
+        console.log('Error getting docs', err);
+      });
+  }
 
   renderEmptyItem() {
     return (
@@ -160,18 +125,18 @@ class CalendarScreen extends Component {
         </View>
       </TouchableOpacity>
     );
-  };
+  }
 
-  /* getMarkedDates = () => {
+  getMarkedDates = () => {
     const marked = {};
     for (var i = 0; i < events.length; i++){
       // only mark dates with data
       if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
         marked[item.title] = {marked: true};
       }
-    });
+    };
     return marked;
-  } */
+  } 
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -250,8 +215,8 @@ class CalendarScreen extends Component {
           // headerStyle={styles.calendar} // for horizontal only
         />
         <AgendaList
-          sections={this.events}
-          extraData={this.state}
+          sections={events}
+          extraData={events.notes}
           renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />
@@ -292,39 +257,6 @@ class CalendarScreen extends Component {
       </CalendarProvider>
     );
   }
-
-  static addToCalendar = (title: string, date: moment, notes: string) => {
-    const eventConfig = {
-      title: title,
-      startDate: date,
-      endDate: utcDateToString(moment.utc(date).add(1, 'hours')),
-      notes: notes,
-      navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-        titleColor: 'blue',
-      },
-    };
-    events.push(eventConfig);
-
-    AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-      .then(
-        (eventInfo: {
-          calendarItemIdentifier: string,
-          eventIdentifier: string,
-        }) => {
-          // handle success - receives an object with `calendarItemIdentifier` and `eventIdentifier` keys, both of type string.
-          // These are two different identifiers on iOS.
-          // On Android, where they are both equal and represent the event id, also strings.
-          // when { action: 'CANCELED' } is returned, the dialog was dismissed
-          console.warn(JSON.stringify(eventInfo));
-        },
-      )
-      .catch((error: string) => {
-        // handle error such as when user rejected permissions
-        console.warn(error);
-      });
-  };
 }
 
 const styles = StyleSheet.create({
