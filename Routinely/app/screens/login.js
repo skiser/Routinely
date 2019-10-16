@@ -139,7 +139,6 @@ class LoginScreen extends Component {
           </View>
         </View>
         <View>
-          {this.state.loggedIn && this.props.navigation.navigate('Calendar')}  
         </View>
       </ImageBackground>
     );
