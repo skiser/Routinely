@@ -26,7 +26,7 @@ class LoginScreen extends Component {
       pushData: [],
       loggedIn: false,
       email: '',
-      password: '',
+      password: ''
     };
   }
 
@@ -109,9 +109,9 @@ class LoginScreen extends Component {
       <ImageBackground
         source={require('../components/img/RoutinelyLoginBackground.png')}
         style={{width: '100%', height: '100%'}}>
-        <View style={styles.body}>
+          <View style={styles.body}>
           <View style={styles.sectionContainer}>
-            {!this.state.loggedIn && (
+            {!this.state.loggedIn &&
               <View>
                 <View style={styles.dp}>
                   <Image
@@ -128,8 +128,7 @@ class LoginScreen extends Component {
                     disabled={this.state.isSigninInProgress}
                   />
                 </View>
-              </View>
-            )}
+              </View>}
           </View>
           <View>
             {!this.state.loggedIn && (
@@ -137,86 +136,10 @@ class LoginScreen extends Component {
                 You are currently logged out
               </Text>
             )}
-            {this.state.loggedIn && (
-              <Button onPress={this.signOut} title="Signout" color="#841584" />
-            )}
           </View>
-          )}
-        </View>
-        <View style={styles.buttonContainer}>
-          {!this.state.loggedIn && <Text>You are currently logged out</Text>}
-          {this.state.loggedIn && (
-            <Button onPress={this.signOut} title="Signout" color="#841584" />
-          )}
         </View>
         <View>
-          {this.state.loggedIn && (
-            <View>
-              <View style={styles.listHeader}>
-                <Text>User Info</Text>
-              </View>
-              <View style={styles.dp}>
-                <Image
-                  style={{width: 100, height: 100}}
-                  source={{
-                    uri:
-                      this.state.userInfo &&
-                      this.state.userInfo.user &&
-                      this.state.userInfo.user.photo,
-                  }}
-                />
-              </View>
-              <View style={styles.detailContainer}>
-                <Text style={styles.title}>Name</Text>
-                <Text style={styles.message}>
-                  {this.state.userInfo &&
-                    this.state.userInfo.user &&
-                    this.state.userInfo.user.name}
-                </Text>
-              </View>
-              <View style={styles.detailContainer}>
-                <Text style={styles.title}>Email</Text>
-                <Text style={styles.message}>
-                  {this.state.userInfo &&
-                    this.state.userInfo.user &&
-                    this.state.userInfo.user.email}
-                </Text>
-              </View>
-              <View style={styles.detailContainer}>
-                <Text style={styles.title}>ID</Text>
-                <Text style={styles.message}>
-                  {this.state.userInfo &&
-                    this.state.userInfo.user &&
-                    this.state.userInfo.user.id}
-                </Text>
-              </View>
-              <View style={styles.container}>
-                <View style={{flexDirection: 'row'}}>
-                  <TouchableHighlight
-                    onPress={() => this.props.navigation.navigate('Calendar')}>
-                    <Image
-                      style={styles.contain}
-                      source={require('../components/img/calendar.png')}
-                    />
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    onPress={() => this.props.navigation.navigate('Alarm')}>
-                    <Image
-                      style={styles.contain}
-                      source={require('../components/img/alarm.png')}
-                    />
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    onPress={() => this.props.navigation.navigate('Logout')}>
-                    <Image
-                      style={styles.contain}
-                      source={require('../components/img/logout.png')}
-                    />
-                  </TouchableHighlight>
-                </View>
-              </View>
-            </View>
-          )}
+          {this.state.loggedIn && this.props.navigation.navigate('Calendar')}  
         </View>
       </ImageBackground>
     );
@@ -248,7 +171,7 @@ const styles = StyleSheet.create({
   textInputEnter: {
     width: 300,
     borderRadius: 35,
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     fontSize: 16,
     color: '#ffffff',
     marginVertical: 10,
