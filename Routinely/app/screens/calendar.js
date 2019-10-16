@@ -215,14 +215,6 @@ class CalendarScreen extends Component {
         disabledOpacity={0.6}
         // todayBottomMargin={16}
       >
-        <TouchableHighlight
-          onPress={() => this.props.navigation.navigate('Event')}>
-          <Image
-            style={styles.plus}
-            source={require('../components/img/plus.png')}
-          />
-        </TouchableHighlight>
-
         <ExpandableCalendar
           // horizontal={false}
           // hideArrows
@@ -246,26 +238,10 @@ class CalendarScreen extends Component {
         <View style={styles.container}>
           <View style={{flexDirection: 'row'}}>
             <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Calendar')}>
-              <Image
-                style={styles.contain}
-                source={require('../components/img/calendar.png')}
-              />
-            </TouchableHighlight>
-            <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Alarm')}>
               <Image
                 style={styles.contain}
                 source={require('../components/img/alarm.png')}
-              />
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => {
-                this.signOut;
-              }}>
-              <Image
-                style={styles.contain}
-                source={require('../components/img/logout.png')}
               />
             </TouchableHighlight>
             <TouchableHighlight

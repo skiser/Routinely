@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableHighlight,
 } from 'react-native';
+
 export default class RepeatDiv extends Component {
   render() {
     return (
