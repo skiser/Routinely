@@ -25,32 +25,12 @@ const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
-const events = getallEvents();
-/*
-var events = [
-  {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}]}, 
-];  
-*/
+const events = getAllEvents();
+
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 };
-
-function getallEvents(){
-    const eventsRef = firestore().collection('users').doc('skiser').collection('event');
-    const allEvents = eventsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          events.push(doc);
-          console.log(doc.id, '=>', doc.data());
-        });
-      })
-      .catch(err => {
-        console.log('Error getting docs', err);
-      });
-}
-
 
 function getFutureDates(days) {
   const array = [];
@@ -66,15 +46,32 @@ function getPastDate(days) {
   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
 
+function getAllEvents() {
+  const eventsRef = firestore()
+    .collection('users')
+    .doc('skiser')
+    .collection('event');
+  const allEvents = eventsRef
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        console.log(doc.id, '=>', doc.data());
+        console.log(doc.id, '=>', doc.title);
+      });
+    })
+    .catch(err => {
+      console.log('Error getting docs', err);
+    });
+}
+
 class CalendarScreen extends Component {
   /*
-constructor(props) {
-  super(props);
-  this.state = {
-    events: [],
-  };
-  events = getallEvents();
-} */
+  constructor(props) {
+    super(props);
+    this.state = {
+      events: [],
+    };
+  }*/
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -87,42 +84,10 @@ constructor(props) {
   buttonPressed() {
     Alert.alert(item.notes);
   }
-
   itemPressed(id) {
     Alert.alert(id);
   }
 
-   getallEvents() {
-    const eventsRef = firestore()
-      .collection('users')
-      .doc('skiser')
-      .collection('event');
-    const allEvents = eventsRef
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          events.push(doc);
-          console.log(doc.id, '=>', doc.data());
-        });
-      })
-      .catch(err => {
-        console.log('Error getting docs', err);
-      });
-  }
-
-  componentDidMount() {
-    firestore()
-      .collection('users')
-      .doc('skiser')
-      .collection('event')
-      .get()
-      .then()
-      .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.data());
-        console.log(data); // array of objects
-        this.setState({event: data});
-      });
-  }
   renderEmptyItem() {
     return (
       <View style={styles.emptyItem}>
@@ -130,20 +95,15 @@ constructor(props) {
       </View>
     );
   }
-  renderItem = events => {
+  renderEvent = events => {
     if (_.isEmpty(this.events)) {
       return this.renderEmptyItem();
     }
-
     return (
       <TouchableOpacity
-        onPress={() => this.itemPressed(item.title)}
+        onPress={() => this.itemPressed(events.title)}
         style={styles.item}>
-        <View>
-          <Text style={styles.itemHourText}>{item.hour}</Text>
-          <Text style={styles.itemDurationText}>{item.duration}</Text>
-        </View>
-        <Text style={styles.itemTitleText}>{item.title}</Text>
+        <Text style={styles.itemTitleText}>{events.title}</Text>
         <View style={styles.itemButtonContainer}>
           <Button title={'Info'} onPress={this.buttonPressed} />
         </View>
@@ -206,45 +166,68 @@ constructor(props) {
   };
 
   render() {
-    const {event} = this.state.event;
     return (
-      <View>
-        <div>
-          event.map(event => (<h5>event.title</h5>
-          );})
-        </div>
-        <CalendarProvider
-          date={today}
-          onDateChanged={this.onDateChanged}
-          onMonthChange={this.onMonthChange}
-          theme={{todayButtonTextColor: '#0059ff'}}
-          showTodayButton
-          disabledOpacity={0.6}
-          // todayBottomMargin={16}
-        >
-          <ExpandableCalendar
-            // horizontal={false}
-            // hideArrows
-            // disablePan
-            // hideKnob
-            // initialPosition={ExpandableCalendar.positions.OPEN}
-            firstDay={1}
-            //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-            theme={this.getTheme()}
-            leftArrowImageSource={require('../components/img/previous.png')}
-            rightArrowImageSource={require('../components/img/next.png')}
-            // calendarStyle={styles.calendar}
-            // headerStyle={styles.calendar} // for horizontal only
+      <CalendarProvider
+        date={today}
+        onDateChanged={this.onDateChanged}
+        onMonthChange={this.onMonthChange}
+        theme={{todayButtonTextColor: '#0059ff'}}
+        showTodayButton
+        disabledOpacity={0.6}
+        // todayBottomMargin={16}
+      >
+        <TouchableHighlight
+          onPress={() => this.props.navigation.navigate('Event')}>
+          <Image
+            style={styles.plus}
+            source={require('../components/img/plus.png')}
           />
-          <AgendaList
-            sections={events}
-            extraData={events.notes}
-            renderItem={this.renderItem}
-            // sectionStyle={styles.section}
-          />
-          <BottomBar />
-        </CalendarProvider>
-      </View>
+        </TouchableHighlight>
+        <ExpandableCalendar
+          firstDay={1}
+          theme={this.getTheme()}
+          leftArrowImageSource={require('../components/img/previous.png')}
+          rightArrowImageSource={require('../components/img/next.png')}
+        />
+        <AgendaList
+          renderEvent={this.renderEvent}
+          // sectionStyle={styles.section}
+        />
+        <View style={styles.container}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Calendar')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/calendar.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Alarm')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/alarm.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => {
+                this.signOut;
+              }}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/logout.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Event')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/plus.png')}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
+      </CalendarProvider>
     );
   }
 }
