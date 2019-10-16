@@ -7,7 +7,8 @@ import DayPicker from '../components/alarm_components/DayPicker';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-
+import {Hoshi} from 'react-native-textinput-effects';
+import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
 const utcDateToString = (momentInUTC: moment): string => {
   let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.warn(s);
@@ -46,23 +47,32 @@ class EventScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Event title: </Text>
-        <TextInput
-          placeholder="enter event title"
-          onChangeText={title => this.setState({title})}
-          value={this.state.title}
-        />
-        <Text style={styles.welcome}>Event Notes: </Text>
-        <TextInput
-          placeholder="enter event event"
-          onChangeText={notes => this.setState({notes})}
-          value={this.state.notes}
-        />
+        <View style={styles.card1}>
+          <Hoshi
+            label={'Title'}
+            onChangeText={title => this.setState({title})}
+            value={this.state.title}
+            borderColor={'#2E68FF'}
+            maskColor={'#blue'}
+          />
+          <Hoshi
+            label={'Custom Notes'}
+            onChangeText={notes => this.setState({notes})}
+            value={this.state.notes}
+            borderColor={'#2E68FF'}
+            maskColor={'#blue'}
+          />
+        </View>
         {/* <View style={styles.picker}>
           <DayPicker />
           <TimePicker />
         </View> */}
-        <Button title="addEvent" onPress={() => this.addEvent()} />
+        <AwesomeButtonBlue
+          width={350}
+          title="addEvent"
+          onPress={() => this.addEvent()}>
+          Add Event
+        </AwesomeButtonBlue>
       </View>
     );
   }
@@ -121,9 +131,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    //justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   welcome: {
     fontSize: 20,
@@ -136,7 +147,19 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  title: {
+    paddingBottom: 16,
+    textAlign: 'center',
+    color: '#404d5b',
+    fontSize: 50,
+    fontWeight: 'bold',
+    opacity: 0.8,
+  },
   card1: {
+    paddingVertical: 16,
+    width: 350,
+  },
+  submit: {
     paddingVertical: 16,
     width: 350,
   },
