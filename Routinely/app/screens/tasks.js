@@ -1,8 +1,8 @@
 import React from 'react';
-import Firebase from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import {TextInput, Text, FlatList, Button, View, StyleSheet, ListRenderItem} from 'react-native';
-const ref = Firebase.firestore().collection('users/bsoto/tasks');
+const ref = firestore().collection('users/bsoto/tasks');
 class tasks extends React.Component{
 
     state = {
