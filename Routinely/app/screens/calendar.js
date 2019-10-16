@@ -1,36 +1,68 @@
 import React, {Component} from 'react';
 import {
-  Alert,
-  Button,
-  Image,
   Platform,
+  Alert,
   StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
   View,
+  Text,
+  TouchableOpacity,
+  Button,
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import {
-  AgendaList,
   CalendarProvider,
   ExpandableCalendar,
+  AgendaList,
 } from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-import BottomBar from '../components/calendar_components/BottomBar';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
-const events = getAllEvents();
+
+var events = getallEvents();
+
+var events = [
+  {
+    title: dates[0],
+    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
+  },
+  {
+    title: dates[1],
+    data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}],
+  },
+];
 
 const utcDateToString = (momentInUTC: moment): string => {
+  let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.warn(s);
-  return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  return s;
 };
+
+function getallEvents() {
+  const eventsRef = firestore()
+    .collection('users')
+    .doc('cteichmann')
+    .collection('event');
+  const allEvents = eventsRef
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        events.push(doc);
+        console.log(doc.id, '=>', doc.data());
+      });
+    })
+    .catch(err => {
+      console.log('Error getting docs', err);
+    });
+}
 
 function getFutureDates(days) {
   const array = [];
@@ -46,32 +78,15 @@ function getPastDate(days) {
   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
 
-function getAllEvents() {
-  const eventsRef = firestore()
-    .collection('users')
-    .doc('skiser')
-    .collection('event');
-  const allEvents = eventsRef
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        console.log(doc.id, '=>', doc.data());
-        console.log(doc.id, '=>', doc.title);
-      });
-    })
-    .catch(err => {
-      console.log('Error getting docs', err);
-    });
-}
-
 class CalendarScreen extends Component {
-  /*
-  constructor(props) {
+  /* constructor(props) {
     super(props);
     this.state = {
       events: [],
     };
-  }*/
+    events = getallEvents();
+  } */
+
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -84,8 +99,27 @@ class CalendarScreen extends Component {
   buttonPressed() {
     Alert.alert(item.notes);
   }
+
   itemPressed(id) {
     Alert.alert(id);
+  }
+
+  getallEvents() {
+    const eventsRef = firestore()
+      .collection('users')
+      .doc('skiser')
+      .collection('event');
+    const allEvents = eventsRef
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          events.push(doc);
+          console.log(doc.id, '=>', doc.data());
+        });
+      })
+      .catch(err => {
+        console.log('Error getting docs', err);
+      });
   }
 
   renderEmptyItem() {
@@ -95,15 +129,20 @@ class CalendarScreen extends Component {
       </View>
     );
   }
-  renderEvent = events => {
+
+  renderItem = events => {
     if (_.isEmpty(this.events)) {
       return this.renderEmptyItem();
     }
     return (
       <TouchableOpacity
-        onPress={() => this.itemPressed(events.title)}
+        onPress={() => this.itemPressed(item.title)}
         style={styles.item}>
-        <Text style={styles.itemTitleText}>{events.title}</Text>
+        <View>
+          <Text style={styles.itemHourText}>{item.hour}</Text>
+          <Text style={styles.itemDurationText}>{item.duration}</Text>
+        </View>
+        <Text style={styles.itemTitleText}>{item.title}</Text>
         <View style={styles.itemButtonContainer}>
           <Button title={'Info'} onPress={this.buttonPressed} />
         </View>
@@ -183,14 +222,25 @@ class CalendarScreen extends Component {
             source={require('../components/img/plus.png')}
           />
         </TouchableHighlight>
+
         <ExpandableCalendar
+          // horizontal={false}
+          // hideArrows
+          // disablePan
+          // hideKnob
+          // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
+          //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
           leftArrowImageSource={require('../components/img/previous.png')}
           rightArrowImageSource={require('../components/img/next.png')}
+          // calendarStyle={styles.calendar}
+          // headerStyle={styles.calendar} // for horizontal only
         />
         <AgendaList
-          renderEvent={this.renderEvent}
+          sections={events}
+          extraData={events.notes}
+          renderItem={this.renderItem}
           // sectionStyle={styles.section}
         />
         <View style={styles.container}>
