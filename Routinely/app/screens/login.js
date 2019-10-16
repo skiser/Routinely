@@ -15,9 +15,7 @@ import {
   statusCodes,
 } from 'react-native-google-signin';
 import firebase from '@react-native-firebase/app';
-import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -111,24 +109,8 @@ class LoginScreen extends Component {
         style={{width: '100%', height: '100%'}}>
           <View style={styles.body}>
           <View style={styles.sectionContainer}>
-            {!this.state.loggedIn &&
-              <View>
-                <View style={styles.dp}>
-                  <Image
-                    style={{width: 150, height: 150}}
-                    source={require('../components/img/RoutinelyR.png')}
-                  />
-                </View>
-                <View style={styles.buttonContainer}>
-                  <GoogleSigninButton
-                    style={{width: 192, height: 48}}
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Dark}
-                    onPress={this.firebaseGoogleLogin}
-                    disabled={this.state.isSigninInProgress}
-                  />
-                </View>
-              </View>}
+            {!this.state.loggedIn && (
+                this.props.navigation.navigate('Calendar'))}
           </View>
           <View>
             {!this.state.loggedIn && (

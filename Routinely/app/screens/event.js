@@ -17,6 +17,8 @@ import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import {Hoshi} from 'react-native-textinput-effects';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
+import RepeatDiv from '../components/alarm_components/RepeatDiv';
+import {Divider} from 'react-native-elements';
 
 const utcDateToString = (momentInUTC: moment): string => {
   let time = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -61,7 +63,6 @@ class EventScreen extends Component {
           Thu: this.state.Thu,
           Fri: this.state.Fri,
           Sat: this.state.Sat,
-
         })
         .then(ref => {
           console.log('Added doc w ID: ', ref.id);
@@ -96,42 +97,51 @@ class EventScreen extends Component {
             onDateChange={chosenDate => this.setState({chosenDate})}
           />
         </View>
-        <View style={styles.containerdate}>
-          <Button 
-            buttonStyle={styles.dayBox} 
-            title="S" 
-            value={this.state.Sun=false}
-            onPress={Sun => this.state.Sun=true}/>
-          <Button 
-            buttonStyle={styles.dayBox} 
-            title="M" 
-            value={this.state.Mon=false}
-            onPress={Mon => this.setState({Mon})}/>
-          <Button 
-            buttonStyle={styles.dayBox} 
-            title="T" 
-            value={this.state.Tue=false}
-            onPress={Tue => this.setState({Tue})}/>
-          <Button 
-            buttonStyle={styles.dayBox} 
-            title="W" 
-            value={this.state.Wed=false}
-            onPress={Wed => this.setState({Wed})}/>
-          <Button 
-            buttonStyle={styles.dayBox} 
-            title="T" 
-            value={this.state.Thu=false}
-            onPress={Thu => this.setState({Thu})}/>
-          <Button 
-            buttonStyle={styles.dayBox} 
-            title="F" 
-            value={this.state.Fri=false}
-            onPress={Fri => this.setState({Fri})}/>
-          <Button 
-            buttonStyle={styles.dayBox} 
+        <RepeatDiv />
+        <Divider />
+        <View style={styles.containerDate}>
+          <Button
+            buttonStyle={styles.dayBox}
             title="S"
-            value={this.state.Sat=false}
-            onPress={Sat => this.setState({Sat})}/>
+            value={(this.state.Sun = false)}
+            onPress={Sun => (this.state.Sun = true)}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="M"
+            value={(this.state.Mon = false)}
+            onPress={Mon => this.setState({Mon})}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="T"
+            value={(this.state.Tue = false)}
+            onPress={Tue => this.setState({Tue})}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="W"
+            value={(this.state.Wed = false)}
+            onPress={Wed => this.setState({Wed})}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="T"
+            value={(this.state.Thu = false)}
+            onPress={Thu => this.setState({Thu})}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="F"
+            value={(this.state.Fri = false)}
+            onPress={Fri => this.setState({Fri})}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="S"
+            value={(this.state.Sat = false)}
+            onPress={Sat => this.setState({Sat})}
+          />
         </View>
         <AwesomeButtonBlue
           width={350}
@@ -159,7 +169,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
   },
-  containerdate: {
+  containerDate: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,

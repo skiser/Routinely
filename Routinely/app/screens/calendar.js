@@ -1,56 +1,68 @@
 import React, {Component} from 'react';
 import {
-  Alert,
-  Button,
-  Image,
   Platform,
+  Alert,
   StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
   View,
+  Text,
+  TouchableOpacity,
+  Button,
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import {
-  AgendaList,
   CalendarProvider,
   ExpandableCalendar,
+  AgendaList,
 } from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-import BottomBar from '../components/calendar_components/BottomBar';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
-const events = getallEvents();
-/*
+
+var events = getallEvents();
+
 var events = [
-  {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
-  {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}]}, 
-];  
-*/
+  {
+    title: dates[0],
+    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
+  },
+  {
+    title: dates[1],
+    data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}],
+  },
+];
+
 const utcDateToString = (momentInUTC: moment): string => {
+  let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.warn(s);
-  return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  return s;
 };
 
-function getallEvents(){
-    const eventsRef = firestore().collection('users').doc('skiser').collection('event');
-    const allEvents = eventsRef.get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          events.push(doc);
-          console.log(doc.id, '=>', doc.data());
-        });
-      })
-      .catch(err => {
-        console.log('Error getting docs', err);
+function getallEvents() {
+  const eventsRef = firestore()
+    .collection('users')
+    .doc('cteichmann')
+    .collection('event');
+  const allEvents = eventsRef
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        events.push(doc);
+        console.log(doc.id, '=>', doc.data());
       });
+    })
+    .catch(err => {
+      console.log('Error getting docs', err);
+    });
 }
-
 
 function getFutureDates(days) {
   const array = [];
@@ -67,14 +79,14 @@ function getPastDate(days) {
 }
 
 class CalendarScreen extends Component {
-  /*
-constructor(props) {
-  super(props);
-  this.state = {
-    events: [],
-  };
-  events = getallEvents();
-} */
+  /* constructor(props) {
+    super(props);
+    this.state = {
+      events: [],
+    };
+    events = getallEvents();
+  } */
+
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
@@ -92,7 +104,7 @@ constructor(props) {
     Alert.alert(id);
   }
 
-   getallEvents() {
+  getallEvents() {
     const eventsRef = firestore()
       .collection('users')
       .doc('skiser')
@@ -110,19 +122,6 @@ constructor(props) {
       });
   }
 
-  componentDidMount() {
-    firestore()
-      .collection('users')
-      .doc('skiser')
-      .collection('event')
-      .get()
-      .then()
-      .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.data());
-        console.log(data); // array of objects
-        this.setState({event: data});
-      });
-  }
   renderEmptyItem() {
     return (
       <View style={styles.emptyItem}>
@@ -130,11 +129,11 @@ constructor(props) {
       </View>
     );
   }
+
   renderItem = events => {
     if (_.isEmpty(this.events)) {
       return this.renderEmptyItem();
     }
-
     return (
       <TouchableOpacity
         onPress={() => this.itemPressed(item.title)}
@@ -206,45 +205,62 @@ constructor(props) {
   };
 
   render() {
-    const {event} = this.state.event;
     return (
-      <View>
-        <div>
-          event.map(event => (<h5>event.title</h5>
-          );})
-        </div>
-        <CalendarProvider
-          date={today}
-          onDateChanged={this.onDateChanged}
-          onMonthChange={this.onMonthChange}
-          theme={{todayButtonTextColor: '#0059ff'}}
-          showTodayButton
-          disabledOpacity={0.6}
-          // todayBottomMargin={16}
-        >
-          <ExpandableCalendar
-            // horizontal={false}
-            // hideArrows
-            // disablePan
-            // hideKnob
-            // initialPosition={ExpandableCalendar.positions.OPEN}
-            firstDay={1}
-            //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-            theme={this.getTheme()}
-            leftArrowImageSource={require('../components/img/previous.png')}
-            rightArrowImageSource={require('../components/img/next.png')}
-            // calendarStyle={styles.calendar}
-            // headerStyle={styles.calendar} // for horizontal only
-          />
-          <AgendaList
-            sections={events}
-            extraData={events.notes}
-            renderItem={this.renderItem}
-            // sectionStyle={styles.section}
-          />
-          <BottomBar />
-        </CalendarProvider>
-      </View>
+      <CalendarProvider
+        date={today}
+        onDateChanged={this.onDateChanged}
+        onMonthChange={this.onMonthChange}
+        theme={{todayButtonTextColor: '#0059ff'}}
+        showTodayButton
+        disabledOpacity={0.6}
+        // todayBottomMargin={16}
+      >
+        <ExpandableCalendar
+          // horizontal={false}
+          // hideArrows
+          // disablePan
+          // hideKnob
+          // initialPosition={ExpandableCalendar.positions.OPEN}
+          firstDay={1}
+          //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          theme={this.getTheme()}
+          leftArrowImageSource={require('../components/img/previous.png')}
+          rightArrowImageSource={require('../components/img/next.png')}
+          // calendarStyle={styles.calendar}
+          // headerStyle={styles.calendar} // for horizontal only
+        />
+        <AgendaList
+          sections={events}
+          extraData={events.notes}
+          renderItem={this.renderItem}
+          // sectionStyle={styles.section}
+        />
+        <View style={styles.container}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Alarm')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/alarm.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Event')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/plus.png')}
+              />
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Task')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/calendar.png')}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
+      </CalendarProvider>
     );
   }
 }
