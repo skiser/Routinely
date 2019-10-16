@@ -214,8 +214,9 @@ class LoginScreen extends Component {
                     />
                   </TouchableHighlight>
                 </View>
-              </View>
+              
             </View>
+          </View>
           )}
         </View>
       </ImageBackground>
