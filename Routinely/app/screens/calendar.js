@@ -251,6 +251,13 @@ class CalendarScreen extends Component {
                 source={require('../components/img/plus.png')}
               />
             </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Task')}>
+              <Image
+                style={styles.contain}
+                source={require('../components/img/calendar.png')}
+              />
+            </TouchableHighlight>
           </View>
         </View>
       </CalendarProvider>
