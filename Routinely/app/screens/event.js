@@ -1,15 +1,22 @@
 import React, {Component, useState} from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Platform, UIManager} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Platform,
+  UIManager,
+  DatePickerIOS,
+} from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
-import TimePicker from '../components/alarm_components/TimePicker';
 import DayPicker from '../components/alarm_components/DayPicker';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import {Hoshi} from 'react-native-textinput-effects';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 const utcDateToString = (momentInUTC: moment): string => {
   let time = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -24,41 +31,13 @@ class EventScreen extends Component {
       title: '',
       notes: '',
       startTime: '',
-      date: new Date('2020-06-12T14:42:42'),
-      mode: 'date',
-      show: false,
-    }; 
+      chosenDate: new Date(),
+    };
+    this.setDate = this.setDate.bind(this);
   }
-
-  setDate = (event, date) => {
-    date = date || this.state.date;
-
-    this.setState({
-      show: Platform.OS === 'ios' ? true : false,
-      date,
-    });
-  };
-
-
-  show = mode => {
-    this.setState({
-      show: true,
-      mode,
-    });
-  };
-
-  datepicker = () => {
-    this.show('date');
-  };
-
-  timepicker = () => {
-    this.show('time');
-  };
-
-  componentDidMount() {
-    this.time;
+  setDate(newDate) {
+    this.setState({chosenDate: newDate});
   }
-
   addEvent = async () => {
     const addEvent = firestore()
       .collection('users')
@@ -80,7 +59,6 @@ class EventScreen extends Component {
   };
 
   render() {
-    const {show, date, mode} = this.state; 
     return (
       <View style={styles.container}>
         <View style={styles.card1}>
@@ -99,23 +77,13 @@ class EventScreen extends Component {
             maskColor={'#blue'}
           />
         </View>
-        <View style={styles.picker}>
         <View>
-          <Button onPress={this.datepicker} title="Show  Date" />
-        </View>
-        <View>
-          <Button onPress={this.timepicker} title="Select Time" />
-        </View>
-        {show && (
-          <DateTimePicker
-            value={this.state.date}
-            mode={this.state.mode}
-            is24Hour={true}
-            display="default"
-            onChange={this.setDate}
+          <DatePickerIOS
+            date={this.state.chosenDate}
+            onDateChange={this.setDate}
           />
-        )}
         </View>
+        <DayPicker />
         <AwesomeButtonBlue
           width={350}
           title="addEvent"
@@ -132,7 +100,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
     paddingLeft: 10,
     paddingRight: 10,
