@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {StyleSheet, Text, View, Button, TextInput} from 'react-native';
+import {StyleSheet, Text, View, Button, TextInput, Platform, UIManager} from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 import TimePicker from '../components/alarm_components/TimePicker';
@@ -9,8 +9,10 @@ import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import {Hoshi} from 'react-native-textinput-effects';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 const utcDateToString = (momentInUTC: moment): string => {
-  let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  let time = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.warn(s);
   return time;
 };
@@ -21,8 +23,40 @@ class EventScreen extends Component {
     this.state = {
       title: '',
       notes: '',
-      startTime: ,
-    };
+      startTime: '',
+      date: new Date('2020-06-12T14:42:42'),
+      mode: 'date',
+      show: false,
+    }; 
+  }
+
+  setDate = (event, date) => {
+    date = date || this.state.date;
+
+    this.setState({
+      show: Platform.OS === 'ios' ? true : false,
+      date,
+    });
+  };
+
+
+  show = mode => {
+    this.setState({
+      show: true,
+      mode,
+    });
+  };
+
+  datepicker = () => {
+    this.show('date');
+  };
+
+  timepicker = () => {
+    this.show('time');
+  };
+
+  componentDidMount() {
+    this.time;
   }
 
   addEvent = async () => {
@@ -35,6 +69,7 @@ class EventScreen extends Component {
         .add({
           title: this.state.title,
           notes: this.state.notes,
+          startTime: utcDateToString(this.state.date),
         })
         .then(ref => {
           console.log('Added doc w ID: ', ref.id);
@@ -45,6 +80,7 @@ class EventScreen extends Component {
   };
 
   render() {
+    const {show, date, mode} = this.state; 
     return (
       <View style={styles.container}>
         <View style={styles.card1}>
@@ -63,10 +99,23 @@ class EventScreen extends Component {
             maskColor={'#blue'}
           />
         </View>
-        {/* <View style={styles.picker}>
-          <DayPicker />
-          <TimePicker />
-        </View> */}
+        <View style={styles.picker}>
+        <View>
+          <Button onPress={this.datepicker} title="Show  Date" />
+        </View>
+        <View>
+          <Button onPress={this.timepicker} title="Select Time" />
+        </View>
+        {show && (
+          <DateTimePicker
+            value={this.state.date}
+            mode={this.state.mode}
+            is24Hour={true}
+            display="default"
+            onChange={this.setDate}
+          />
+        )}
+        </View>
         <AwesomeButtonBlue
           width={350}
           title="addEvent"
@@ -76,55 +125,7 @@ class EventScreen extends Component {
       </View>
     );
   }
-
-  static addToCalendar = (title: string, startDateUTC: moment) => {
-    const eventConfig = {
-      title,
-      startDate: utcDateToString(startDateUTC),
-      endDate: utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
-      notes: 'tasty!',
-      navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-        titleColor: 'blue',
-      },
-    };
-
-    AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-      .then(
-        (eventInfo: {
-          calendarItemIdentifier: string,
-          eventIdentifier: string,
-        }) => {
-          // handle success - receives an object with `calendarItemIdentifier` and `eventIdentifier` keys, both of type string.
-          // These are two different identifiers on iOS.
-          // On Android, where they are both equal and represent the event id, also strings.
-          // when { action: 'CANCELED' } is returned, the dialog was dismissed
-          console.warn(JSON.stringify(eventInfo));
-        },
-      )
-      .catch((error: string) => {
-        // handle error such as when user rejected permissions
-        console.warn(error);
-      });
-  };
-
-  static editCalendarEventWithId = (eventId: string) => {
-    const eventConfig = {
-      eventId,
-    };
-
-    AddCalendarEvent.presentEventEditingDialog(eventConfig)
-      .then(eventInfo => {
-        console.warn(JSON.stringify(eventInfo));
-      })
-      .catch((error: string) => {
-        // handle error such as when user rejected permissions
-        console.warn(error);
-      });
-  };
 }
-
 const styles = StyleSheet.create({
   pick: {
     width: 600,
