@@ -25,15 +25,32 @@ const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
-const events = [{title: '', notes: '', startTime: moment}];
+const events = getallEvents();
 /*
-    title: dates[0],
-    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
-  },*/
+var events = [
+  {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
+  {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}]}, 
+];  
+*/
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 };
+
+function getallEvents(){
+    const eventsRef = firestore().collection('users').doc('skiser').collection('event');
+    const allEvents = eventsRef.get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          events.push(doc);
+          console.log(doc.id, '=>', doc.data());
+        });
+      })
+      .catch(err => {
+        console.log('Error getting docs', err);
+      });
+}
+
 
 function getFutureDates(days) {
   const array = [];
@@ -50,12 +67,14 @@ function getPastDate(days) {
 }
 
 class CalendarScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      ,
+  /*
+constructor(props) {
+  super(props);
+  this.state = {
+    events: [],
   };
-  }
+  events = getallEvents();
+} */
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
     // fetch and set data for date + week ahead
