@@ -26,7 +26,6 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
-
 var events = [
   {
     title: dates[0],
@@ -114,7 +113,7 @@ class CalendarScreen extends Component {
   itemPressed(id) {
     Alert.alert(id);
   }
-/*
+  /*
   getallEvents() {
     const eventsRef = firestore()
       .collection('users')
@@ -141,23 +140,33 @@ class CalendarScreen extends Component {
     );
   }
 
-  renderItem = events => {
-    if (_.isEmpty(this.events)) {
-      return this.renderEmptyItem();
-    }
+  renderEvent = () => {
+    // if (this.eventList.length() == 0) {
+    //   return this.renderEmptyItem();
+    //
     return (
-      <TouchableOpacity
-        onPress={() => this.itemPressed(item.title)}
-        style={styles.item}>
-        <View>
-          <Text style={styles.itemHourText}>{item.hour}</Text>
-          <Text style={styles.itemDurationText}>{item.duration}</Text>
-        </View>
-        <Text style={styles.itemTitleText}>{item.title}</Text>
-        <View style={styles.itemButtonContainer}>
-          <Button title={'Info'} onPress={this.buttonPressed} />
-        </View>
-      </TouchableOpacity>
+      <FlatList
+        data={this.state.eventList}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => this.itemPressed(item.title)}
+              style={styles.item}>
+              <View>
+                <Text>Hello </Text>
+                <Text style={styles.itemHourText}>{item.hour}</Text>
+                <Text style={styles.itemDurationText}>{item.duration}</Text>
+              </View>
+              <Text style={styles.itemTitleText}>{item.title}</Text>
+              <Text style={styles.itemTitleText}>{item.notes}</Text>
+              <View style={styles.itemButtonContainer}>
+                <Button title={'Info'} onPress={this.buttonPressed} />
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
     );
   };
 
@@ -240,19 +249,14 @@ class CalendarScreen extends Component {
           // calendarStyle={styles.calendar}
           // headerStyle={styles.calendar} // for horizontal only
         />
+
         <AgendaList
           sections={events}
           extraData={events.notes}
-          renderItem={this.renderItem}
-          // sectionStyle={styles.section}
-        />
-        <FlatList
-          data={this.state.eventList}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            console.log(item);
-            return <Text> {item.title}</Text>;
+          renderItem={() => {
+            return this.renderEvent();
           }}
+          // sectionStyle={styles.section}
         />
         <View style={styles.container}>
           <View style={{flexDirection: 'row'}}>
@@ -273,8 +277,8 @@ class CalendarScreen extends Component {
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Task')}>
               <Image
-                style={styles.contain}
-                source={require('../components/img/calendar.png')}
+                style={styles.clip}
+                source={require('../components/img/clipboard.png')}
               />
             </TouchableHighlight>
           </View>
@@ -301,6 +305,12 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginRight: 10,
+  },
+  clip: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+    marginBottom: 10,
   },
   calendar: {
     paddingLeft: 20,
