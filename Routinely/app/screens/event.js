@@ -38,12 +38,11 @@ class EventScreen extends Component {
       Thu: false,
       Fri: false,
       Sat: false,
+      Pressed: true,
     };
-    this.setDate = this.setDate.bind(this);
+    //this.setDate = this.setDate.bind(this);
   }
-  setDate(newDate) {
-    this.setState({chosenDate: newDate});
-  }
+
   addEvent = async () => {
     const addEvent = firestore()
       .collection('users')
@@ -54,7 +53,15 @@ class EventScreen extends Component {
         .add({
           title: this.state.title,
           notes: this.state.notes,
-          chosenDate: utcDateToString(this.state.chosenDate),
+          chosenDate: this.state.chosenDate,
+          Sun: this.state.Sat,
+          Mon: this.state.Mon,
+          Tue: this.state.Tue,
+          Wed: this.state.Wed,
+          Thu: this.state.Thu,
+          Fri: this.state.Fri,
+          Sat: this.state.Sat,
+
         })
         .then(ref => {
           console.log('Added doc w ID: ', ref.id);
@@ -93,37 +100,37 @@ class EventScreen extends Component {
           <Button 
             buttonStyle={styles.dayBox} 
             title="S" 
-            disabled 
-            onPress={Sun => this.setState({Sun})}/>
+            value={this.state.Sun=false}
+            onPress={Sun => this.state.Sun=true}/>
           <Button 
             buttonStyle={styles.dayBox} 
             title="M" 
-            disabled 
+            value={this.state.Mon=false}
             onPress={Mon => this.setState({Mon})}/>
           <Button 
             buttonStyle={styles.dayBox} 
             title="T" 
-            disabled 
+            value={this.state.Tue=false}
             onPress={Tue => this.setState({Tue})}/>
           <Button 
             buttonStyle={styles.dayBox} 
             title="W" 
-            disabled
+            value={this.state.Wed=false}
             onPress={Wed => this.setState({Wed})}/>
           <Button 
             buttonStyle={styles.dayBox} 
             title="T" 
-            disabled
+            value={this.state.Thu=false}
             onPress={Thu => this.setState({Thu})}/>
           <Button 
             buttonStyle={styles.dayBox} 
             title="F" 
-            disabled
+            value={this.state.Fri=false}
             onPress={Fri => this.setState({Fri})}/>
           <Button 
             buttonStyle={styles.dayBox} 
             title="S"
-            disabled
+            value={this.state.Sat=false}
             onPress={Sat => this.setState({Sat})}/>
         </View>
         <AwesomeButtonBlue

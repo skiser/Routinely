@@ -31,7 +31,7 @@ var events = getallEvents();
 var events = [
   {title: dates[0], data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}]},
   {title: dates[1], data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}]}, 
-]; 
+];  
 
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -45,8 +45,8 @@ function getallEvents(){
     const allEvents = eventsRef.get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-        events.push(doc);
-        console.log(doc.id, '=>', doc.data());
+          events.push(doc);
+          console.log(doc.id, '=>', doc.data());
         });
       })
       .catch(err => {
@@ -71,6 +71,13 @@ function getPastDate(days) {
 
 
 class CalendarScreen extends Component {
+  /* constructor(props) {
+    super(props);
+    this.state = {
+      events: [],
+    };
+    events = getallEvents();
+  } */
 
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
