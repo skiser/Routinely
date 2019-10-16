@@ -221,6 +221,13 @@ class LoginScreen extends Component {
                       source={require('./img/logout.png')}
                     />
                   </TouchableHighlight>
+                  <TouchableHighlight
+                      onPress={() => this.props.navigation.navigate('Task')}>
+                    <Image
+                        style={styles.contain}
+                        source={require('./img/plus.png')}
+                    />
+                  </TouchableHighlight>
                 </View>
               </View>
             </View>

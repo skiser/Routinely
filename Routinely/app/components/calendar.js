@@ -16,7 +16,7 @@ import {
   AgendaList,
 } from 'react-native-calendars';
 import _ from 'lodash';
-import '@react-native-firebase/auth';
+//import '@react-native-firebase/auth';
 import moment from 'moment';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
