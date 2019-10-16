@@ -11,7 +11,7 @@ import '@react-native-firebase/auth';
 const utcDateToString = (momentInUTC: moment): string => {
   let s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
   // console.warn(s);
-  return s;
+  return time;
 };
 
 class EventScreen extends Component {
@@ -20,6 +20,7 @@ class EventScreen extends Component {
     this.state = {
       title: '',
       notes: '',
+      startTime: ,
     };
   }
 
