@@ -4,16 +4,15 @@
 
 import 'react-native';
 import React from 'react';
-import Alarm from '../../app/components/alarm';
+import Task from '../../app/screens/tasks';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-test('Alarm Screenshot', () => {
-    const snap = renderer.create(<Alarm/>).toJSON();
+test('Login Screenshot', () => {
+    const snap = renderer.create(<Task/>).toJSON();
     expect(snap).toMatchSnapshot();
 });
 it('renders correctly', () => {
-    const alarm = renderer.create(<Alarm />).getInstance();
-
+    const login = renderer.create(<Task />).getInstance();
 });

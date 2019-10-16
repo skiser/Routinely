@@ -4,16 +4,16 @@
 
 import 'react-native';
 import React from 'react';
-import Task from '../../app/components/tasks';
+import Login from '../../app/screens/login';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
 test('Login Screenshot', () => {
-    const snap = renderer.create(<Task/>).toJSON();
+    const snap = renderer.create(<Login/>).toJSON();
     expect(snap).toMatchSnapshot();
 });
 it('renders correctly', () => {
-    const login = renderer.create(<Task />).getInstance();
+    const login = renderer.create(<Login />).getInstance();
 
 });

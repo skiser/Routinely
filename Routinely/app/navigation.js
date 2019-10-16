@@ -5,7 +5,7 @@ import CalendarScreen from './screens/calendar';
 import AlarmScreen from './screens/alarm';
 import AlarmRingingScreen from './screens/alarmRinging';
 import EventScreen from './screens/event';
-import TaskScreen from './components/tasks'
+import TaskScreen from './screens/tasks'
 
 const AuthStack = createStackNavigator(
   {
