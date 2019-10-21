@@ -78,7 +78,7 @@ class CalendarScreen extends Component {
   };
   addEvent = async event => {
     try {
-      await eRef.collection('event').add({
+      await eventsRef.add({
         title: event,
         complete: false,
       });
@@ -158,15 +158,14 @@ class CalendarScreen extends Component {
     );
   };
 
-
   //TODO: make marked dates appear in calendar 
   getMarkedDates = () => {
     const marked = {};
     data = this.state.eventList;
-
-    for (var i = 0; i < eventList.length; i++) {
+    for (var i = 0; i < this.state.eventList.length; i++) {
       // only mark dates with data
       marked[data.item] = {marked: true};
+      console.log('successfully added');
     }
     return marked;
   };
@@ -232,7 +231,7 @@ class CalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
           leftArrowImageSource={require('../components/img/previous.png')}
           rightArrowImageSource={require('../components/img/next.png')}
