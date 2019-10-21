@@ -42,8 +42,12 @@ const utcDateToString = (momentInUTC: moment): string => {
 };
 const eventsRef = firestore()
   .collection('users')
-  .doc('cteichmann')
-  .collection('event');
+  .doc('skiser')
+  .collection('event'); 
+
+const eRef = firestore().collection('users').get();
+
+//const eventsRef = eRef.collection('event');
 
 function getFutureDates(days) {
   const array = [];
@@ -74,7 +78,7 @@ class CalendarScreen extends Component {
   };
   addEvent = async event => {
     try {
-      await eventsRef.add({
+      await eRef.collection('event').add({
         title: event,
         complete: false,
       });
@@ -86,8 +90,9 @@ class CalendarScreen extends Component {
 
   getEvents = async eventRetrieved => {
     try {
-      const snapshot = await eventsRef.get();
+      const snapshot = await eventsRef.get()
       snapshot.forEach(event => {
+      //.then(snapshot => { 
         this.state.eventList.push(event.data());
       });
       eventRetrieved(this.state.eventList);
@@ -106,32 +111,15 @@ class CalendarScreen extends Component {
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
   }
-  buttonPressed() {
-    Alert.alert(item.notes);
+  //TODO: need to figure out how to properly do this
+  buttonPressed(id) {
+    Alert.alert(id);
   }
 
   itemPressed(id) {
     Alert.alert(id);
   }
-  /*
-  getallEvents() {
-    const eventsRef = firestore()
-      .collection('users')
-      .doc('skiser')
-      .collection('event');
-    const allEvents = eventsRef
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          events.push(doc);
-          console.log(doc.id, '=>', doc.data());
-        });
-      })
-      .catch(err => {
-        console.log('Error getting docs', err);
-      });
-  }
-*/
+
   renderEmptyItem() {
     return (
       <View style={styles.emptyItem}>
@@ -154,15 +142,15 @@ class CalendarScreen extends Component {
               onPress={() => this.itemPressed(item.title)}
               style={styles.item}>
               <View>
-                <Text>Hello </Text>
                 <Text style={styles.itemHourText}>{item.hour}</Text>
                 <Text style={styles.itemDurationText}>{item.duration}</Text>
               </View>
-              <Text style={styles.itemTitleText}>{item.title}</Text>
-              <Text style={styles.itemTitleText}>{item.notes}</Text>
+              <Text style={styles.itemTitleText}>{item.title}     </Text>
+              <Text style={styles.itemHourText}>{item.notes}</Text>
+              {/* TODO: do we want an info button or not??
               <View style={styles.itemButtonContainer}>
                 <Button title={'Info'} onPress={this.buttonPressed} />
-              </View>
+              </View> */}
             </TouchableOpacity>
           );
         }}
@@ -170,13 +158,15 @@ class CalendarScreen extends Component {
     );
   };
 
+
+  //TODO: make marked dates appear in calendar 
   getMarkedDates = () => {
     const marked = {};
-    for (var i = 0; i < events.length; i++) {
+    data = this.state.eventList;
+
+    for (var i = 0; i < eventList.length; i++) {
       // only mark dates with data
-      if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
-        marked[item.title] = {marked: true};
-      }
+      marked[data.item] = {marked: true};
     }
     return marked;
   };
