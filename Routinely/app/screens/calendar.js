@@ -121,7 +121,7 @@ class CalendarScreen extends Component {
               </View>
               <Text style={styles.itemTitleText}>{item.title}     </Text>
               <Text style={styles.itemHourText}>{item.notes}      </Text>
-              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes()}{item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
+              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
  
               {/* TODO: do we want an info button or not??
               <View style={styles.itemButtonContainer}>
