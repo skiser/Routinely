@@ -1,23 +1,9 @@
 import React, {Component} from 'react';
-import {
-  Alert,
-  Button,
-  FlatList,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  AgendaList,
-  CalendarProvider,
-  ExpandableCalendar,
-} from 'react-native-calendars';
+import {Alert, Button, FlatList, Image, Platform, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View,} from 'react-native';
+import {AgendaList,CalendarProvider, ExpandableCalendar,} from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
+import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 
@@ -36,16 +22,18 @@ var events = [
     data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}],
   },
 ];
+
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 };
+
+const user = firebase.auth().currentUser;
+
 const eventsRef = firestore()
   .collection('users')
-  .doc('skiser')
+  .doc(user.email)
   .collection('event'); 
-
-const eRef = firestore().collection('users').get();
 
 //const eventsRef = eRef.collection('event');
 
@@ -75,17 +63,6 @@ class CalendarScreen extends Component {
     eventList: [],
     setEvent: '',
     event: '',
-  };
-  addEvent = async event => {
-    try {
-      await eventsRef.add({
-        title: event,
-        complete: false,
-      });
-    } catch (error) {
-      console.log('addEvent failed');
-    }
-    this.setState({event: ''});
   };
 
   getEvents = async eventRetrieved => {
@@ -132,6 +109,7 @@ class CalendarScreen extends Component {
     // if (this.eventList.length() == 0) {
     //   return this.renderEmptyItem();
     //
+    
     return (
       <FlatList
         data={this.state.eventList}
@@ -146,7 +124,9 @@ class CalendarScreen extends Component {
                 <Text style={styles.itemDurationText}>{item.duration}</Text>
               </View>
               <Text style={styles.itemTitleText}>{item.title}     </Text>
-              <Text style={styles.itemHourText}>{item.notes}</Text>
+              <Text style={styles.itemHourText}>{item.notes}      </Text>
+              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes()}{item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
+ 
               {/* TODO: do we want an info button or not??
               <View style={styles.itemButtonContainer}>
                 <Button title={'Info'} onPress={this.buttonPressed} />
@@ -158,10 +138,10 @@ class CalendarScreen extends Component {
     );
   };
 
-  //TODO: make marked dates appear in calendar 
   getMarkedDates = () => {
     const marked = {};
     data = this.state.eventList;
+    console.log(data);
     for (var i = 0; i < this.state.eventList.length; i++) {
       // only mark dates with data
       marked[data.item] = {marked: true};
