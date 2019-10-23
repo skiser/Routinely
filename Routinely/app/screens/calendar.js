@@ -105,11 +105,7 @@ class CalendarScreen extends Component {
     );
   }
 
-  renderEvent = () => {
-    // if (this.eventList.length() == 0) {
-    //   return this.renderEmptyItem();
-    //
-    
+  renderItem = () => {
     return (
       <FlatList
         data={this.state.eventList}
@@ -117,7 +113,7 @@ class CalendarScreen extends Component {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => this.itemPressed(item.title)}
+              onPress={() => this.itemPressed(item.title+ '   ' +item.notes)}
               style={styles.item}>
               <View>
                 <Text style={styles.itemHourText}>{item.hour}</Text>
@@ -138,17 +134,17 @@ class CalendarScreen extends Component {
     );
   };
 
-  getMarkedDates = () => {
+  /* getMarkedDates = () => {
     const marked = {};
     data = this.state.eventList;
     console.log(data);
     for (var i = 0; i < this.state.eventList.length; i++) {
       // only mark dates with data
-      marked[data.item] = {marked: true};
+      marked[this.state.eventList[i]] = {marked: true};
       console.log('successfully added');
     }
     return marked;
-  };
+  }; */
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -211,20 +207,21 @@ class CalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          //markedDates={getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
           leftArrowImageSource={require('../components/img/previous.png')}
           rightArrowImageSource={require('../components/img/next.png')}
-          // calendarStyle={styles.calendar}
-          // headerStyle={styles.calendar} // for horizontal only
+          calendarStyle={styles.calendar}
+          headerStyle={styles.calendar} // for horizontal only
         />
 
         <AgendaList
           sections={events}
           extraData={events.notes}
           renderItem={() => {
-            return this.renderEvent();
+            return this.renderItem();
           }}
+        
           // sectionStyle={styles.section}
         />
         <View style={styles.container}>

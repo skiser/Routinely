@@ -38,7 +38,11 @@ class EventScreen extends Component {
     //this.setDate = this.setDate.bind(this);
   }
 
-  //email = this.state.email;
+  onButtonPress = (day) => {
+    this.setState({
+      day: true
+    });
+  }
 
   addEvent = async () => {
     const addEvent = firestore().collection('users').doc(user.email).collection('event');
@@ -48,7 +52,7 @@ class EventScreen extends Component {
           title: this.state.title,
           notes: this.state.notes,
           chosenDate: this.state.chosenDate,
-          Sun: this.state.Sat,
+          Sun: this.state.Sun,
           Mon: this.state.Mon,
           Tue: this.state.Tue,
           Wed: this.state.Wed,
@@ -95,44 +99,37 @@ class EventScreen extends Component {
           <Button
             buttonStyle={styles.dayBox}
             title="S"
-            value={(this.state.Sun = false)}
-            onPress={Sun => (this.state.Sun = true)}
+            onPress={() => this.setState(prevState => ({Sun: !prevState.Sun}))}
           />
           <Button
             buttonStyle={styles.dayBox}
             title="M"
-            value={(this.state.Mon = false)}
-            onPress={Mon => this.setState({Mon})}
+            onPress={() => this.setState(prevState => ({Mon: !prevState.Mon}))}
           />
           <Button
             buttonStyle={styles.dayBox}
             title="T"
-            value={(this.state.Tue = false)}
-            onPress={Tue => this.setState({Tue})}
+            onPress={() => this.setState(prevState => ({Tue: !prevState.Tue}))}
           />
           <Button
             buttonStyle={styles.dayBox}
             title="W"
-            value={(this.state.Wed = false)}
-            onPress={Wed => this.setState({Wed})}
+            onPress={() => this.setState(prevState => ({Wed: !prevState.Wed}))}
           />
           <Button
             buttonStyle={styles.dayBox}
             title="T"
-            value={(this.state.Thu = false)}
-            onPress={Thu => this.setState({Thu})}
+            onPress={() => this.setState(prevState => ({Thu: !prevState.Thu}))}
           />
           <Button
             buttonStyle={styles.dayBox}
             title="F"
-            value={(this.state.Fri = false)}
-            onPress={Fri => this.setState({Fri})}
+            onPress={() => this.setState(prevState => ({Fri: !prevState.Fri}))}
           />
           <Button
             buttonStyle={styles.dayBox}
             title="S"
-            value={(this.state.Sat = false)}
-            onPress={Sat => this.setState({Sat})}
+            onPress={() => this.setState(prevState => ({Sat: !prevState.Sat}))}
           />
         </View>
         <AwesomeButtonBlue
