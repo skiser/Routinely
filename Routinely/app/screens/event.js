@@ -1,14 +1,5 @@
 import React, {Component, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  Platform,
-  UIManager,
-  DatePickerIOS,
-} from 'react-native';
+import {StyleSheet, Text, View, Button, TextInput, Platform, UIManager, DatePickerIOS,} from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 import DayPicker from '../components/alarm_components/DayPicker';
@@ -25,6 +16,8 @@ const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return time;
 };
+
+const user = firebase.auth().currentUser;
 
 class EventScreen extends Component {
   constructor(props) {
@@ -45,11 +38,10 @@ class EventScreen extends Component {
     //this.setDate = this.setDate.bind(this);
   }
 
+  //email = this.state.email;
+
   addEvent = async () => {
-    const addEvent = firestore()
-      .collection('users')
-      .doc('skiser')
-      .collection('event');
+    const addEvent = firestore().collection('users').doc(user.email).collection('event');
     try {
       await addEvent
         .add({
