@@ -48,7 +48,7 @@ class EventScreen extends Component {
   addEvent = async () => {
     const addEvent = firestore()
       .collection('users')
-      .doc('skiser')
+      .doc('cteichmann')
       .collection('event');
     try {
       await addEvent

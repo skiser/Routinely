@@ -43,9 +43,11 @@ const utcDateToString = (momentInUTC: moment): string => {
 const eventsRef = firestore()
   .collection('users')
   .doc('skiser')
-  .collection('event'); 
+  .collection('event');
 
-const eRef = firestore().collection('users').get();
+const eRef = firestore()
+  .collection('users')
+  .get();
 
 //const eventsRef = eRef.collection('event');
 
@@ -90,9 +92,9 @@ class CalendarScreen extends Component {
 
   getEvents = async eventRetrieved => {
     try {
-      const snapshot = await eventsRef.get()
+      const snapshot = await eventsRef.get();
       snapshot.forEach(event => {
-      //.then(snapshot => { 
+        //.then(snapshot => {
         this.state.eventList.push(event.data());
       });
       eventRetrieved(this.state.eventList);
@@ -145,7 +147,7 @@ class CalendarScreen extends Component {
                 <Text style={styles.itemHourText}>{item.hour}</Text>
                 <Text style={styles.itemDurationText}>{item.duration}</Text>
               </View>
-              <Text style={styles.itemTitleText}>{item.title}     </Text>
+              <Text style={styles.itemTitleText}>{item.title} </Text>
               <Text style={styles.itemHourText}>{item.notes}</Text>
               {/* TODO: do we want an info button or not??
               <View style={styles.itemButtonContainer}>
@@ -158,8 +160,7 @@ class CalendarScreen extends Component {
     );
   };
 
-
-  //TODO: make marked dates appear in calendar 
+  //TODO: make marked dates appear in calendar
   getMarkedDates = () => {
     const marked = {};
     data = this.state.eventList;
@@ -248,27 +249,13 @@ class CalendarScreen extends Component {
           }}
           // sectionStyle={styles.section}
         />
-        <View style={styles.container}>
-          <View style={{flexDirection: 'row'}}>
+        <View style={styles.plus}>
+          <View>
             <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Alarm')}>
+              onPress={() => this.props.navigation.navigate('Menu')}>
               <Image
-                style={styles.contain}
-                source={require('../components/img/alarm.png')}
-              />
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Event')}>
-              <Image
-                style={styles.contain}
-                source={require('../components/img/plus.png')}
-              />
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Task')}>
-              <Image
-                style={styles.clip}
-                source={require('../components/img/clipboard.png')}
+                style={styles.plusImage}
+                source={require('../components/img/circle-plus.png')}
               />
             </TouchableHighlight>
           </View>
@@ -280,9 +267,10 @@ class CalendarScreen extends Component {
 
 const styles = StyleSheet.create({
   plus: {
-    width: 20,
-    height: 20,
-    marginLeft: 350,
+    color: 'white',
+    alignItems: 'baseline',
+    marginLeft: 300,
+    marginBottom: 25,
   },
   container: {
     paddingTop: 10,
@@ -291,16 +279,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     alignItems: 'center',
   },
-  contain: {
+  plusImage: {
     width: 50,
     height: 50,
-    marginRight: 10,
-  },
-  clip: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-    marginBottom: 10,
   },
   calendar: {
     paddingLeft: 20,

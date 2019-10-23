@@ -6,6 +6,7 @@ import AlarmScreen from './screens/alarm';
 import AlarmRingingScreen from './screens/alarmRinging';
 import EventScreen from './screens/event';
 import TaskScreen from './screens/tasks';
+import MenuScreen from './screens/menu';
 
 const AuthStack = createStackNavigator(
   {
@@ -24,11 +25,13 @@ const AppStack = createStackNavigator(
     Calendar: CalendarScreen,
     Event: EventScreen,
     Task: TaskScreen,
+    Menu: MenuScreen,
   },
   {
     initialRouteName: 'Alarm',
     initialRouteName: 'AlarmRinging',
     initialRouteName: 'Calendar',
+    initialRouteName: 'Menu',
   },
 );
 
@@ -39,7 +42,7 @@ export default createAppContainer(
       Auth: AuthStack,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: 'App',
     },
   ),
 );
