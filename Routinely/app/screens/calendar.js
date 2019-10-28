@@ -1,23 +1,9 @@
 import React, {Component} from 'react';
-import {
-  Alert,
-  Button,
-  FlatList,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  AgendaList,
-  CalendarProvider,
-  ExpandableCalendar,
-} from 'react-native-calendars';
+import {Alert, Button, FlatList, Image, Platform, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View,} from 'react-native';
+import {AgendaList,CalendarProvider, ExpandableCalendar,} from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
+import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 
@@ -36,18 +22,18 @@ var events = [
     data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}],
   },
 ];
+
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 };
+
+const user = firebase.auth().currentUser;
+
 const eventsRef = firestore()
   .collection('users')
-  .doc('skiser')
-  .collection('event');
-
-const eRef = firestore()
-  .collection('users')
-  .get();
+  .doc(user.email)
+  .collection('event'); 
 
 //const eventsRef = eRef.collection('event');
 
@@ -78,23 +64,12 @@ class CalendarScreen extends Component {
     setEvent: '',
     event: '',
   };
-  addEvent = async event => {
-    try {
-      await eRef.collection('event').add({
-        title: event,
-        complete: false,
-      });
-    } catch (error) {
-      console.log('addEvent failed');
-    }
-    this.setState({event: ''});
-  };
 
   getEvents = async eventRetrieved => {
     try {
-      const snapshot = await eventsRef.get();
+      const snapshot = await eventsRef.get()
       snapshot.forEach(event => {
-        //.then(snapshot => {
+      //.then(snapshot => { 
         this.state.eventList.push(event.data());
       });
       eventRetrieved(this.state.eventList);
@@ -130,10 +105,7 @@ class CalendarScreen extends Component {
     );
   }
 
-  renderEvent = () => {
-    // if (this.eventList.length() == 0) {
-    //   return this.renderEmptyItem();
-    //
+  renderItem = () => {
     return (
       <FlatList
         data={this.state.eventList}
@@ -141,14 +113,16 @@ class CalendarScreen extends Component {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => this.itemPressed(item.title)}
+              onPress={() => this.itemPressed(item.title+ '   ' +item.notes)}
               style={styles.item}>
               <View>
                 <Text style={styles.itemHourText}>{item.hour}</Text>
                 <Text style={styles.itemDurationText}>{item.duration}</Text>
               </View>
-              <Text style={styles.itemTitleText}>{item.title} </Text>
-              <Text style={styles.itemHourText}>{item.notes}</Text>
+              <Text style={styles.itemTitleText}>{item.title}     </Text>
+              <Text style={styles.itemHourText}>{item.notes}      </Text>
+              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes()}{item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
+
               {/* TODO: do we want an info button or not??
               <View style={styles.itemButtonContainer}>
                 <Button title={'Info'} onPress={this.buttonPressed} />
@@ -160,17 +134,17 @@ class CalendarScreen extends Component {
     );
   };
 
-  //TODO: make marked dates appear in calendar
-  getMarkedDates = () => {
+  /* getMarkedDates = () => {
     const marked = {};
     data = this.state.eventList;
-
-    for (var i = 0; i < eventList.length; i++) {
+    console.log(data);
+    for (var i = 0; i < this.state.eventList.length; i++) {
       // only mark dates with data
-      marked[data.item] = {marked: true};
+      marked[this.state.eventList[i]] = {marked: true};
+      console.log('successfully added');
     }
     return marked;
-  };
+  }; */
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -233,20 +207,21 @@ class CalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          //markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          //markedDates={getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
           leftArrowImageSource={require('../components/img/previous.png')}
           rightArrowImageSource={require('../components/img/next.png')}
-          // calendarStyle={styles.calendar}
-          // headerStyle={styles.calendar} // for horizontal only
+          calendarStyle={styles.calendar}
+          headerStyle={styles.calendar} // for horizontal only
         />
 
         <AgendaList
           sections={events}
           extraData={events.notes}
           renderItem={() => {
-            return this.renderEvent();
+            return this.renderItem();
           }}
+
           // sectionStyle={styles.section}
         />
         <View style={styles.plus}>
