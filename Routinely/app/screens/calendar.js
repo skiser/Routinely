@@ -13,14 +13,8 @@ const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
 var events = [
-  {
-    title: dates[0],
-    data: [{hour: '12am', duration: '1h', title: 'Ashtanga Yoga'}],
-  },
-  {
-    title: dates[1],
-    data: [{hour: '4pm', duration: '1h', title: 'Pilates ABC'}],
-  },
+  //we cant just call get dates for this 
+ //getDates()
 ];
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -63,19 +57,28 @@ class CalendarScreen extends Component {
     eventList: [],
     setEvent: '',
     event: '',
+    datelist: [],
+    date: '',
   };
 
   getEvents = async eventRetrieved => {
     try {
       const snapshot = await eventsRef.get()
       snapshot.forEach(event => {
-      //.then(snapshot => { 
         this.state.eventList.push(event.data());
+        console.log("this is the event " +event.get('chosenDate').toDate());
       });
       eventRetrieved(this.state.eventList);
     } catch (error) {
       console.log('problem retrieving tasks');
     }
+  };
+
+  getDates = () => {
+    this.state.eventlist.forEach(event =>{
+      events.push(event.get('chosenDate').toDate());
+    })
+    return events;
   };
 
   onEventsRetrieved = eventList => {
@@ -84,9 +87,15 @@ class CalendarScreen extends Component {
       eventList: (prevState.eventList = eventList),
     }));
   };
+  
+
+  getAllData(){
+    this.getEvents(this.onEventsRetrieved);
+    //this.getDates(this.onDatesRetrieved);
+  }
 
   componentDidMount() {
-    this.getEvents(this.onEventsRetrieved);
+    this.getAllData();
   }
   //TODO: need to figure out how to properly do this
   buttonPressed(id) {
@@ -121,6 +130,7 @@ class CalendarScreen extends Component {
               </View>
               <Text style={styles.itemTitleText}>{item.title}     </Text>
               <Text style={styles.itemHourText}>{item.notes}      </Text>
+
               <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
  
               {/* TODO: do we want an info button or not??
@@ -134,17 +144,24 @@ class CalendarScreen extends Component {
     );
   };
 
-  /* getMarkedDates = () => {
+  getMarkedDates = () => {
     const marked = {};
-    data = this.state.eventList;
-    console.log(data);
-    for (var i = 0; i < this.state.eventList.length; i++) {
+    const mark = this.state.eventList;
+    console.log(mark);
+    mark.forEach(event =>{
       // only mark dates with data
-      marked[this.state.eventList[i]] = {marked: true};
+      const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
+      const day = event.chosenDate.toDate().getUTCDate();
+      const year = event.chosenDate.toDate().getUTCFullYear();
+      
+      const markdate = year + "-" + month + "-" + day;
+
+      marked[markdate] = {marked: true};
       console.log('successfully added');
-    }
+    })
+    console.log(marked);
     return marked;
-  }; */
+  }; 
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -207,23 +224,33 @@ class CalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          //markedDates={getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
           theme={this.getTheme()}
           leftArrowImageSource={require('../components/img/previous.png')}
           rightArrowImageSource={require('../components/img/next.png')}
           calendarStyle={styles.calendar}
           headerStyle={styles.calendar} // for horizontal only
         />
-
-        <AgendaList
-          sections={events}
-          extraData={events.notes}
-          renderItem={() => {
-            return this.renderItem();
-          }}
-        
-          // sectionStyle={styles.section}
-        />
+        <FlatList
+          data={this.state.eventList}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              onPress={() => this.itemPressed(item.title+ '   ' +item.notes)}
+              style={styles.item}>
+              <View>
+                <Text style={styles.itemHourText}>{item.hour}</Text>
+                <Text style={styles.itemDurationText}>{item.duration}</Text>
+              </View>
+              <Text style={styles.itemTitleText}>{item.title}     </Text>
+              <Text style={styles.itemHourText}>{item.notes}      </Text>
+              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getUTCMonth()+1} - {item.chosenDate.toDate().getUTCDate()} - {item.chosenDate.toDate().getUTCFullYear()}   </Text>
+              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
         <View style={styles.container}>
           <View style={{flexDirection: 'row'}}>
             <TouchableHighlight
