@@ -12,9 +12,12 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
+//need to figure out how to continually called marked datess
+//need to figure out if we can order the events when we are listing them by date
+//the day also is not acting correctly and the am/pm isnt either
+
 var events = [
-  //we cant just call get dates for this 
- //getDates()
+  
 ];
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -59,14 +62,14 @@ class CalendarScreen extends Component {
     event: '',
   };
 
-  getEvents = async  => {
+  getEvents = async eventRetrieved  => {
     try {
-      eventsRef.onSnapshot(querySnapshot =>{
+      eventsRef.onSnapshot(querySnapshot=>{
       querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
           console.log("this is the event " +event.get('chosenDate').toDate());
         });
-      //eventRetrieved(this.state.eventList);
+      eventRetrieved(this.state.eventList);
       });
       
     } catch (error) {
@@ -100,8 +103,6 @@ class CalendarScreen extends Component {
       </View>
     );
   }
-
-  
 
   getMarkedDates = () => {
     const marked = {};
