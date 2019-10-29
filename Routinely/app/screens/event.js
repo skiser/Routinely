@@ -66,6 +66,7 @@ class EventScreen extends Component {
     } catch (error) {
       console.error(error);
     }
+    this.props.navigation.navigate('Calendar');
   };
 
   render() {
