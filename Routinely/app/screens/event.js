@@ -45,7 +45,7 @@ class EventScreen extends Component {
   }
 
   addEvent = async () => {
-    const addEvent = firestore().collection('users').doc(user.email).collection('event');
+    const addEvent = firestore().collection('users').doc(user.email).collection('events');
     try {
       await addEvent
         .add({
@@ -136,6 +136,7 @@ class EventScreen extends Component {
           width={350}
           title="addEvent"
           onPress={() => this.addEvent()}>
+          
           Add Event
         </AwesomeButtonBlue>
       </View>
