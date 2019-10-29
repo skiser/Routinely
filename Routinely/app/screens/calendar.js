@@ -249,15 +249,8 @@ class CalendarScreen extends Component {
           );
         }}
       />
-        <View style={styles.container}>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Alarm')}>
-              <Image
-                style={styles.contain}
-                source={require('../components/img/alarm.png')}
-              />
-            </TouchableHighlight>
+        <View style={styles.plus}>
+          <View>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Menu')}>
               <Image
