@@ -27,7 +27,7 @@ const user = firebase.auth().currentUser;
 const eventsRef = firestore()
   .collection('users')
   .doc(user.email)
-  .collection('event'); 
+  .collection('events'); 
 
 //const eventsRef = eRef.collection('event');
 
@@ -57,45 +57,32 @@ class CalendarScreen extends Component {
     eventList: [],
     setEvent: '',
     event: '',
-    datelist: [],
-    date: '',
   };
 
-  getEvents = async eventRetrieved => {
+  getEvents = async  => {
     try {
-      const snapshot = await eventsRef.get()
-      snapshot.forEach(event => {
-        this.state.eventList.push(event.data());
-        console.log("this is the event " +event.get('chosenDate').toDate());
+      eventsRef.onSnapshot(querySnapshot =>{
+      querySnapshot.forEach(event => {
+          this.state.eventList.push(event.data());
+          console.log("this is the event " +event.get('chosenDate').toDate());
+        });
+      //eventRetrieved(this.state.eventList);
       });
-      eventRetrieved(this.state.eventList);
+      
     } catch (error) {
       console.log('problem retrieving tasks');
     }
   };
 
-  getDates = () => {
-    this.state.eventlist.forEach(event =>{
-      events.push(event.get('chosenDate').toDate());
-    })
-    return events;
-  };
-
   onEventsRetrieved = eventList => {
-    console.log(eventList);
+    console.log("event list:" +eventList);
     this.setState(prevState => ({
       eventList: (prevState.eventList = eventList),
     }));
   };
-  
-
-  getAllData(){
-    this.getEvents(this.onEventsRetrieved);
-    //this.getDates(this.onDatesRetrieved);
-  }
 
   componentDidMount() {
-    this.getAllData();
+    this.getEvents(this.onEventsRetrieved);
   }
   //TODO: need to figure out how to properly do this
   buttonPressed(id) {
@@ -114,38 +101,11 @@ class CalendarScreen extends Component {
     );
   }
 
-  renderItem = () => {
-    return (
-      <FlatList
-        data={this.state.eventList}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => this.itemPressed(item.title+ '   ' +item.notes)}
-              style={styles.item}>
-              <View>
-                <Text style={styles.itemHourText}>{item.hour}</Text>
-                <Text style={styles.itemDurationText}>{item.duration}</Text>
-              </View>
-              <Text style={styles.itemTitleText}>{item.title}     </Text>
-              <Text style={styles.itemHourText}>{item.notes}      </Text>
-              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
-              {/* TODO: do we want an info button or not??
-              <View style={styles.itemButtonContainer}>
-                <Button title={'Info'} onPress={this.buttonPressed} />
-              </View> */}
-            </TouchableOpacity>
-          );
-        }}
-      />
-    );
-  };
+  
 
   getMarkedDates = () => {
     const marked = {};
     const mark = this.state.eventList;
-    console.log(mark);
     mark.forEach(event =>{
       // only mark dates with data
       const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
@@ -157,7 +117,7 @@ class CalendarScreen extends Component {
       marked[markdate] = {marked: true};
       console.log('successfully added');
     })
-    console.log(marked);
+    console.log('Marked:' +marked);
     return marked;
   }; 
 
