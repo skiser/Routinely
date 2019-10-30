@@ -8,7 +8,7 @@ class AlarmRingingScreen extends Component {
     this.state = {
       dataSource: [],
       loading: true,
-      relativePath: 'Routinely/app/components/img/icons/',
+      relativePath: 'https://www.weatherbit.io/static/img/icons/',
       png: '.png',
     };
   }
@@ -37,22 +37,30 @@ class AlarmRingingScreen extends Component {
           precipitationNow: responseJson.data[0].precip,
           weatherConditionsNow: responseJson.data[0].weather.description,
           weatherConditionsNowCode: responseJson.data[0].weather.icon,
-
-          temperature6Hrs: responseJson.data[5].temp,
-          precipitation6Hrs: responseJson.data[5].precip,
-          weatherConditions6Hrs: responseJson.data[5].weather.description,
-          weatherConditions6HrsCode: responseJson.data[5].weather.icon,
-
-          temperature12Hrs: responseJson.data[11].temp,
-          precipitation12Hrs: responseJson.data[11].precip,
-          weatherConditions12Hrs: responseJson.data[11].weather.description,
-          weatherConditions12HrsCode: responseJson.data[11].weather.icon,
           weatherNowIconLink:
             this.state.relativePath +
             responseJson.data[0].weather.icon +
             this.state.png,
+          temperature6Hrs: responseJson.data[5].temp,
+          precipitation6Hrs: responseJson.data[5].precip,
+          weatherConditions6Hrs: responseJson.data[5].weather.description,
+          weatherConditions6HrsCode: responseJson.data[5].weather.icon,
+          weather6HrsIconLink:
+            this.state.relativePath +
+            responseJson.data[5].weather.icon +
+            this.state.png,
+          temperature12Hrs: responseJson.data[11].temp,
+          precipitation12Hrs: responseJson.data[11].precip,
+          weatherConditions12Hrs: responseJson.data[11].weather.description,
+          weatherConditions12HrsCode: responseJson.data[11].weather.icon,
+          weather12HrsIconLink:
+            this.state.relativePath +
+            responseJson.data[11].weather.icon +
+            this.state.png,
         });
         console.log('Now', this.state.weatherNowIconLink);
+        console.log('6Hr', this.state.weather6HrsIconLink);
+        console.log('12Hr', this.state.weather12HrsIconLink);
       })
       .catch(error => console.log(error)); //to catch the errors if any
   }
@@ -66,7 +74,10 @@ class AlarmRingingScreen extends Component {
         <View style={styles.row}>
           <View style={styles.forecast}>
             <Text style={styles.time}>Right Now</Text>
-            <Image style={styles.img} source={{uri: this.state.weatherNowIconLink}} />
+            <Image
+              style={styles.img}
+              source={{uri: this.state.weatherNowIconLink}}
+            />
             <Text style={styles.conditions}>
               {this.state.weatherConditionsNow}
             </Text>
@@ -79,7 +90,7 @@ class AlarmRingingScreen extends Component {
             <Text style={styles.time}>6 Hrs</Text>
             <Image
               style={styles.img}
-              source={require('Routinely/app/components/img/icons/r04d.png')}
+              source={{uri: this.state.weather6HrsIconLink}}
             />
             <Text style={styles.conditions}>
               {this.state.weatherConditions6Hrs}
@@ -93,7 +104,7 @@ class AlarmRingingScreen extends Component {
             <Text style={styles.time}>12 Hrs</Text>
             <Image
               style={styles.img}
-              source={require('Routinely/app/components/img/icons/s02d.png')}
+              source={{uri: this.state.weather12HrsIconLink}}
             />
             <Text style={styles.conditions}>
               {this.state.weatherConditions12Hrs}
@@ -128,7 +139,7 @@ const styles = StyleSheet.create({
   forecast: {
     textAlign: 'center',
     flexDirection: 'column',
-    padding: 0,
+    padding: 5,
     margin: 10,
     borderWidth: 1,
     borderRadius: 15,
@@ -149,11 +160,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     paddingBottom: 3,
-    paddingTop: 3,
   },
   img: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
   },
 });
 
