@@ -128,7 +128,9 @@ class CalendarScreen extends Component {
     return marked;
   }; 
 
-  edittingEvent = item => { 
+  edittingEvent = item => {
+    console.log("item:" +item);
+    const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
     this.props.navigation.navigate("EditEvent", {event: item,});
   }
 

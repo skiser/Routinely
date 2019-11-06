@@ -82,8 +82,8 @@ class EventScreen extends Component {
           />
           <Hoshi
             label={'Custom Notes'}
-            onChangeText={notes => this.setState({notes})}
             value={this.state.notes}
+            onChangeText={notes => this.setState({notes})}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
