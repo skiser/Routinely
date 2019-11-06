@@ -11,32 +11,21 @@ import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blu
 import RepeatDiv from '../components/alarm_components/RepeatDiv';
 import {Divider} from 'react-native-elements';
 
-const utcDateToString = (momentInUTC: moment): string => {
-  let time = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-  // console.warn(s);
-  return time;
-};
-
 const user = firebase.auth().currentUser;
 
-class EventScreen extends Component {
+class EditEventScreen extends Component {
+
+
   constructor(props) {
     super(props);
     this.state = {
       title: '',
       notes: '',
-      chosenDate: new Date(),
-      Sun: false,
-      Mon: false,
-      Tue: false,
-      Wed: false,
-      Thu: false,
-      Fri: false,
-      Sat: false,
-      Pressed: true,
     };
     //this.setDate = this.setDate.bind(this);
   }
+
+
 
   onButtonPress = (day) => {
     this.setState({
@@ -44,24 +33,16 @@ class EventScreen extends Component {
     });
   }
 
-  addEvent = async (title) => {
+  editEvent = async (title) => {
     //const title = this.state.title.toString();
-    const addEvent = firestore().collection('users').doc(user.email).collection('events');
+    const editEvent = firestore().collection('users').doc(user.email).collection('events');
     try {
-      addEvent.doc(title).set({
+      //console.log(title);
+      editEvent.doc(event.title).update({
         title: this.state.title,
-        notes: this.state.notes,
-        chosenDate: this.state.chosenDate,
-        Sun: this.state.Sun,
-        Mon: this.state.Mon,
-        Tue: this.state.Tue,
-        Wed: this.state.Wed,
-        Thu: this.state.Thu,
-        Fri: this.state.Fri,
-        Sat: this.state.Sat,
       })
         .then(ref => {
-          console.log('Added doc w ID: ', ref.id);
+          console.log('Edited doc w ID: ', ref.id);
         });
     } catch (error) {
       console.error(error);
@@ -69,76 +50,35 @@ class EventScreen extends Component {
     this.props.navigation.navigate('Calendar');
   };
 
+  //console.log(this.props.event)
   render() {
+    const event = this.props.navigation.getParam('event');
     return (
       <View style={styles.container}>
         <View style={styles.card1}>
           <Hoshi
-            label={'Title'}
-            onChangeText={title => this.setState({title})}
-            value={this.state.title}
+            label={'Edit Title:'}
+            value={event.title}
+            onChangeText={title => event.title}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
           <Hoshi
-            label={'Custom Notes'}
-            onChangeText={notes => this.setState({notes})}
-            value={this.state.notes}
+            label={'Edit Notes:'}
+            onChangeText={notes => event.notes}
+            value={event.notes}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
         </View>
-        <View>
-          <DatePickerIOS
-            date={this.state.chosenDate}
-            onDateChange={chosenDate => this.setState({chosenDate})}
-          />
-        </View>
         <RepeatDiv />
         <Divider />
-        <View style={styles.containerDate}>
-          <Button
-            buttonStyle={styles.dayBox}
-            title="S"
-            onPress={() => this.setState(prevState => ({Sun: !prevState.Sun}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="M"
-            onPress={() => this.setState(prevState => ({Mon: !prevState.Mon}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="T"
-            onPress={() => this.setState(prevState => ({Tue: !prevState.Tue}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="W"
-            onPress={() => this.setState(prevState => ({Wed: !prevState.Wed}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="T"
-            onPress={() => this.setState(prevState => ({Thu: !prevState.Thu}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="F"
-            onPress={() => this.setState(prevState => ({Fri: !prevState.Fri}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="S"
-            onPress={() => this.setState(prevState => ({Sat: !prevState.Sat}))}
-          />
-        </View>
         <AwesomeButtonBlue
           width={350}
-          title="addEvent"
-          onPress={() => this.addEvent(this.state.title)}>
+          title="editEvent"
+          onPress={() => this.editEvent(event.title)}>
           
-          Add Event
+          Edit Event
         </AwesomeButtonBlue>
       </View>
     );
@@ -202,4 +142,5 @@ const styles = StyleSheet.create({
     width: 350,
   },
 });
-export default EventScreen;
+
+export default EditEventScreen;

@@ -12,10 +12,6 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
-//need to figure out how to continually called marked datess
-//need to figure out if we can order the events when we are listing them by date
-//the day also is not acting correctly and the am/pm isnt either
-
 var events = [
   
 ];
@@ -30,7 +26,7 @@ const user = firebase.auth().currentUser;
 const eventsRef = firestore()
   .collection('users')
   .doc(user.email)
-  .collection('events'); 
+  .collection('events').orderBy("chosenDate", "asc"); 
 
 //const eventsRef = eRef.collection('event');
 
@@ -56,18 +52,28 @@ class CalendarScreen extends Component {
   onMonthChange = (/* month, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   };
-  state = {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      eventList: [],
+      setEvent: '',
+      editting: '',
+    };
+  }  
+  
+  /*state = {
     eventList: [],
     setEvent: '',
     event: '',
-  };
+  };*/
 
-  getEvents = async eventRetrieved  => {
+  getEvents = async eventRetrieved => {
     try {
       eventsRef.onSnapshot(querySnapshot=>{
       querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
-          console.log("this is the event " +event.get('chosenDate').toDate());
+          //console.log("this is the event " +event.get('chosenDate').toDate());
         });
       eventRetrieved(this.state.eventList);
       });
@@ -78,7 +84,7 @@ class CalendarScreen extends Component {
   };
 
   onEventsRetrieved = eventList => {
-    console.log("event list:" +eventList);
+    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       eventList: (prevState.eventList = eventList),
     }));
@@ -116,11 +122,27 @@ class CalendarScreen extends Component {
       const markdate = year + "-" + month + "-" + day;
 
       marked[markdate] = {marked: true};
-      console.log('successfully added');
+      //console.log('successfully added');
     })
-    console.log('Marked:' +marked);
+    //console.log('Marked:' +marked);
     return marked;
   }; 
+
+  edittingEvent = item => { 
+    this.props.navigation.navigate("EditEvent", {event: item,});
+  }
+
+  deleteEvent = item =>{
+    const index = this.state.eventList.indexOf(item);
+    //console.log(index);
+    
+    this.state.eventList.splice(index, 1);
+    console.log("deleting:" +item.title);
+    const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title);
+    console.log("deleting event:");
+    events.delete();
+    console.log("success");
+  }
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -196,16 +218,24 @@ class CalendarScreen extends Component {
           renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => this.itemPressed(item.title+ '   ' +item.notes)}
+              onPress={() => this.itemPressed(item.notes)}
               style={styles.item}>
               <View>
                 <Text style={styles.itemHourText}>{item.hour}</Text>
                 <Text style={styles.itemDurationText}>{item.duration}</Text>
               </View>
               <Text style={styles.itemTitleText}>{item.title}     </Text>
-              <Text style={styles.itemHourText}>{item.notes}      </Text>
+              {/* <Text style={styles.itemHourText}>{item.notes}      </Text> */}
               <Text style={styles.itemHourText}>{item.chosenDate.toDate().getUTCMonth()+1} - {item.chosenDate.toDate().getUTCDate()} - {item.chosenDate.toDate().getUTCFullYear()}   </Text>
-              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}</Text>
+              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}     </Text>
+              <Button 
+                title="Edit" 
+                onPress={() => this.edittingEvent(item)}
+              />
+              <Button 
+                title="Delete" 
+                onPress={() => this.deleteEvent(item)}
+              />
             </TouchableOpacity>
           );
         }}
