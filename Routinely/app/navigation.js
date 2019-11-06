@@ -7,6 +7,7 @@ import AlarmRingingScreen from './screens/alarmRinging';
 import EventScreen from './screens/event';
 import TaskScreen from './screens/tasks';
 import MenuScreen from './screens/menu';
+import EditEventScreen from './screens/editEvent';
 
 const AuthStack = createStackNavigator(
   {
@@ -26,6 +27,7 @@ const AppStack = createStackNavigator(
     Event: EventScreen,
     Task: TaskScreen,
     Menu: MenuScreen,
+    EditEvent: EditEventScreen,
   },
   {
     initialRouteName: 'Alarm',
