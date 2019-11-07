@@ -48,7 +48,7 @@ class EventScreen extends Component {
     //const title = this.state.title.toString();
     const addEvent = firestore().collection('users').doc(user.email).collection('events');
     try {
-      addEvent.doc(title).set({
+      addEvent.doc().set({
         title: this.state.title,
         notes: this.state.notes,
         chosenDate: this.state.chosenDate,
