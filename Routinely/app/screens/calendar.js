@@ -61,7 +61,7 @@ class CalendarScreen extends Component {
       editting: '',
     };
   }  
-  
+  m
   /*state = {
     eventList: [],
     setEvent: '',
@@ -128,19 +128,49 @@ class CalendarScreen extends Component {
     return marked;
   }; 
 
-  edittingEvent = item => { 
+  edittingEvent = item => {
+    const index = this.state.eventList.indexOf(item)
+    console.log("item:" +item);
+    this.state.eventList.splice(index, 1);
+    let query = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get()
+      .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }  
+      snapshot.forEach(doc => {
+        firestore().collection('users').doc(user.email).collection('events').doc(doc.id).delete();
+      });
+      })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+    //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
     this.props.navigation.navigate("EditEvent", {event: item,});
   }
 
   deleteEvent = item =>{
     const index = this.state.eventList.indexOf(item);
     //console.log(index);
-    
+    console.log(item);
     this.state.eventList.splice(index, 1);
-    console.log("deleting:" +item.title);
-    const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title);
-    console.log("deleting event:");
-    events.delete();
+    //console.log("deleting:" +item.title);
+    let query = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get()
+      .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }  
+      snapshot.forEach(doc => {
+        firestore().collection('users').doc(user.email).collection('events').doc(doc.id).delete();
+      });
+      })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+    //const events = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get();
+    console.log(events);
+    //this.getEvents(this.onEventsRetrieved);
     console.log("success");
   }
 

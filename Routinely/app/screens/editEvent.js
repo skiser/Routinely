@@ -15,12 +15,20 @@ const user = firebase.auth().currentUser;
 
 class EditEventScreen extends Component {
 
-
   constructor(props) {
     super(props);
     this.state = {
       title: '',
       notes: '',
+      chosenDate: new Date(),
+      Sun: false,
+      Mon: false,
+      Tue: false,
+      Wed: false,
+      Thu: false,
+      Fri: false,
+      Sat: false,
+      Pressed: true,
     };
     //this.setDate = this.setDate.bind(this);
   }
@@ -33,42 +41,98 @@ class EditEventScreen extends Component {
     });
   }
 
-  editEvent = async (title) => {
+  editEvent = async (event) => {
     //const title = this.state.title.toString();
     const editEvent = firestore().collection('users').doc(user.email).collection('events');
+    console.log("title: "+ this.state.title+", notes: "+ this.state.notes);
     try {
       //console.log(title);
-      editEvent.doc(event.title).update({
+      editEvent.doc().set({
         title: this.state.title,
+        notes: this.state.notes,
+        chosenDate: this.state.chosenDate,
+        Sun: this.state.Sun,
+        Mon: this.state.Mon,
+        Tue: this.state.Tue,
+        Wed: this.state.Wed,
+        Thu: this.state.Thu,
+        Fri: this.state.Fri,
+        Sat: this.state.Sat,
       })
         .then(ref => {
-          console.log('Edited doc w ID: ', ref.id);
+          console.log('Edited doc w ID: ', ref);
         });
     } catch (error) {
       console.error(error);
     }
-    this.props.navigation.navigate('Calendar');
+    this.props.navigation.navigate('Calendar', {event: event});
   };
 
   //console.log(this.props.event)
   render() {
     const event = this.props.navigation.getParam('event');
+    console.log(event);
     return (
       <View style={styles.container}>
         <View style={styles.card1}>
           <Hoshi
             label={'Edit Title:'}
-            value={event.title}
-            onChangeText={title => event.title}
+            placeholder={event.title}
+            onChangeText={title => this.setState({title})}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
           <Hoshi
             label={'Edit Notes:'}
-            onChangeText={notes => event.notes}
-            value={event.notes}
+            onChangeText={notes => this.setState({notes})}
+            placeholder={event.notes}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
+          />
+        </View>
+        <View>
+          <DatePickerIOS
+            date={this.state.chosenDate}
+            onDateChange={chosenDate => this.setState({chosenDate})}
+          />
+        </View>
+        <RepeatDiv />
+        <Divider />
+        <View style={styles.containerDate}>
+          <Button
+            buttonStyle={styles.dayBox}
+            title="S"
+            onPress={() => this.setState(prevState => ({Sun: !prevState.Sun}))}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="M"
+            onPress={() => this.setState(prevState => ({Mon: !prevState.Mon}))}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="T"
+            onPress={() => this.setState(prevState => ({Tue: !prevState.Tue}))}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="W"
+            onPress={() => this.setState(prevState => ({Wed: !prevState.Wed}))}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="T"
+            onPress={() => this.setState(prevState => ({Thu: !prevState.Thu}))}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="F"
+            onPress={() => this.setState(prevState => ({Fri: !prevState.Fri}))}
+          />
+          <Button
+            buttonStyle={styles.dayBox}
+            title="S"
+            onPress={() => this.setState(prevState => ({Sat: !prevState.Sat}))}
           />
         </View>
         <RepeatDiv />
@@ -76,7 +140,7 @@ class EditEventScreen extends Component {
         <AwesomeButtonBlue
           width={350}
           title="editEvent"
-          onPress={() => this.editEvent(event.title)}>
+          onPress={() => this.editEvent(event)}>
           
           Edit Event
         </AwesomeButtonBlue>
