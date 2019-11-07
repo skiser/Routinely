@@ -43,11 +43,11 @@ class EditEventScreen extends Component {
 
   editEvent = async (event) => {
     //const title = this.state.title.toString();
-    const editEvent = firestore().collection('users').doc(user.email).collection('events')
+    const editEvent = firestore().collection('users').doc(user.email).collection('events');
     console.log("title: "+ this.state.title+", notes: "+ this.state.notes);
     try {
       //console.log(title);
-      editEvent.doc(this.state.title).set({
+      editEvent.doc().set({
         title: this.state.title,
         notes: this.state.notes,
         chosenDate: this.state.chosenDate,
@@ -77,15 +77,15 @@ class EditEventScreen extends Component {
         <View style={styles.card1}>
           <Hoshi
             label={'Edit Title:'}
-            value={event.title}
+            placeholder={event.title}
             onChangeText={title => this.setState({title})}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
           <Hoshi
             label={'Edit Notes:'}
-            onChangeText={notes => this.setState(notes)}
-            value={event.notes}
+            onChangeText={notes => this.setState({notes})}
+            placeholder={event.notes}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
