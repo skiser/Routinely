@@ -8,6 +8,7 @@ import EventScreen from './screens/event';
 import TaskScreen from './screens/tasks';
 import MenuScreen from './screens/menu';
 import EditEventScreen from './screens/editEvent';
+import EditTaskScreen from './screens/editTask';
 
 const AuthStack = createStackNavigator(
   {
@@ -28,6 +29,7 @@ const AppStack = createStackNavigator(
     Task: TaskScreen,
     Menu: MenuScreen,
     EditEvent: EditEventScreen,
+    EditTask: EditTaskScreen,
   },
   {
     initialRouteName: 'Alarm',
