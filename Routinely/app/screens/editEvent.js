@@ -33,8 +33,6 @@ class EditEventScreen extends Component {
     //this.setDate = this.setDate.bind(this);
   }
 
-
-
   onButtonPress = (day) => {
     this.setState({
       day: true
@@ -60,7 +58,7 @@ class EditEventScreen extends Component {
         Sat: this.state.Sat,
       })
         .then(ref => {
-          console.log('Edited doc w ID: ', ref);
+          console.log('Edited doc w ID: ', ref.id);
         });
     } catch (error) {
       console.error(error);
@@ -96,7 +94,7 @@ class EditEventScreen extends Component {
             onDateChange={chosenDate => this.setState({chosenDate})}
           />
         </View>
-        <RepeatDiv />
+        <RepeatDiv/>
         <Divider />
         <View style={styles.containerDate}>
           <Button

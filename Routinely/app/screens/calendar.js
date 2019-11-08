@@ -28,6 +28,12 @@ const eventsRef = firestore()
   .doc(user.email)
   .collection('events').orderBy("chosenDate", "asc"); 
 
+const tasksRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('tasks'); 
+
+
 //const eventsRef = eRef.collection('event');
 
 function getFutureDates(days) {
@@ -57,6 +63,7 @@ class CalendarScreen extends Component {
     super(props);
     this.state = {
       eventList: [],
+      taskList: [],
       setEvent: '',
       editting: '',
     };
@@ -79,6 +86,21 @@ class CalendarScreen extends Component {
       });
       
     } catch (error) {
+      console.log('problem retrieving events');
+    }
+  };
+
+  getTasks = async taskRetrieved =>{
+   try {
+      tasksRef.onSnapshot(querySnapshot=>{
+      querySnapshot.forEach(tasks => {
+          this.state.taskList.push(tasks.data());
+          //console.log("this is the event " +event.get('chosenDate').toDate());
+        });
+      taskRetrieved(this.state.taskList);
+      });
+      
+    } catch (error) {
       console.log('problem retrieving tasks');
     }
   };
@@ -90,8 +112,16 @@ class CalendarScreen extends Component {
     }));
   };
 
+  onTasksRetrieved = taskList => {
+    //console.log("event list:" +eventList);
+    this.setState(prevState => ({
+      taskList: (prevState.taskList = taskList),
+    }));
+  };
+
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
+    this.getTasks(this.onTasksRetrieved);
   }
   //TODO: need to figure out how to properly do this
   buttonPressed(id) {
@@ -122,7 +152,7 @@ class CalendarScreen extends Component {
       const markdate = year + "-" + month + "-" + day;
 
       marked[markdate] = {marked: true};
-      //console.log('successfully added');
+      console.log('successfully added');
     })
     //console.log('Marked:' +marked);
     return marked;
@@ -149,6 +179,27 @@ class CalendarScreen extends Component {
     this.props.navigation.navigate("EditEvent", {event: item,});
   }
 
+  edittingTask = item => {
+    const index = this.state.taskList.indexOf(item)
+    console.log("task:" +item);
+    this.state.taskList.splice(index, 1);
+    let query = firestore().collection('users').doc(user.email).collection('tasks').where('title', '==', item.title).get()
+      .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }  
+      snapshot.forEach(doc => {
+        firestore().collection('users').doc(user.email).collection('tasks').doc(doc.id).delete();
+      });
+      })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+    //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
+    this.props.navigation.navigate("EditTask", {task: item,});
+  }
+
   deleteEvent = item =>{
     const index = this.state.eventList.indexOf(item);
     //console.log(index);
@@ -171,6 +222,28 @@ class CalendarScreen extends Component {
     //const events = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get();
     console.log(events);
     //this.getEvents(this.onEventsRetrieved);
+    console.log("success");
+  }
+
+  deleteTask = item =>{
+    const index = this.state.taskList.indexOf(item);
+    //console.log(index);
+    console.log(item);
+    this.state.taskList.splice(index, 1);
+    //console.log("deleting:" +item.title);
+    let query = firestore().collection('users').doc(user.email).collection('tasks').where('title', '==', item.title).get()
+      .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }  
+      snapshot.forEach(doc => {
+        firestore().collection('users').doc(user.email).collection('tasks').doc(doc.id).delete();
+      });
+      })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
     console.log("success");
   }
 
@@ -268,8 +341,27 @@ class CalendarScreen extends Component {
               />
             </TouchableOpacity>
           );
-        }}
-      />
+        }}/>
+        <FlatList
+          data={this.state.taskList}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => { 
+          return (
+            <TouchableOpacity
+              onPress={() => this.itemPressed(item.notes)}
+              style={styles.item}>
+              <Text style={styles.itemTitleText}>{item.title}     </Text>
+              <Button 
+                title="Edit" 
+                onPress={() => this.edittingTask(item)}
+              />
+              <Button 
+                title="Delete" 
+                onPress={() => this.deleteTask(item)}
+              />
+            </TouchableOpacity>
+          );
+        }}/>
         <View style={styles.plus}>
           <View>
             <TouchableHighlight
