@@ -16,6 +16,8 @@ class LoginScreen extends Component {
       loggedIn: false,
       email: '',
       password: '',
+      datasource: [],
+      loading: true,
     };
   }
 
@@ -92,7 +94,6 @@ class LoginScreen extends Component {
       console.error(error);
     }
   };
-
   render() {
     return (
       <ImageBackground

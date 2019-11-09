@@ -1,6 +1,21 @@
 import React, {Component} from 'react';
-import {Alert, Button, FlatList, Image, Platform, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View,} from 'react-native';
-import {AgendaList,CalendarProvider, ExpandableCalendar,} from 'react-native-calendars';
+import {
+  Alert,
+  Button,
+  FlatList,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  AgendaList,
+  CalendarProvider,
+  ExpandableCalendar,
+} from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
 import firebase from '@react-native-firebase/app';
@@ -12,9 +27,7 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
-var events = [
-  
-];
+var events = [];
 
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
@@ -26,13 +39,13 @@ const user = firebase.auth().currentUser;
 const eventsRef = firestore()
   .collection('users')
   .doc(user.email)
-  .collection('events').orderBy("chosenDate", "asc"); 
+  .collection('events')
+  .orderBy('chosenDate', 'asc');
 
 const tasksRef = firestore()
   .collection('users')
   .doc(user.email)
-  .collection('tasks'); 
-
+  .collection('tasks');
 
 //const eventsRef = eRef.collection('event');
 
@@ -67,8 +80,7 @@ class CalendarScreen extends Component {
       setEvent: '',
       editting: '',
     };
-  }  
-  m
+  }
   /*state = {
     eventList: [],
     setEvent: '',
@@ -77,29 +89,27 @@ class CalendarScreen extends Component {
 
   getEvents = async eventRetrieved => {
     try {
-      eventsRef.onSnapshot(querySnapshot=>{
-      querySnapshot.forEach(event => {
+      eventsRef.onSnapshot(querySnapshot => {
+        querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
           //console.log("this is the event " +event.get('chosenDate').toDate());
         });
-      eventRetrieved(this.state.eventList);
+        eventRetrieved(this.state.eventList);
       });
-      
     } catch (error) {
       console.log('problem retrieving events');
     }
   };
 
-  getTasks = async taskRetrieved =>{
-   try {
-      tasksRef.onSnapshot(querySnapshot=>{
-      querySnapshot.forEach(tasks => {
+  getTasks = async taskRetrieved => {
+    try {
+      tasksRef.onSnapshot(querySnapshot => {
+        querySnapshot.forEach(tasks => {
           this.state.taskList.push(tasks.data());
           //console.log("this is the event " +event.get('chosenDate').toDate());
         });
-      taskRetrieved(this.state.taskList);
+        taskRetrieved(this.state.taskList);
       });
-      
     } catch (error) {
       console.log('problem retrieving tasks');
     }
@@ -143,109 +153,149 @@ class CalendarScreen extends Component {
   getMarkedDates = () => {
     const marked = {};
     const mark = this.state.eventList;
-    mark.forEach(event =>{
+    mark.forEach(event => {
       // only mark dates with data
       const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
       const day = event.chosenDate.toDate().getUTCDate();
       const year = event.chosenDate.toDate().getUTCFullYear();
-      
-      const markdate = year + "-" + month + "-" + day;
+
+      const markdate = year + '-' + month + '-' + day;
 
       marked[markdate] = {marked: true};
       console.log('successfully added');
-    })
+    });
     //console.log('Marked:' +marked);
     return marked;
-  }; 
+  };
 
   edittingEvent = item => {
-    const index = this.state.eventList.indexOf(item)
-    console.log("item:" +item);
+    const index = this.state.eventList.indexOf(item);
+    console.log('item:' + item);
     this.state.eventList.splice(index, 1);
-    let query = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get()
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('events')
+      .where('title', '==', item.title)
+      .get()
       .then(snapshot => {
-      if (snapshot.empty) {
-        console.log('No matching documents.');
-        return;
-      }  
-      snapshot.forEach(doc => {
-        firestore().collection('users').doc(user.email).collection('events').doc(doc.id).delete();
-      });
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('events')
+            .doc(doc.id)
+            .delete();
+        });
       })
-    .catch(err => {
-      console.log('Error getting documents', err);
-    });
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
     //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
-    this.props.navigation.navigate("EditEvent", {event: item,});
-  }
+    this.props.navigation.navigate('EditEvent', {event: item});
+  };
 
   edittingTask = item => {
-    const index = this.state.taskList.indexOf(item)
-    console.log("task:" +item);
+    const index = this.state.taskList.indexOf(item);
+    console.log('task:' + item);
     this.state.taskList.splice(index, 1);
-    let query = firestore().collection('users').doc(user.email).collection('tasks').where('title', '==', item.title).get()
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('tasks')
+      .where('title', '==', item.title)
+      .get()
       .then(snapshot => {
-      if (snapshot.empty) {
-        console.log('No matching documents.');
-        return;
-      }  
-      snapshot.forEach(doc => {
-        firestore().collection('users').doc(user.email).collection('tasks').doc(doc.id).delete();
-      });
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('tasks')
+            .doc(doc.id)
+            .delete();
+        });
       })
-    .catch(err => {
-      console.log('Error getting documents', err);
-    });
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
     //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
-    this.props.navigation.navigate("EditTask", {task: item,});
-  }
+    this.props.navigation.navigate('EditTask', {task: item});
+  };
 
-  deleteEvent = item =>{
+  deleteEvent = item => {
     const index = this.state.eventList.indexOf(item);
     //console.log(index);
     console.log(item);
     this.state.eventList.splice(index, 1);
     //console.log("deleting:" +item.title);
-    let query = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get()
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('events')
+      .where('title', '==', item.title)
+      .get()
       .then(snapshot => {
-      if (snapshot.empty) {
-        console.log('No matching documents.');
-        return;
-      }  
-      snapshot.forEach(doc => {
-        firestore().collection('users').doc(user.email).collection('events').doc(doc.id).delete();
-      });
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('events')
+            .doc(doc.id)
+            .delete();
+        });
       })
-    .catch(err => {
-      console.log('Error getting documents', err);
-    });
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
     //const events = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get();
     console.log(events);
     //this.getEvents(this.onEventsRetrieved);
-    console.log("success");
-  }
+    console.log('success');
+  };
 
-  deleteTask = item =>{
+  deleteTask = item => {
     const index = this.state.taskList.indexOf(item);
     //console.log(index);
     console.log(item);
     this.state.taskList.splice(index, 1);
     //console.log("deleting:" +item.title);
-    let query = firestore().collection('users').doc(user.email).collection('tasks').where('title', '==', item.title).get()
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('tasks')
+      .where('title', '==', item.title)
+      .get()
       .then(snapshot => {
-      if (snapshot.empty) {
-        console.log('No matching documents.');
-        return;
-      }  
-      snapshot.forEach(doc => {
-        firestore().collection('users').doc(user.email).collection('tasks').doc(doc.id).delete();
-      });
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('tasks')
+            .doc(doc.id)
+            .delete();
+        });
       })
-    .catch(err => {
-      console.log('Error getting documents', err);
-    });
-    console.log("success");
-  }
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    console.log('success');
+  };
 
   getTheme = () => {
     const themeColor = '#0059ff';
@@ -319,49 +369,37 @@ class CalendarScreen extends Component {
           data={this.state.eventList}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => this.itemPressed(item.notes)}
-              style={styles.item}>
-              <View>
-                <Text style={styles.itemHourText}>{item.hour}</Text>
-                <Text style={styles.itemDurationText}>{item.duration}</Text>
-              </View>
-              <Text style={styles.itemTitleText}>{item.title}     </Text>
-              {/* <Text style={styles.itemHourText}>{item.notes}      </Text> */}
-              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getUTCMonth()+1} - {item.chosenDate.toDate().getUTCDate()} - {item.chosenDate.toDate().getUTCFullYear()}   </Text>
-              <Text style={styles.itemHourText}>{item.chosenDate.toDate().getHours() > 12 ?  (item.chosenDate.toDate().getHours() - 12)  : item.chosenDate.toDate().getHours()}:{item.chosenDate.toDate().getMinutes() < 10 ? ("0"+(item.chosenDate.toDate().getMinutes())):(item.chosenDate.toDate().getMinutes())}  {item.chosenDate.toDate().getHours() > 12 ?'pm':'am'}     </Text>
-              <Button 
-                title="Edit" 
-                onPress={() => this.edittingEvent(item)}
-              />
-              <Button 
-                title="Delete" 
-                onPress={() => this.deleteEvent(item)}
-              />
-            </TouchableOpacity>
-          );
-        }}/>
-        <FlatList
-          data={this.state.taskList}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => { 
-          return (
-            <TouchableOpacity
-              onPress={() => this.itemPressed(item.notes)}
-              style={styles.item}>
-              <Text style={styles.itemTitleText}>{item.title}     </Text>
-              <Button 
-                title="Edit" 
-                onPress={() => this.edittingTask(item)}
-              />
-              <Button 
-                title="Delete" 
-                onPress={() => this.deleteTask(item)}
-              />
-            </TouchableOpacity>
-          );
-        }}/>
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  this.itemPressed(item.title + '   ' + item.notes)
+                }
+                style={styles.item}>
+                <View>
+                  <Text style={styles.itemHourText}>{item.hour}</Text>
+                  <Text style={styles.itemDurationText}>{item.duration}</Text>
+                </View>
+                <Text style={styles.itemTitleText}>{item.title} </Text>
+                <Text style={styles.itemHourText}>{item.notes} </Text>
+                <Text style={styles.itemHourText}>
+                  {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
+                  {item.chosenDate.toDate().getUTCDate()} -{' '}
+                  {item.chosenDate.toDate().getUTCFullYear()}{' '}
+                </Text>
+                <Text style={styles.itemHourText}>
+                  {item.chosenDate.toDate().getHours() > 12
+                    ? item.chosenDate.toDate().getHours() - 12
+                    : item.chosenDate.toDate().getHours()}
+                  :
+                  {item.chosenDate.toDate().getMinutes() < 10
+                    ? '0' + item.chosenDate.toDate().getMinutes()
+                    : item.chosenDate.toDate().getMinutes()}{' '}
+                  {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
         <View style={styles.plus}>
           <View>
             <TouchableHighlight
