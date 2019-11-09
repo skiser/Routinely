@@ -11,15 +11,10 @@ import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blu
 import RepeatDiv from '../components/alarm_components/RepeatDiv';
 import {Divider} from 'react-native-elements';
 
-const utcDateToString = (momentInUTC: moment): string => {
-  let time = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-  // console.warn(s);
-  return time;
-};
-
 const user = firebase.auth().currentUser;
 
-class EventScreen extends Component {
+class EditEventScreen extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,11 +39,13 @@ class EventScreen extends Component {
     });
   }
 
-  addEvent = async (title) => {
+  editEvent = async (event) => {
     //const title = this.state.title.toString();
-    const addEvent = firestore().collection('users').doc(user.email).collection('events');
+    const editEvent = firestore().collection('users').doc(user.email).collection('events');
+    console.log("title: "+ this.state.title+", notes: "+ this.state.notes);
     try {
-      addEvent.doc().set({
+      //console.log(title);
+      editEvent.doc().set({
         title: this.state.title,
         notes: this.state.notes,
         chosenDate: this.state.chosenDate,
@@ -61,29 +58,32 @@ class EventScreen extends Component {
         Sat: this.state.Sat,
       })
         .then(ref => {
-          console.log('Added doc w ID: ', ref.id);
+          console.log('Edited doc w ID: ', ref.id);
         });
     } catch (error) {
       console.error(error);
     }
-    this.props.navigation.navigate('Calendar');
+    this.props.navigation.navigate('Calendar', {event: event});
   };
 
+  //console.log(this.props.event)
   render() {
+    const event = this.props.navigation.getParam('event');
+    console.log(event);
     return (
       <View style={styles.container}>
         <View style={styles.card1}>
           <Hoshi
-            label={'Title'}
+            label={'Edit Title:'}
+            placeholder={event.title}
             onChangeText={title => this.setState({title})}
-            value={this.state.title}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
           <Hoshi
-            label={'Custom Notes'}
-            value={this.state.notes}
+            label={'Edit Notes:'}
             onChangeText={notes => this.setState({notes})}
+            placeholder={event.notes}
             borderColor={'#2E68FF'}
             maskColor={'#blue'}
           />
@@ -94,7 +94,7 @@ class EventScreen extends Component {
             onDateChange={chosenDate => this.setState({chosenDate})}
           />
         </View>
-        <RepeatDiv />
+        <RepeatDiv/>
         <Divider />
         <View style={styles.containerDate}>
           <Button
@@ -133,12 +133,14 @@ class EventScreen extends Component {
             onPress={() => this.setState(prevState => ({Sat: !prevState.Sat}))}
           />
         </View>
+        <RepeatDiv />
+        <Divider />
         <AwesomeButtonBlue
           width={350}
-          title="addEvent"
-          onPress={() => this.addEvent(this.state.title)}>
+          title="editEvent"
+          onPress={() => this.editEvent(event)}>
           
-          Add Event
+          Edit Event
         </AwesomeButtonBlue>
       </View>
     );
@@ -202,4 +204,5 @@ const styles = StyleSheet.create({
     width: 350,
   },
 });
-export default EventScreen;
+
+export default EditEventScreen;

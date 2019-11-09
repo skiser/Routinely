@@ -19,7 +19,7 @@ const ref = firestore()
     .doc(user.email)
     .collection('tasks');
 
-class tasks extends React.Component {
+class editTasksScreen extends React.Component {
   state = {
     list:[],
     taskList: [],
@@ -36,12 +36,13 @@ class tasks extends React.Component {
       console.log('addTask failed');
     }
     this.setState({task: ''});
+    this.props.navigation.navigate('Calendar', {task: task});
 
   };
 
   getTasks = taskRetrieved => {
     try {
-//this.state.taskList=[];
+    //this.state.taskList=[];
       ref.onSnapshot(querySnapshot => {
         querySnapshot.forEach(task => {
           console.log("data"+task.data());
@@ -65,11 +66,13 @@ class tasks extends React.Component {
     this.getTasks(this.onTasksRetrieved);
   }
   render() {
+    const task = this.props.navigation.getParam('task');
     return (
         <View style={styles.container}>
           <View style={styles.inputRow}>
             <Hoshi
                 style={styles.card1}
+                placeholder={task.title}
                 label={'Enter Task Name'}
                 onChangeText={task => this.setState({task})}
                 value={this.state.task}
@@ -117,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default tasks;
+export default editTasksScreen;

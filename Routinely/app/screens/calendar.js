@@ -27,10 +27,6 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
-//need to figure out how to continually called marked datess
-//need to figure out if we can order the events when we are listing them by date
-//the day also is not acting correctly and the am/pm isnt either
-
 var events = [];
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -43,7 +39,13 @@ const user = firebase.auth().currentUser;
 const eventsRef = firestore()
   .collection('users')
   .doc(user.email)
-  .collection('events');
+  .collection('events')
+  .orderBy('chosenDate', 'asc');
+
+const tasksRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('tasks');
 
 //const eventsRef = eRef.collection('event');
 
@@ -69,20 +71,44 @@ class CalendarScreen extends Component {
   onMonthChange = (/* month, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onMonthChange: ', month, updateSource);
   };
-  state = {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      eventList: [],
+      taskList: [],
+      setEvent: '',
+      editting: '',
+    };
+  }
+  /*state = {
     eventList: [],
     setEvent: '',
     event: '',
-  };
+  };*/
 
   getEvents = async eventRetrieved => {
     try {
       eventsRef.onSnapshot(querySnapshot => {
         querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
-          console.log('this is the event ' + event.get('chosenDate').toDate());
+          //console.log("this is the event " +event.get('chosenDate').toDate());
         });
         eventRetrieved(this.state.eventList);
+      });
+    } catch (error) {
+      console.log('problem retrieving events');
+    }
+  };
+
+  getTasks = async taskRetrieved => {
+    try {
+      tasksRef.onSnapshot(querySnapshot => {
+        querySnapshot.forEach(tasks => {
+          this.state.taskList.push(tasks.data());
+          //console.log("this is the event " +event.get('chosenDate').toDate());
+        });
+        taskRetrieved(this.state.taskList);
       });
     } catch (error) {
       console.log('problem retrieving tasks');
@@ -90,14 +116,22 @@ class CalendarScreen extends Component {
   };
 
   onEventsRetrieved = eventList => {
-    console.log('event list:' + eventList);
+    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       eventList: (prevState.eventList = eventList),
     }));
   };
 
+  onTasksRetrieved = taskList => {
+    //console.log("event list:" +eventList);
+    this.setState(prevState => ({
+      taskList: (prevState.taskList = taskList),
+    }));
+  };
+
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
+    this.getTasks(this.onTasksRetrieved);
   }
   //TODO: need to figure out how to properly do this
   buttonPressed(id) {
@@ -130,8 +164,137 @@ class CalendarScreen extends Component {
       marked[markdate] = {marked: true};
       console.log('successfully added');
     });
-    console.log('Marked:' + marked);
+    //console.log('Marked:' +marked);
     return marked;
+  };
+
+  edittingEvent = item => {
+    const index = this.state.eventList.indexOf(item);
+    console.log('item:' + item);
+    this.state.eventList.splice(index, 1);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('events')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('events')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
+    this.props.navigation.navigate('EditEvent', {event: item});
+  };
+
+  edittingTask = item => {
+    const index = this.state.taskList.indexOf(item);
+    console.log('task:' + item);
+    this.state.taskList.splice(index, 1);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('tasks')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('tasks')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
+    this.props.navigation.navigate('EditTask', {task: item});
+  };
+
+  deleteEvent = item => {
+    const index = this.state.eventList.indexOf(item);
+    //console.log(index);
+    console.log(item);
+    this.state.eventList.splice(index, 1);
+    //console.log("deleting:" +item.title);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('events')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('events')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    //const events = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get();
+    console.log(events);
+    //this.getEvents(this.onEventsRetrieved);
+    console.log('success');
+  };
+
+  deleteTask = item => {
+    const index = this.state.taskList.indexOf(item);
+    //console.log(index);
+    console.log(item);
+    this.state.taskList.splice(index, 1);
+    //console.log("deleting:" +item.title);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('tasks')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('tasks')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    console.log('success');
   };
 
   getTheme = () => {
