@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 const user = firebase.auth().currentUser;
+
 const ref = firestore()
     .collection('users')
     .doc(user.email)

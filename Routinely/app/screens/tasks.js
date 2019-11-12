@@ -3,6 +3,7 @@ import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
+
 import {
   TextInput,
   RefreshControl,
@@ -10,10 +11,13 @@ import {
   FlatList,
   View,
   StyleSheet,
-  ListRenderItem,
+  ListRenderItem, TouchableHighlight, Image,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
+import Swipeout from 'react-native-swipeout'
+
 const user = firebase.auth().currentUser;
+
 const ref = firestore()
     .collection('users')
     .doc(user.email)
@@ -26,26 +30,15 @@ class tasks extends React.Component {
     setTask: '',
     task: '',
   };
-  addTask = async task => {
-    try {
-      await ref.add({
-        title: task,
-        complete: false,
-      });
-    } catch (error) {
-      console.log('addTask failed');
-    }
-    this.setState({task: ''});
 
-  };
-
-  getTasks = taskRetrieved => {
+  getTasks = async taskRetrieved => {
     try {
-//this.state.taskList=[];
       ref.onSnapshot(querySnapshot => {
-        querySnapshot.forEach(task => {
-          console.log("data"+task.data());
-          this.state.taskList.push(task.data());
+        console.log(querySnapshot);
+        this.setState({taskList: []});
+        querySnapshot.forEach(tasks => {
+          console.log("data: " +tasks.data());
+          this.state.taskList.push(tasks.data());
         });
         taskRetrieved(this.state.taskList);
       });
@@ -54,8 +47,34 @@ class tasks extends React.Component {
     }
   };
 
+  deleteTask = async item => {
+    const index = this.state.taskList.indexOf(item);
+    console.log("title: " + item);
+    this.state.taskList.splice(index, 1);
+    let query = firestore()
+        .collection('users')
+        .doc(user.email)
+        .collection('tasks')
+        .where('title', '==', item.title)
+        .get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            console.log('No matching documents.');
+            return;
+          }
+          snapshot.forEach(doc => {
+            firestore().collection('users').doc(user.email).collection('tasks').doc(doc.id).delete();
+          });
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
+        });
+    console.log("success");
+  };
+
+  editTask = item => {};
+
   onTasksRetrieved = taskList => {
-//console.log("tasks: "+taskList);
     this.setState(prevState => ({
       taskList: (prevState.taskList = taskList),
     }));
@@ -63,23 +82,49 @@ class tasks extends React.Component {
 
   componentDidMount() {
     this.getTasks(this.onTasksRetrieved);
+  };
+
+  addTasks(){
+    this.props.navigation.navigate('Task');
   }
+
+  listTasks = item =>  {
+    const swipeBtns = [
+      {
+        onPress: (item) => {this.editTask(item)},
+        text: 'Edit',
+        backgroundColor: '#166EE5',
+      },
+      {
+        onPress: () => {this.deleteTask(item)},
+        text: 'Delete',
+        backgroundColor: '#F0050F',
+      }
+    ];
+
+    return (
+        <Swipeout
+            right = {swipeBtns}
+            autoClose="true"
+            backgroundColor="transparent"
+            sensitivity={100}
+            buttonWidth={50}>
+          <View>
+            <Text style={styles.tasks}> {item.title} </Text>
+          </View>
+        </Swipeout>
+    );
+  };
+
   render() {
+
     return (
         <View style={styles.container}>
           <View style={styles.inputRow}>
-            <Hoshi
-                style={styles.card1}
-                label={'Enter Task Name'}
-                onChangeText={task => this.setState({task})}
-                value={this.state.task}
-                borderColor={'#2E68FF'}
-                maskColor={'#blue'}
-            />
             <AwesomeButtonBlue
                 width={75}
                 title="addTitle"
-                onPress={() => this.addTask(this.state.task)}>
+                onPress={() => this.addTasks()}>
               Add
             </AwesomeButtonBlue>
           </View>
@@ -87,8 +132,7 @@ class tasks extends React.Component {
               data={this.state.taskList}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
-//console.log("item " +item);
-                return <Text style={styles.tasks}> {item.title}</Text> ;
+                return this.listTasks(item)
               }}
           />
         </View>
