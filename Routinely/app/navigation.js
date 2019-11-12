@@ -5,7 +5,8 @@ import CalendarScreen from './screens/calendar';
 import AlarmScreen from './screens/alarm';
 import AlarmRingingScreen from './screens/alarmRinging';
 import EventScreen from './screens/event';
-import TaskScreen from './screens/tasks';
+import TasksScreen from './screens/tasks';
+import TaskScreen from './screens/task';
 import MenuScreen from './screens/menu';
 import EditEventScreen from './screens/editEvent';
 import EditTaskScreen from './screens/editTask';
@@ -28,16 +29,13 @@ const AppStack = createStackNavigator(
     Calendar: CalendarScreen,
     Event: EventScreen,
     Task: TaskScreen,
+    Tasks: TasksScreen,
     Menu: MenuScreen,
     EditEvent: EditEventScreen,
     EditTask: EditTaskScreen,
     Notes: NotesScreen,
   },
   {
-    initialRouteName: 'Alarm',
-    initialRouteName: 'AlarmRinging',
-    initialRouteName: 'Menu',
-    initialRouteName: 'Notes',
     initialRouteName: 'Calendar',
   },
 );

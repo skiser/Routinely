@@ -35,7 +35,7 @@ class MenuScreen extends Component {
         <View style={styles.row}>
           <View>
             <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Task')}>
+              onPress={() => this.props.navigation.navigate('Tasks')}>
               <Image
                 style={styles.icon}
                 source={require('../components/img/DailyToDoButton.png')}

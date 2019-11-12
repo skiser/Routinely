@@ -11,7 +11,11 @@ import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blu
 import RepeatDiv from '../components/alarm_components/RepeatDiv';
 import {Divider} from 'react-native-elements';
 
-const user = firebase.auth().currentUser;
+const user = [{"email": ''}];
+if(firebase.auth().currentUser !== null){
+  const currentUser = firebase.auth().currentUser;
+  user.email= currentUser.email;
+}
 
 class EditEventScreen extends Component {
 
