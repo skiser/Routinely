@@ -42,17 +42,16 @@ class MenuScreen extends Component {
               />
             </TouchableHighlight>
           </View>
+          <View>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Notes')}>
+              <Image
+                style={styles.icon}
+                source={require('../components/img/NotesButton.png')}
+              />
+            </TouchableHighlight>
+          </View>
         </View>
-        <Button
-          title="Back"
-          color="#90A4AE"
-          onPress={() => this.props.navigation.navigate('Calendar')}
-        />
-        <Button
-          title="Notes"
-          color="#90A4AE"
-          onPress={() => this.props.navigation.navigate('Notes')}
-        />
       </View>
     );
   }
@@ -67,18 +66,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 180,
+    width: 200,
     height: 100,
     marginLeft: 5,
+    marginTop: 5,
   },
   row: {
     flexDirection: 'row',
   },
   MenuButton: {
     backgroundColor: 'red',
-    width: '45%',
-    height: '35%',
-    borderRadius: 10,
+    width: '50%',
+    height: '40%',
+    borderRadius: 14,
     margin: 10,
   },
 });

@@ -478,7 +478,10 @@ class CalendarScreen extends Component {
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Notes')}
               underlayColor={'#ededed'}>
-              <Text>Notes ></Text>
+              <Image
+                style={styles.icon}
+                source={require('../components/img/NotesHome.png')}
+              />
             </TouchableHighlight>
             <Divider />
             <FlatList
@@ -515,8 +518,8 @@ class CalendarScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 10,
+    marginRight: 10,
   },
   greyBackground: {
     backgroundColor: '#ededed',
@@ -582,7 +585,7 @@ const styles = StyleSheet.create({
     //alignItems: 'baseline',
     position: 'absolute',
     bottom: 25,
-    marginLeft: 300,
+    marginLeft: 340,
   },
   plusImage: {
     width: 60,
