@@ -21,7 +21,8 @@ import moment from 'moment';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-import Swipeout from "react-native-swipeout";
+import {Divider} from 'react-native-elements';
+import Swipeout from 'react-native-swipeout';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -35,10 +36,10 @@ const utcDateToString = (momentInUTC: moment): string => {
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 };
 
-const user = [{"email": ''}];
-if(firebase.auth().currentUser !== null){
+const user = [{email: ''}];
+if (firebase.auth().currentUser !== null) {
   const currentUser = firebase.auth().currentUser;
-  user.email= currentUser.email;
+  user.email = currentUser.email;
 }
 
 const eventsRef = firestore()
@@ -240,109 +241,101 @@ class CalendarScreen extends Component {
   listTasks = item => {
     const swipeBtns = [
       {
-        onPress: (item) => {this.editTask(item)},
+        onPress: item => {
+          this.editTask(item);
+        },
         text: 'Edit',
         backgroundColor: '#166EE5',
       },
       {
         onPress: () => {
-          Alert.alert(
-              'Delete?',
-              'Are you sure you want to delete this item?',
-              [
-                {
-                  text: 'No', onPress: () =>
-                    console.log('cancelled')
-
-                },
-                {
-                  text: 'Yes', onPress: () =>
-                    this.deleteTask(item)
-                }
-              ]
-          )
+          Alert.alert('Delete?', 'Are you sure you want to delete this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.deleteTask(item),
+            },
+          ]);
         },
         text: 'Delete',
         backgroundColor: '#F0050F',
-      }
+      },
     ];
 
     return (
-        <Swipeout
-            right = {swipeBtns}
-            autoClose="true"
-            backgroundColor="transparent"
-            sensitivity={100}
-            buttonWidth={50}
-
-            >
-
-          <View style = {styles.item}>
-            <Text style = {styles.itemTitleText}>{item.title}</Text>
-            <Text>{item.note}</Text>
-          </View>
-        </Swipeout>
-    )
+      <Swipeout
+        right={swipeBtns}
+        autoClose="true"
+        backgroundColor="transparent"
+        sensitivity={100}
+        buttonWidth={50}>
+        <View style={styles.item}>
+          <Text style={styles.itemTitleText}>{item.title}</Text>
+          <Text>{item.note}</Text>
+        </View>
+      </Swipeout>
+    );
   };
 
   listEvents = item => {
     const swipeBtns = [
       {
-        onPress: (item) => {this.editTask(item)},
+        onPress: item => {
+          this.editTask(item);
+        },
         text: 'Edit',
         backgroundColor: '#166EE5',
       },
       {
         onPress: () => {
-          Alert.alert(
-              'Delete?',
-              'Are you sure you want to delete this item?',
-              [
-                {
-                  text: 'No', onPress: () =>
-                      console.log('cancelled')
-
-                },
-                {
-                  text: 'Yes', onPress: () =>
-                      this.deleteEvent(item)
-                }
-              ]
-          )
+          Alert.alert('Delete?', 'Are you sure you want to delete this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.deleteEvent(item),
+            },
+          ]);
         },
         text: 'Delete',
         backgroundColor: '#F0050F',
-      }
+      },
     ];
 
     return (
-        <Swipeout
-            right = {swipeBtns}
-            autoClose="true"
-            backgroundColor="transparent"
-            sensitivity={100}
-            buttonWidth={50}
-        >
-          <View style = {styles.item}>
-            <Text style={styles.itemHourText}>{item.hour}</Text>
-            <Text style={styles.itemDurationText}>{item.duration}</Text>
-            <Text style={styles.itemTitleText}> {item.title} </Text>
-            <Text style={styles.itemHourText}> {item.notes}
-              {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
-              {item.chosenDate.toDate().getUTCDate()} -{' '}
-              {item.chosenDate.toDate().getUTCFullYear()}{' '}
-              {item.chosenDate.toDate().getHours() > 12
-                ? item.chosenDate.toDate().getHours() - 12
-                : item.chosenDate.toDate().getHours()}
-              :
-              {item.chosenDate.toDate().getMinutes() < 10
-                ? '0' + item.chosenDate.toDate().getMinutes()
-                : item.chosenDate.toDate().getMinutes()}{' '}
-              {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
-            </Text>
-          </View>
-        </Swipeout>
-    )
+      <Swipeout
+        right={swipeBtns}
+        autoClose="true"
+        backgroundColor="transparent"
+        sensitivity={100}
+        buttonWidth={50}>
+        <View style={styles.item}>
+          <Text style={styles.itemHourText}>{item.hour}</Text>
+          <Text style={styles.itemDurationText}>{item.duration}</Text>
+          <Text style={styles.itemTitleText}> {item.title} </Text>
+          <Text style={styles.itemHourText}>
+            {' '}
+            {item.notes}
+            {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
+            {item.chosenDate.toDate().getUTCDate()} -{' '}
+            {item.chosenDate.toDate().getUTCFullYear()}{' '}
+            {item.chosenDate.toDate().getHours() > 12
+              ? item.chosenDate.toDate().getHours() - 12
+              : item.chosenDate.toDate().getHours()}
+            :
+            {item.chosenDate.toDate().getMinutes() < 10
+              ? '0' + item.chosenDate.toDate().getMinutes()
+              : item.chosenDate.toDate().getMinutes()}{' '}
+            {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
+          </Text>
+        </View>
+      </Swipeout>
+    );
   };
 
   deleteEvent = item => {
@@ -480,24 +473,30 @@ class CalendarScreen extends Component {
           calendarStyle={styles.calendar}
           headerStyle={styles.calendar} // for horizontal only
         />
-        <FlatList
-          data={this.state.eventList}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              this.listEvents(item)
-            );
-          }}
-        />
-        <FlatList
-            data={this.state.taskList}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => {
-              return (
-                  this.listTasks(item)
-              );
-            }}
-        />
+        <View style={styles.greyBackground}>
+          <View style={styles.container}>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Notes')}
+              underlayColor={'#ededed'}>
+              <Text>Notes ></Text>
+            </TouchableHighlight>
+            <Divider />
+            <FlatList
+              data={this.state.eventList}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => {
+                return this.listEvents(item);
+              }}
+            />
+            <FlatList
+              data={this.state.taskList}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => {
+                return this.listTasks(item);
+              }}
+            />
+          </View>
+        </View>
         <View style={styles.plus}>
           <View>
             <TouchableHighlight
@@ -515,22 +514,12 @@ class CalendarScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  plus: {
-    color: 'white',
-    alignItems: 'baseline',
-    marginLeft: 300,
-    marginBottom: 25,
-  },
   container: {
-    paddingTop: 10,
-    paddingLeft: 40,
-    paddingRight: 20,
-    paddingBottom: 5,
-    alignItems: 'center',
+    marginLeft: 15,
+    marginRight: 15,
   },
-  plusImage: {
-    width: 50,
-    height: 50,
+  greyBackground: {
+    backgroundColor: '#ededed',
   },
   calendar: {
     paddingLeft: 20,
@@ -539,6 +528,17 @@ const styles = StyleSheet.create({
   section: {
     backgroundColor: '#f0f4f7',
     color: '#79838a',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 25,
+    top: 100,
+    flex: 1,
+  },
+  noteSection: {
+    height: 50,
+    fontSize: 12,
+    backgroundColor: 'white',
   },
   item: {
     padding: 20,
@@ -576,6 +576,17 @@ const styles = StyleSheet.create({
   emptyItemText: {
     color: '#79838a',
     fontSize: 14,
+  },
+  plus: {
+    color: 'white',
+    //alignItems: 'baseline',
+    position: 'absolute',
+    bottom: 25,
+    marginLeft: 300,
+  },
+  plusImage: {
+    width: 60,
+    height: 60,
   },
 });
 

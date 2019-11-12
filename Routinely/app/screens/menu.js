@@ -17,7 +17,7 @@ class MenuScreen extends Component {
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Alarm')}>
               <Image
-                style={styles.alarm}
+                style={styles.icon}
                 source={require('../components/img/AlarmButton.png')}
               />
             </TouchableHighlight>
@@ -26,7 +26,7 @@ class MenuScreen extends Component {
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Event')}>
               <Image
-                style={styles.alarm}
+                style={styles.icon}
                 source={require('../components/img/EventButton.png')}
               />
             </TouchableHighlight>
@@ -37,24 +37,21 @@ class MenuScreen extends Component {
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate('Tasks')}>
               <Image
-                style={styles.alarm}
-                source={require('../components/img/ToDoButton.png')}
-              />
-            </TouchableHighlight>
-          </View>
-          <View>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Alarm')}>
-              <Image
-                style={styles.alarm}
-                source={require('../components/img/AlarmButton.png')}
+                style={styles.icon}
+                source={require('../components/img/DailyToDoButton.png')}
               />
             </TouchableHighlight>
           </View>
         </View>
         <Button
           title="Back"
+          color="#90A4AE"
           onPress={() => this.props.navigation.navigate('Calendar')}
+        />
+        <Button
+          title="Notes"
+          color="#90A4AE"
+          onPress={() => this.props.navigation.navigate('Notes')}
         />
       </View>
     );
@@ -69,12 +66,20 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     alignItems: 'center',
   },
-  alarm: {
-    marginRight: 4,
-    marginLeft: 4,
+  icon: {
+    width: 180,
+    height: 100,
+    marginLeft: 5,
   },
   row: {
     flexDirection: 'row',
+  },
+  MenuButton: {
+    backgroundColor: 'red',
+    width: '45%',
+    height: '35%',
+    borderRadius: 10,
+    margin: 10,
   },
 });
 export default MenuScreen;

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Button, Text, Image} from 'react-native';
 import DisplayTime from '../components/alarmRinging_components/DisplayTime';
+import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/c137';
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
 
 class AlarmRingingScreen extends Component {
   constructor(props) {
@@ -115,14 +117,20 @@ class AlarmRingingScreen extends Component {
             </Text>
           </View>
         </View>
-        <Button
-          title="Calendar"
-          onPress={() => this.props.navigation.navigate('Calendar')}
-        />
-        <Button
-          title="Logout"
-          onPress={() => this.props.navigation.navigate('Login')}
-        />
+        <AwesomeButtonRick
+          width={200}
+          title="DisableAlarm"
+          style={styles.TurnOff}
+          onPress={() => this.props.navigation.navigate('Calendar')}>
+          Turn Off
+        </AwesomeButtonRick>
+        <AwesomeButtonBlue
+          width={200}
+          title="DisableAlarm"
+          style={styles.TurnOff}
+          onPress={() => this.props.navigation.navigate('Alarm')}>
+          Snooze
+        </AwesomeButtonBlue>
       </View>
     );
   }
@@ -164,6 +172,12 @@ const styles = StyleSheet.create({
   img: {
     width: 80,
     height: 80,
+  },
+  TurnOff: {
+    display: 'flex',
+    alignContent: 'center',
+    marginLeft: 80,
+    marginTop: 10,
   },
 });
 
