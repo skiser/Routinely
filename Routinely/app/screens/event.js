@@ -1,5 +1,14 @@
 import React, {Component, useState} from 'react';
-import {StyleSheet, Text, View, Button, TextInput, Platform, UIManager, DatePickerIOS,} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Platform,
+  UIManager,
+  DatePickerIOS,
+} from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
 import DayPicker from '../components/alarm_components/DayPicker';
@@ -17,10 +26,10 @@ const utcDateToString = (momentInUTC: moment): string => {
   return time;
 };
 
-const user = [{"email": ''}];
-if(firebase.auth().currentUser !== null){
+const user = [{email: ''}];
+if (firebase.auth().currentUser !== null) {
   const currentUser = firebase.auth().currentUser;
-  user.email= currentUser.email;
+  user.email = currentUser.email;
 }
 
 class EventScreen extends Component {
@@ -42,28 +51,33 @@ class EventScreen extends Component {
     //this.setDate = this.setDate.bind(this);
   }
 
-  onButtonPress = (day) => {
+  onButtonPress = day => {
     this.setState({
-      day: true
+      day: true,
     });
-  }
+  };
 
-  addEvent = async (title) => {
+  addEvent = async title => {
     //const title = this.state.title.toString();
-    const addEvent = firestore().collection('users').doc(user.email).collection('events');
+    const addEvent = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('events');
     try {
-      addEvent.doc().set({
-        title: this.state.title,
-        notes: this.state.notes,
-        chosenDate: this.state.chosenDate,
-        Sun: this.state.Sun,
-        Mon: this.state.Mon,
-        Tue: this.state.Tue,
-        Wed: this.state.Wed,
-        Thu: this.state.Thu,
-        Fri: this.state.Fri,
-        Sat: this.state.Sat,
-      })
+      addEvent
+        .doc()
+        .set({
+          title: this.state.title,
+          notes: this.state.notes,
+          chosenDate: this.state.chosenDate,
+          Sun: this.state.Sun,
+          Mon: this.state.Mon,
+          Tue: this.state.Tue,
+          Wed: this.state.Wed,
+          Thu: this.state.Thu,
+          Fri: this.state.Fri,
+          Sat: this.state.Sat,
+        })
         .then(ref => {
           console.log('Added doc w ID: ', ref.id);
         });
@@ -138,10 +152,9 @@ class EventScreen extends Component {
           />
         </View>
         <AwesomeButtonBlue
-          width={350}
+          width={395}
           title="addEvent"
           onPress={() => this.addEvent(this.state.title)}>
-          
           Add Event
         </AwesomeButtonBlue>
       </View>
@@ -199,11 +212,11 @@ const styles = StyleSheet.create({
   },
   card1: {
     paddingVertical: 16,
-    width: 350,
+    width: 400,
   },
   submit: {
     paddingVertical: 16,
-    width: 350,
+    width: 400,
   },
 });
 export default EventScreen;

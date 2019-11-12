@@ -149,7 +149,7 @@ class AlarmScreen extends Component {
         <Divider />
         <ColorPicker />
         <AwesomeButtonBlue
-          width={350}
+          width={395}
           title="addAlarm"
           onPress={() => this.addAlarm(this.state.title)}>
           Add Alarm
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   },
   card1: {
     paddingVertical: 16,
-    width: 350,
+    width: 400,
   },
   submit: {
     paddingVertical: 16,
