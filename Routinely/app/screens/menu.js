@@ -48,6 +48,11 @@ class MenuScreen extends Component {
           color="#90A4AE"
           onPress={() => this.props.navigation.navigate('Calendar')}
         />
+        <Button
+          title="Notes"
+          color="#90A4AE"
+          onPress={() => this.props.navigation.navigate('Notes')}
+        />
       </View>
     );
   }

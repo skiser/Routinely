@@ -9,6 +9,7 @@ import TaskScreen from './screens/tasks';
 import MenuScreen from './screens/menu';
 import EditEventScreen from './screens/editEvent';
 import EditTaskScreen from './screens/editTask';
+import NotesScreen from './screens/notes';
 
 const AuthStack = createStackNavigator(
   {
@@ -30,12 +31,14 @@ const AppStack = createStackNavigator(
     Menu: MenuScreen,
     EditEvent: EditEventScreen,
     EditTask: EditTaskScreen,
+    Notes: NotesScreen,
   },
   {
     initialRouteName: 'Alarm',
     initialRouteName: 'AlarmRinging',
-    initialRouteName: 'Calendar',
     initialRouteName: 'Menu',
+    initialRouteName: 'Notes',
+    initialRouteName: 'Calendar',
   },
 );
 
