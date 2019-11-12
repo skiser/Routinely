@@ -16,11 +16,12 @@ import {
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 import {HeaderTitle} from 'react-navigation-stack';
-const user = firebase.auth().currentUser;
-const ref = firestore()
-  .collection('users')
-  .doc(user.email)
-  .collection('note');
+
+const user = [{email: ''}];
+if (firebase.auth().currentUser !== null) {
+  const currentUser = firebase.auth().currentUser;
+  user.email = currentUser.email;
+}
 
 class notes extends React.Component {
   state = {
