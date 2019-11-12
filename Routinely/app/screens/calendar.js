@@ -21,6 +21,7 @@ import moment from 'moment';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
+import Swipeout from "react-native-swipeout";
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -34,7 +35,11 @@ const utcDateToString = (momentInUTC: moment): string => {
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
 };
 
-const user = firebase.auth().currentUser;
+const user = [{"email": ''}];
+if(firebase.auth().currentUser !== null){
+  const currentUser = firebase.auth().currentUser;
+  user.email= currentUser.email;
+}
 
 const eventsRef = firestore()
   .collection('users')
@@ -90,6 +95,7 @@ class CalendarScreen extends Component {
   getEvents = async eventRetrieved => {
     try {
       eventsRef.onSnapshot(querySnapshot => {
+        this.setState({eventList: []});
         querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
           //console.log("this is the event " +event.get('chosenDate').toDate());
@@ -104,6 +110,7 @@ class CalendarScreen extends Component {
   getTasks = async taskRetrieved => {
     try {
       tasksRef.onSnapshot(querySnapshot => {
+        this.setState({taskList: []});
         querySnapshot.forEach(tasks => {
           this.state.taskList.push(tasks.data());
           //console.log("this is the event " +event.get('chosenDate').toDate());
@@ -228,6 +235,114 @@ class CalendarScreen extends Component {
       });
     //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
     this.props.navigation.navigate('EditTask', {task: item});
+  };
+
+  listTasks = item => {
+    const swipeBtns = [
+      {
+        onPress: (item) => {this.editTask(item)},
+        text: 'Edit',
+        backgroundColor: '#166EE5',
+      },
+      {
+        onPress: () => {
+          Alert.alert(
+              'Delete?',
+              'Are you sure you want to delete this item?',
+              [
+                {
+                  text: 'No', onPress: () =>
+                    console.log('cancelled')
+
+                },
+                {
+                  text: 'Yes', onPress: () =>
+                    this.deleteTask(item)
+                }
+              ]
+          )
+        },
+        text: 'Delete',
+        backgroundColor: '#F0050F',
+      }
+    ];
+
+    return (
+        <Swipeout
+            right = {swipeBtns}
+            autoClose="true"
+            backgroundColor="transparent"
+            sensitivity={100}
+            buttonWidth={50}
+
+            >
+
+          <View style = {styles.item}>
+            <Text style = {styles.itemTitleText}>{item.title}</Text>
+            <Text>{item.note}</Text>
+          </View>
+        </Swipeout>
+    )
+  };
+
+  listEvents = item => {
+    const swipeBtns = [
+      {
+        onPress: (item) => {this.editTask(item)},
+        text: 'Edit',
+        backgroundColor: '#166EE5',
+      },
+      {
+        onPress: () => {
+          Alert.alert(
+              'Delete?',
+              'Are you sure you want to delete this item?',
+              [
+                {
+                  text: 'No', onPress: () =>
+                      console.log('cancelled')
+
+                },
+                {
+                  text: 'Yes', onPress: () =>
+                      this.deleteEvent(item)
+                }
+              ]
+          )
+        },
+        text: 'Delete',
+        backgroundColor: '#F0050F',
+      }
+    ];
+
+    return (
+        <Swipeout
+            right = {swipeBtns}
+            autoClose="true"
+            backgroundColor="transparent"
+            sensitivity={100}
+            buttonWidth={50}
+        >
+          <View style = {styles.item}>
+            <Text style={styles.itemHourText}>{item.hour}</Text>
+            <Text style={styles.itemDurationText}>{item.duration}</Text>
+            <Text style={styles.itemTitleText}> {item.title} </Text>
+            <Text style={styles.itemHourText}> {item.notes}
+              {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
+              {item.chosenDate.toDate().getUTCDate()} -{' '}
+              {item.chosenDate.toDate().getUTCFullYear()}{' '}
+              {item.chosenDate.toDate().getHours() > 12
+                ? item.chosenDate.toDate().getHours() - 12
+                : item.chosenDate.toDate().getHours()}
+              :
+              {item.chosenDate.toDate().getMinutes() < 10
+                ? '0' + item.chosenDate.toDate().getMinutes()
+                : item.chosenDate.toDate().getMinutes()}{' '}
+              {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
+            </Text>
+          </View>
+        </Swipeout>
+    )
   };
 
   deleteEvent = item => {
@@ -370,35 +485,18 @@ class CalendarScreen extends Component {
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity
-                onPress={() =>
-                  this.itemPressed(item.title + '   ' + item.notes)
-                }
-                style={styles.item}>
-                <View>
-                  <Text style={styles.itemHourText}>{item.hour}</Text>
-                  <Text style={styles.itemDurationText}>{item.duration}</Text>
-                </View>
-                <Text style={styles.itemTitleText}>{item.title} </Text>
-                <Text style={styles.itemHourText}>{item.notes} </Text>
-                <Text style={styles.itemHourText}>
-                  {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
-                  {item.chosenDate.toDate().getUTCDate()} -{' '}
-                  {item.chosenDate.toDate().getUTCFullYear()}{' '}
-                </Text>
-                <Text style={styles.itemHourText}>
-                  {item.chosenDate.toDate().getHours() > 12
-                    ? item.chosenDate.toDate().getHours() - 12
-                    : item.chosenDate.toDate().getHours()}
-                  :
-                  {item.chosenDate.toDate().getMinutes() < 10
-                    ? '0' + item.chosenDate.toDate().getMinutes()
-                    : item.chosenDate.toDate().getMinutes()}{' '}
-                  {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
-                </Text>
-              </TouchableOpacity>
+              this.listEvents(item)
             );
           }}
+        />
+        <FlatList
+            data={this.state.taskList}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => {
+              return (
+                  this.listTasks(item)
+              );
+            }}
         />
         <View style={styles.plus}>
           <View>

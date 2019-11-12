@@ -11,12 +11,16 @@ import {
   FlatList,
   View,
   StyleSheet,
-  ListRenderItem, TouchableHighlight, Image,
+  ListRenderItem, TouchableHighlight, Image, Alert,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 import Swipeout from 'react-native-swipeout'
 
-const user = firebase.auth().currentUser;
+const user = [{"email": ''}];
+if(firebase.auth().currentUser !== null){
+  const currentUser = firebase.auth().currentUser;
+  user.email= currentUser.email;
+}
 
 const ref = firestore()
     .collection('users')
@@ -34,7 +38,6 @@ class tasks extends React.Component {
   getTasks = async taskRetrieved => {
     try {
       ref.onSnapshot(querySnapshot => {
-        console.log(querySnapshot);
         this.setState({taskList: []});
         querySnapshot.forEach(tasks => {
           console.log("data: " +tasks.data());
@@ -96,7 +99,23 @@ class tasks extends React.Component {
         backgroundColor: '#166EE5',
       },
       {
-        onPress: () => {this.deleteTask(item)},
+        onPress: () => {
+          Alert.alert(
+              'Delete?',
+              'Are you sure you want to delete this item?',
+              [
+                {
+                  text: 'No', onPress: () =>
+                      console.log('cancelled')
+
+                },
+                {
+                  text: 'Yes', onPress: () =>
+                      this.deleteTask(item)
+                }
+              ]
+          )
+        },
         text: 'Delete',
         backgroundColor: '#F0050F',
       }
