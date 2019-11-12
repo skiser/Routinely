@@ -13,7 +13,11 @@ import {
   ListRenderItem,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
-const user = firebase.auth().currentUser;
+const user = [{"email": ''}];
+if(firebase.auth().currentUser !== null){
+  const currentUser = firebase.auth().currentUser;
+  user.email= currentUser.email;
+}
 
 const ref = firestore()
     .collection('users')

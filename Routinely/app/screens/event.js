@@ -17,7 +17,11 @@ const utcDateToString = (momentInUTC: moment): string => {
   return time;
 };
 
-const user = firebase.auth().currentUser;
+const user = [{"email": ''}];
+if(firebase.auth().currentUser !== null){
+  const currentUser = firebase.auth().currentUser;
+  user.email= currentUser.email;
+}
 
 class EventScreen extends Component {
   constructor(props) {
