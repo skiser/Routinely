@@ -25,7 +25,6 @@ import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 
-
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
 const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -39,7 +38,21 @@ const dayNames = [
   'Wednesday',
   'Thursday',
   'Friday',
-  'Saturday'
+  'Saturday',
+];
+const monthNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 const fastDate = getPastDate(3);
@@ -115,9 +128,13 @@ class CalendarScreen extends Component {
       wholeList: [{title: date, data: []}],
     };
   }
-  sortEvents =  (date1, date2) =>{
-    if (date1.chosenDate.toDate() > date2.chosenDate.toDate()) return -1;
-    if (date1.chosenDate.toDate() < date2.chosenDate.toDate()) return 1;
+  sortEvents = (date1, date2) => {
+    if (date1.chosenDate.toDate() > date2.chosenDate.toDate()) {
+      return -1;
+    }
+    if (date1.chosenDate.toDate() < date2.chosenDate.toDate()) {
+      return 1;
+    }
     return 0;
   };
 
@@ -125,40 +142,83 @@ class CalendarScreen extends Component {
     try {
       eventsRef.onSnapshot(querySnapshot => {
         this.setState({eventList: []});
-        this.setState({wholeList:[]});
+        this.setState({wholeList: []});
         querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
-            });
-        this.setState({wholeList:[]});
+        });
+        this.setState({wholeList: []});
         this.state.eventList.forEach(event => {
-          if(this.state.wholeList.length > this.state.eventList.length){
+          if (this.state.wholeList.length > this.state.eventList.length) {
             return;
-         }
-          else if(this.state.wholeList.length === 0 ) {
+          } else if (this.state.wholeList.length === 0) {
             const date = event.chosenDate.toDate();
-            console.log("date: "+ date);
-            this.state.wholeList.push({title: event.chosenDate.toDate().toDateString(), data: [event]});
-            console.log("title: " + event.chosenDate.toDate().toDateString());
-          }
-          else if(this.state.wholeList.every((item) => item.title !== event.chosenDate.toDate().toDateString())){
-            console.log("added");
-            this.state.wholeList.push({title: event.chosenDate.toDate().toDateString(), data: [event]});
-            console.log("title: " + event.chosenDate.toDate().toDateString());
-          }
-          else {
+            console.log('date: ' + date);
+            this.state.wholeList.push({
+              title: event.chosenDate.toDate().toDateString(),
+              data: [event],
+            });
+            console.log('title: ' + event.chosenDate.toDate().toDateString());
+          } else if (
+            this.state.wholeList.every(
+              item => item.title !== event.chosenDate.toDate().toDateString(),
+            )
+          ) {
+            console.log('added');
+            this.state.wholeList.push({
+              title: event.chosenDate.toDate().toDateString(),
+              data: [event],
+            });
+            console.log('title: ' + event.chosenDate.toDate().toDateString());
+          } else {
             this.state.wholeList.forEach(item => {
-              if(item.title === event.chosenDate.toDate().toDateString()){
-                console.log("title: " +item.title + ", " + "event: " +item.title);
-               item.data.push(event)
+              if (item.title === event.chosenDate.toDate().toDateString()) {
+                console.log(
+                  'title: ' + item.title + ', ' + 'event: ' + item.title,
+                );
+                item.data.push(event);
               }
             });
           }
-         });
+        });
+        /* this.state.alarmList.forEach(alarm => {
+          if (this.state.wholeList.length > this.state.alarmList.length) {
+            return;
+          } else if (this.state.wholeList.length === 0) {
+            const date = alarm.chosenDate.toDate();
+            console.log('date: ' + date);
+            this.state.wholeList.push({
+              title: alarm.chosenDate.toDate().toDateString(),
+              data: [alarm],
+            });
+            console.log('title: ' + alarm.chosenDate.toDate().toDateString());
+          } else if (
+            this.state.wholeList.every(
+              item => item.title !== alarm.chosenDate.toDate().toDateString(),
+            )
+          ) {
+            console.log('added');
+            this.state.wholeList.push({
+              title: alarm.chosenDate.toDate().toDateString(),
+              data: [alarm],
+            });
+            console.log('title: ' + alarm.chosenDate.toDate().toDateString());
+          } else {
+            this.state.wholeList.forEach(item => {
+              if (item.title === alarm.chosenDate.toDate().toDateString()) {
+                console.log(
+                  'title: ' + item.title + ', ' + 'event: ' + item.title,
+                );
+                item.data.push(alarm);
+              }
+            });
+          }
+        });
+        */
         this.state.wholeList.forEach(item => {
-          //console.log(item);
+          console.log(item);
         });
 
-          console.log("whole: "+ this.state.wholeList);
+        console.log('whole: ' + this.state.wholeList);
         this.state.eventList.sort(this.sortEvents);
         eventRetrieved(this.state.eventList);
       });
@@ -167,9 +227,13 @@ class CalendarScreen extends Component {
     }
   };
 
-  sortTasks =  (date1, date2) =>{
-    if (date1.createdAt.toDate() > date2.createdAt.toDate()) return -1;
-    if (date1.createdAt.toDate() < date2.createdAt.toDate()) return 1;
+  sortTasks = (date1, date2) => {
+    if (date1.createdAt.toDate() > date2.createdAt.toDate()) {
+      return -1;
+    }
+    if (date1.createdAt.toDate() < date2.createdAt.toDate()) {
+      return 1;
+    }
     return 0;
   };
 
@@ -189,7 +253,7 @@ class CalendarScreen extends Component {
     }
   };
 
-  getAlarms = async alarmRetrieved =>{
+  getAlarms = async alarmRetrieved => {
     try {
       alarmsRef.onSnapshot(querySnapshot => {
         this.setState({alarmList: []});
@@ -198,13 +262,12 @@ class CalendarScreen extends Component {
           //console.log("this is the event " +event.get('chosenDate').toDate());
         });
         alarmRetrieved(this.state.alarmList);
-        console.log("GETTING ALARMS");
+        console.log('GETTING ALARMS');
       });
     } catch (error) {
       console.log('problem retrieving tasks');
     }
   };
-
 
   onEventsRetrieved = eventList => {
     //console.log("event list:" +eventList);
@@ -230,8 +293,7 @@ class CalendarScreen extends Component {
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
-    this.getAlarms(this.onAlarmsRetrieved);    
-
+    this.getAlarms(this.onAlarmsRetrieved);
   }
   buttonPressed(id) {
     Alert.alert(id);
@@ -241,10 +303,10 @@ class CalendarScreen extends Component {
     Alert.alert(id);
   }
 
-  getTodays(){
+  getTodays() {
     const todayevent = this.state.eventList;
-    console.log("today: "+todayfull);
-    
+    console.log('today: ' + todayfull);
+
     todayevent.forEach(event => {
       const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
       const day = event.chosenDate.toDate().getUTCDate();
@@ -252,18 +314,17 @@ class CalendarScreen extends Component {
 
       const markdate = year + '-' + month + '-' + day;
       console.log(markdate);
-      if (markdate == todayfull){
+      if (markdate == todayfull) {
         this.state.todayevent.push(event);
-        console.log("added to today");
+        console.log('added to today');
         //this.state.eventList.pop(event);
         //console.log("removed from original");
       }
-      console.log("before"+this.state.eventList);
+      console.log('before' + this.state.eventList);
       //const groupedList = this.state.eventList.groupBy(event.chosenDate);
       //console.log("after"+groupedList);
-    })
+    });
   }
-
 
   renderEmptyItem() {
     return (
@@ -336,7 +397,7 @@ class CalendarScreen extends Component {
 
   edittingEvent = item => {
     const index = this.state.eventList.indexOf(item);
-    console.log('event:' +item);
+    console.log('event:' + item);
     this.state.eventList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -399,7 +460,7 @@ class CalendarScreen extends Component {
   listTasks = item => {
     const swipeBtns = [
       {
-        onPress:  () => {
+        onPress: () => {
           Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
             {
               text: 'No',
@@ -450,7 +511,7 @@ class CalendarScreen extends Component {
   listEvents = item => {
     const swipeBtns = [
       {
-        onPress:  () => {
+        onPress: () => {
           Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
             {
               text: 'No',
@@ -493,13 +554,8 @@ class CalendarScreen extends Component {
           <Text style={styles.itemHourText}>{item.hour}</Text>
           <Text style={styles.itemDurationText}>{item.duration}</Text>
           <Text style={styles.itemTitleText}> {item.title} </Text>
+          <Text style={{marginLeft: 5}}>{item.notes} </Text>
           <Text style={styles.itemHourText}>
-            {' '}
-            {item.notes}
-            {' '}
-            {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
-            {item.chosenDate.toDate().getUTCDate()} -{' '}
-            {item.chosenDate.toDate().getUTCFullYear()}{' '}
             {item.chosenDate.toDate().getHours() > 12
               ? item.chosenDate.toDate().getHours() - 12
               : item.chosenDate.toDate().getHours()}
@@ -517,7 +573,7 @@ class CalendarScreen extends Component {
   listWhole = item => {
     const swipeBtns = [
       {
-        onPress:  () => {
+        onPress: () => {
           Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
             {
               text: 'No',
@@ -551,58 +607,56 @@ class CalendarScreen extends Component {
     ];
 
     return (
-        <Swipeout
-            right={swipeBtns}
-            autoClose="true"
-            backgroundColor="transparent"
-            sensitivity={100}
-            buttonWidth={50}>
-          <View style={styles.item}>
-            <Text style={styles.itemHourText}>{item.hour}</Text>
-            <Text style={styles.itemDurationText}>{item.duration}</Text>
-            <Text style={styles.itemTitleText}> {item.title} </Text>
-            <Text style={styles.itemHourText}>
-              {' '}
-              {item.notes}
-              {' '}
-              {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
-              {item.chosenDate.toDate().getUTCDate()} -{' '}
-              {item.chosenDate.toDate().getUTCFullYear()}{' '}
-              {item.chosenDate.toDate().getHours() > 12
-                  ? item.chosenDate.toDate().getHours() - 12
-                  : item.chosenDate.toDate().getHours()}
-              :
-              {item.chosenDate.toDate().getMinutes() < 10
-                  ? '0' + item.chosenDate.toDate().getMinutes()
-                  : item.chosenDate.toDate().getMinutes()}{' '}
-              {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
-            </Text>
-          </View>
-        </Swipeout>
+      <Swipeout
+        right={swipeBtns}
+        autoClose="true"
+        backgroundColor="transparent"
+        sensitivity={100}
+        buttonWidth={50}>
+        <View style={styles.item}>
+          <Text style={styles.itemHourText}>{item.hour}</Text>
+          <Text style={styles.itemDurationText}>{item.duration}</Text>
+          <Text style={styles.itemTitleText}> {item.title} </Text>
+          <Text style={{marginLeft: 5}}>{item.notes} </Text>
+          <Text style={styles.itemHourText}>
+            {item.chosenDate.toDate().getHours() > 12
+              ? item.chosenDate.toDate().getHours() - 12
+              : item.chosenDate.toDate().getHours()}
+            :
+            {item.chosenDate.toDate().getMinutes() < 10
+              ? '0' + item.chosenDate.toDate().getMinutes()
+              : item.chosenDate.toDate().getMinutes()}{' '}
+            {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
+          </Text>
+        </View>
+      </Swipeout>
     );
   };
 
   listDay = item => {
     const date = new Date(item.title);
-    return(
-        <View>
-          <Text style = {styles.header}> {dayNames[date.getDay()]} </Text>
-          <Text>{date.getDate()} </Text>
-          <FlatList
-              data={item.data}
-              //keyExtractor={item => item.id}
-              renderItem={({item}) => {
-                return this.listWhole(item)
-              }}
-          />
-        </View>
+    return (
+      <View>
+        <Text style={{marginBottom: 5, marginTop: 2}}>
+          {monthNames[date.getMonth()]} {date.getDate()}-{' '}
+          {dayNames[date.getDay()]}
+        </Text>
+        <FlatList
+          style={{borderRadius: 10}}
+          data={item.data}
+          //keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return this.listWhole(item);
+          }}
+        />
+      </View>
     );
   };
 
   listAlarms = item => {
     const swipeBtns = [
       {
-        onPress:  () => {
+        onPress: () => {
           Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
             {
               text: 'No',
@@ -644,12 +698,8 @@ class CalendarScreen extends Component {
         buttonWidth={50}>
         <View style={styles.item}>
           <Text style={styles.itemTitleText}> {item.title} </Text>
+          <Text style={{marginLeft: 5}}>{item.notes} </Text>
           <Text style={styles.itemHourText}>
-            {' '}
-            {item.notes}
-            {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
-            {item.chosenDate.toDate().getUTCDate()} -{' '}
-            {item.chosenDate.toDate().getUTCFullYear()}{' '}
             {item.chosenDate.toDate().getHours() > 12
               ? item.chosenDate.toDate().getHours() - 12
               : item.chosenDate.toDate().getHours()}
@@ -763,15 +813,14 @@ class CalendarScreen extends Component {
     console.log('success');
   };
 
-  showWeek = (item) => {
+  showWeek = item => {
     let today = new Date(Date.now()).getDay();
-    this.state.week=[];
-    for(let i = 0; i<dayNames.length ; i++){
-      if(today > 6) {
+    this.state.week = [];
+    for (let i = 0; i < dayNames.length; i++) {
+      if (today > 6) {
         today -= 7;
         this.state.week.push(dayNames[today]);
-      }
-      else {
+      } else {
         this.state.week.push(dayNames[today]);
       }
       today++;
@@ -780,9 +829,9 @@ class CalendarScreen extends Component {
     console.log(this.state.week);
 
     return (
-        <View>
+      <View>
         <Text> {this.state.week[index]} </Text>
-        </View>
+      </View>
     );
   };
 
@@ -855,16 +904,16 @@ class CalendarScreen extends Component {
           headerStyle={styles.calendar} // for horizontal only
         />
         <View style={styles.greyBackground}>
-          < View style = {styles.container}>
-            <Notes/>
+          <View style={styles.container}>
+            <Notes />
             <FlatList
               data={this.state.wholeList}
+              style={{borderRadius: 10}}
               renderItem={({item}) => {
-              //console.log("what: "+ item.title);
-                return (this.listDay(item))
-                }}
-                />
-
+                //console.log("what: "+ item.title);
+                return this.listDay(item);
+              }}
+            />
 
             {/*    <FlatList*/}
             {/*  data={this.state.eventList}*/}
@@ -876,6 +925,7 @@ class CalendarScreen extends Component {
             {/*/>*/}
             <FlatList
               data={this.state.taskList}
+              style={{borderRadius: 10}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listTasks(item);
@@ -884,6 +934,7 @@ class CalendarScreen extends Component {
 
             <FlatList
               data={this.state.alarmList}
+              style={{borderRadius: 10}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listAlarms(item);
@@ -984,8 +1035,8 @@ const styles = StyleSheet.create({
     height: 60,
   },
   header: {
-    fontSize:25
-  }
+    fontSize: 25,
+  },
 });
 
 export default CalendarScreen;
