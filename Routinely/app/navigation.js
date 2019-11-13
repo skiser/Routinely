@@ -11,6 +11,7 @@ import MenuScreen from './screens/menu';
 import EditEventScreen from './screens/editEvent';
 import NotesScreen from './screens/notes';
 import WeatherScreen from './screens/weather';
+import NoteScreen from './screens/note';
 
 const AuthStack = createStackNavigator(
   {
@@ -33,6 +34,7 @@ const AppStack = createStackNavigator(
     Menu: MenuScreen,
     EditEvent: EditEventScreen,
     Notes: NotesScreen,
+    Note: NoteScreen,
     Weather: WeatherScreen,
   },
   {

@@ -48,6 +48,7 @@ class notes extends React.Component {
   };
 
   addNote(){
+    console.log('here');
     this.props.navigation.navigate('Note');
   }
   getNotes = noteRetrieved => {
