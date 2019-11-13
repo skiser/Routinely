@@ -45,6 +45,7 @@ class EditEventScreen extends Component {
 
   editEvent = async (event) => {
     //const title = this.state.title.toString();
+    //const idEdit = this.props.navigation.getParam('id');
     const editEvent = firestore().collection('users').doc(user.email).collection('events');
     console.log("title: "+ this.state.title+", notes: "+ this.state.notes);
     try {
@@ -73,7 +74,7 @@ class EditEventScreen extends Component {
   //console.log(this.props.event)
   render() {
     const event = this.props.navigation.getParam('event');
-    console.log(event);
+    //console.log(event);
     return (
       <View style={styles.container}>
         <View style={styles.card1}>
