@@ -180,7 +180,6 @@ class CalendarScreen extends Component {
     this.getAlarms(this.onAlarmsRetrieved);    
 
   }
-  //TODO: need to figure out how to properly do this
   buttonPressed(id) {
     Alert.alert(id);
   }
@@ -189,7 +188,7 @@ class CalendarScreen extends Component {
     Alert.alert(id);
   }
 
-  getTodaysEvents(){
+  getTodays(){
     const todayevent = this.state.eventList;
     console.log("today: "+todayfull);
     
@@ -284,7 +283,7 @@ class CalendarScreen extends Component {
 
   edittingEvent = item => {
     const index = this.state.eventList.indexOf(item);
-    console.log('item:' + item);
+    console.log('event:' +item);
     this.state.eventList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -347,8 +346,17 @@ class CalendarScreen extends Component {
   listTasks = item => {
     const swipeBtns = [
       {
-        onPress: item => {
-          this.editTask(item);
+        onPress:  () => {
+          Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.edittingTask(item),
+            },
+          ]);
         },
         text: 'Edit',
         backgroundColor: '#166EE5',
@@ -389,8 +397,17 @@ class CalendarScreen extends Component {
   listEvents = item => {
     const swipeBtns = [
       {
-        onPress: item => {
-          this.editTask(item);
+        onPress:  () => {
+          Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.edittingEvent(item),
+            },
+          ]);
         },
         text: 'Edit',
         backgroundColor: '#166EE5',
@@ -447,8 +464,17 @@ class CalendarScreen extends Component {
   listAlarms = item => {
     const swipeBtns = [
       {
-        onPress: item => {
-          this.edittingAlarm(item);
+        onPress:  () => {
+          Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.edittingAlarm(item),
+            },
+          ]);
         },
         text: 'Edit',
         backgroundColor: '#166EE5',
@@ -462,7 +488,7 @@ class CalendarScreen extends Component {
             },
             {
               text: 'Yes',
-              onPress: () => this.deleteAlarms(item),
+              onPress: () => this.deleteAlarm(item),
             },
           ]);
         },
@@ -567,7 +593,7 @@ class CalendarScreen extends Component {
     console.log('success');
   };
 
-  deleteAlarms = item => {
+  deleteAlarm = item => {
     const index = this.state.alarmList.indexOf(item);
     //console.log(index);
     console.log(item);
