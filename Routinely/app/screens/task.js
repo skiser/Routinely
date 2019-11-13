@@ -38,10 +38,11 @@ class task extends React.Component {
     addTask = async (title, note) => {
         try {
             const date = new Date(Date.now());
+            console.log("date: " + date);
             await ref.add({
                 title: title,
                 note: note,
-                date: date,
+                createdAt: date,
                 complete: false,
             });
         } catch (error) {

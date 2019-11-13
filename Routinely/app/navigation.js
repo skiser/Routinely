@@ -9,7 +9,6 @@ import TasksScreen from './screens/tasks';
 import TaskScreen from './screens/task';
 import MenuScreen from './screens/menu';
 import EditEventScreen from './screens/editEvent';
-import EditTaskScreen from './screens/editTask';
 import NotesScreen from './screens/notes';
 import NoteScreen from './screens/note';
 
@@ -33,7 +32,6 @@ const AppStack = createStackNavigator(
     Tasks: TasksScreen,
     Menu: MenuScreen,
     EditEvent: EditEventScreen,
-    EditTask: EditTaskScreen,
     Notes: NotesScreen,
     Note: NoteScreen,
   },

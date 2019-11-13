@@ -32,6 +32,16 @@ const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 const yyyy = today.getFullYear();
 const todayfull = yyyy + '-' + mm + '-' + dd;
 
+const dayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
+
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
@@ -80,6 +90,7 @@ function getFutureDates(days) {
 function getPastDate(days) {
   return new Date(Date.now() - 864e5 * days).toISOString().split('T')[0];
 }
+const date = new Date();
 
 class CalendarScreen extends Component {
   onDateChanged = (/* date, updateSource */) => {
@@ -99,27 +110,67 @@ class CalendarScreen extends Component {
       editting: '',
       todayevent: [],
       alarmList: [],
+      chosenDate: date,
+      week: [],
+      wholeList: [{title: date, data: []}],
     };
   }
-  /*state = {
-    eventList: [],
-    setEvent: '',
-    event: '',
-  };*/
+  sortEvents =  (date1, date2) =>{
+    if (date1.chosenDate.toDate() > date2.chosenDate.toDate()) return -1;
+    if (date1.chosenDate.toDate() < date2.chosenDate.toDate()) return 1;
+    return 0;
+  };
 
   getEvents = async eventRetrieved => {
     try {
       eventsRef.onSnapshot(querySnapshot => {
         this.setState({eventList: []});
+        this.setState({wholeList:[]});
         querySnapshot.forEach(event => {
           this.state.eventList.push(event.data());
-          //console.log("this is the event " +event.get('chosenDate').toDate());
+            });
+        this.setState({wholeList:[]});
+        this.state.eventList.forEach(event => {
+          if(this.state.wholeList.length > this.state.eventList.length){
+            return;
+         }
+          else if(this.state.wholeList.length === 0 ) {
+            const date = event.chosenDate.toDate();
+            console.log("date: "+ date);
+            this.state.wholeList.push({title: event.chosenDate.toDate().toDateString(), data: [event]});
+            console.log("title: " + event.chosenDate.toDate().toDateString());
+          }
+          else if(this.state.wholeList.every((item) => item.title !== event.chosenDate.toDate().toDateString())){
+            console.log("added");
+            this.state.wholeList.push({title: event.chosenDate.toDate().toDateString(), data: [event]});
+            console.log("title: " + event.chosenDate.toDate().toDateString());
+          }
+          else {
+            this.state.wholeList.forEach(item => {
+              if(item.title === event.chosenDate.toDate().toDateString()){
+                console.log("title: " +item.title + ", " + "event: " +item.title);
+               item.data.push(event)
+              }
+            });
+          }
+         });
+        this.state.wholeList.forEach(item => {
+          //console.log(item);
         });
+
+          console.log("whole: "+ this.state.wholeList);
+        this.state.eventList.sort(this.sortEvents);
         eventRetrieved(this.state.eventList);
       });
     } catch (error) {
       console.log('problem retrieving events');
     }
+  };
+
+  sortTasks =  (date1, date2) =>{
+    if (date1.createdAt.toDate() > date2.createdAt.toDate()) return -1;
+    if (date1.createdAt.toDate() < date2.createdAt.toDate()) return 1;
+    return 0;
   };
 
   getTasks = async taskRetrieved => {
@@ -130,6 +181,7 @@ class CalendarScreen extends Component {
           this.state.taskList.push(tasks.data());
           //console.log("this is the event " +event.get('chosenDate').toDate());
         });
+        this.state.taskList.sort(this.sortTasks);
         taskRetrieved(this.state.taskList);
       });
     } catch (error) {
@@ -430,7 +482,6 @@ class CalendarScreen extends Component {
         backgroundColor: '#F0050F',
       },
     ];
-
     return (
       <Swipeout
         right={swipeBtns}
@@ -460,6 +511,91 @@ class CalendarScreen extends Component {
           </Text>
         </View>
       </Swipeout>
+    );
+  };
+
+  listWhole = item => {
+    const swipeBtns = [
+      {
+        onPress:  () => {
+          Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.edittingEvent(item),
+            },
+          ]);
+        },
+        text: 'Edit',
+        backgroundColor: '#166EE5',
+      },
+      {
+        onPress: () => {
+          Alert.alert('Delete?', 'Are you sure you want to delete this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.deleteEvent(item),
+            },
+          ]);
+        },
+        text: 'Delete',
+        backgroundColor: '#F0050F',
+      },
+    ];
+
+    return (
+        <Swipeout
+            right={swipeBtns}
+            autoClose="true"
+            backgroundColor="transparent"
+            sensitivity={100}
+            buttonWidth={50}>
+          <View style={styles.item}>
+            <Text style={styles.itemHourText}>{item.hour}</Text>
+            <Text style={styles.itemDurationText}>{item.duration}</Text>
+            <Text style={styles.itemTitleText}> {item.title} </Text>
+            <Text style={styles.itemHourText}>
+              {' '}
+              {item.notes}
+              {' '}
+              {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
+              {item.chosenDate.toDate().getUTCDate()} -{' '}
+              {item.chosenDate.toDate().getUTCFullYear()}{' '}
+              {item.chosenDate.toDate().getHours() > 12
+                  ? item.chosenDate.toDate().getHours() - 12
+                  : item.chosenDate.toDate().getHours()}
+              :
+              {item.chosenDate.toDate().getMinutes() < 10
+                  ? '0' + item.chosenDate.toDate().getMinutes()
+                  : item.chosenDate.toDate().getMinutes()}{' '}
+              {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
+            </Text>
+          </View>
+        </Swipeout>
+    );
+  };
+
+  listDay = item => {
+    const date = new Date(item.title);
+    return(
+        <View>
+          <Text style = {styles.header}> {dayNames[date.getDay()]} </Text>
+          <Text>{date.getDate()} </Text>
+          <FlatList
+              data={item.data}
+              //keyExtractor={item => item.id}
+              renderItem={({item}) => {
+                return this.listWhole(item)
+              }}
+          />
+        </View>
     );
   };
 
@@ -627,6 +763,29 @@ class CalendarScreen extends Component {
     console.log('success');
   };
 
+  showWeek = (item) => {
+    let today = new Date(Date.now()).getDay();
+    this.state.week=[];
+    for(let i = 0; i<dayNames.length ; i++){
+      if(today > 6) {
+        today -= 7;
+        this.state.week.push(dayNames[today]);
+      }
+      else {
+        this.state.week.push(dayNames[today]);
+      }
+      today++;
+    }
+    const index = dayNames.indexOf(item);
+    console.log(this.state.week);
+
+    return (
+        <View>
+        <Text> {this.state.week[index]} </Text>
+        </View>
+    );
+  };
+
   getTheme = () => {
     const themeColor = '#0059ff';
     const lightThemeColor = '#e6efff';
@@ -696,15 +855,25 @@ class CalendarScreen extends Component {
           headerStyle={styles.calendar} // for horizontal only
         />
         <View style={styles.greyBackground}>
-          <View style={styles.container}>
+          < View style = {styles.container}>
             <Notes/>
             <FlatList
-              data={this.state.eventList}
-              keyExtractor={item => item.id}
+              data={this.state.wholeList}
               renderItem={({item}) => {
-                return this.listEvents(item);
-              }}
-            />
+              //console.log("what: "+ item.title);
+                return (this.listDay(item))
+                }}
+                />
+
+
+            {/*    <FlatList*/}
+            {/*  data={this.state.eventList}*/}
+            {/*  keyExtractor={item => item.id}*/}
+            {/*  renderItem={({item}) => {*/}
+            {/*    return (this.listEvents(item)*/}
+            {/*    );*/}
+            {/*  }}*/}
+            {/*/>*/}
             <FlatList
               data={this.state.taskList}
               keyExtractor={item => item.id}
@@ -712,6 +881,7 @@ class CalendarScreen extends Component {
                 return this.listTasks(item);
               }}
             />
+
             <FlatList
               data={this.state.alarmList}
               keyExtractor={item => item.id}
@@ -813,6 +983,9 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
+  header: {
+    fontSize:25
+  }
 });
 
 export default CalendarScreen;
