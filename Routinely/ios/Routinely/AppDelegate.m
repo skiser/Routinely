@@ -11,6 +11,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <Firebase.h>
+@import UserNotifications;
 
 @implementation AppDelegate
 
@@ -31,6 +32,21 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  UNAuthorizationOptions options = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
+  [center requestAuthorizationWithOptions:options
+    completionHandler:^(BOOL granted, NSError * _Nullable error) {
+      if (!granted) {
+        NSLog(@"Something went wrong");
+      }
+  }];
+
+  [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+  if (settings.authorizationStatus != UNAuthorizationStatusAuthorized) {
+    // Notifications not allowed
+  }
+  }];
+
   return YES;
 }
 

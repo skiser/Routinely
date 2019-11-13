@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
 import {
+  Alert,
   TextInput,
   RefreshControl,
   Text,
@@ -16,12 +17,18 @@ import {
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 import {HeaderTitle} from 'react-navigation-stack';
+import Swipeout from 'react-native-swipeout';
 
 const user = [{email: ''}];
 if (firebase.auth().currentUser !== null) {
   const currentUser = firebase.auth().currentUser;
   user.email = currentUser.email;
 }
+
+const notesRef = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('notes');
 
 class notes extends React.Component {
   state = {
@@ -30,21 +37,24 @@ class notes extends React.Component {
     setNote: '',
     note: '',
   };
-  addNote = async note => {
-    try {
-      await ref.add({
-        title: note,
-        complete: false,
-      });
-    } catch (error) {
-      console.log('addNote failed');
-    }
-    this.setState({note: ''});
+  onNotesRetrieved = noteList => {
+    this.setState(prevState => ({
+      noteList: (prevState.noteList = noteList),
+    }));
   };
+
+  componentDidMount() {
+    this.getNotes(this.onNotesRetrieved);
+  };
+
+  addNote(){
+    this.props.navigation.navigate('Note');
+  }
   getNotes = noteRetrieved => {
-    try {
+    try { 
       //this.state.noteList=[];
-      ref.onSnapshot(querySnapshot => {
+      notesRef.onSnapshot(querySnapshot => {
+        this.setState({noteList: []});
         querySnapshot.forEach(note => {
           console.log('data' + note.data());
           this.state.noteList.push(note.data());
@@ -55,39 +65,136 @@ class notes extends React.Component {
       console.log('problem retrieving notes');
     }
   };
-  onNotesRetrieved = noteList => {
-    //console.log("notes: "+noteList);
-    this.setState(prevState => ({
-      noteList: (prevState.noteList = noteList),
-    }));
+
+  editNote = item => {
+    const index = this.state.noteList.indexOf(item);
+    console.log('item:' + item);
+    this.state.noteList.splice(index, 1);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('notes')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('notes')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
+    this.props.navigation.navigate('Note', {note: item});
   };
-  componentDidMount() {
-    this.getNotes(this.onNotesRetrieved);
-  }
+
+  deleteNote = item => {
+    const index = this.state.noteList.indexOf(item);
+    //console.log(index);
+    console.log(item);
+    this.state.noteList.splice(index, 1);
+    //console.log("deleting:" +item.title);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('notes')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('notes')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    console.log('success');
+  };
+
+  listNotes = item => {
+    const swipeBtns = [
+      {
+        onPress:  () => {
+          Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.editNote(item),
+            },
+          ]);
+        },
+        text: 'Edit',
+        backgroundColor: '#166EE5',
+      },
+      {
+        onPress: () => {
+          Alert.alert('Delete?', 'Are you sure you want to delete this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.deleteNote(item),
+            },
+          ]);
+        },
+        text: 'Delete',
+        backgroundColor: '#F0050F',
+      },
+    ];
+
+    return (
+      <Swipeout
+        right={swipeBtns}
+        autoClose="true"
+        backgroundColor="transparent"
+        sensitivity={100}
+        buttonWidth={50}>
+        <View style={styles.item}>
+          <Text style={styles.notes}> {item.title} </Text>
+        </View>
+      </Swipeout>
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.inputRow}>
-          <TextInput
-            style={styles.card1}
-            onChangeText={note => this.setState({note})}
-            value={this.state.note}
-            multiline
-            numberOfLines={36}
-          />
           <AwesomeButtonBlue
             width={70}
             title="addTitle"
-            onPress={() => this.addNote(this.state.note)}>
-            SAVE
+            onPress={() => this.addNote()}>
+            Add A Note
           </AwesomeButtonBlue>
         </View>
         <FlatList
           data={this.state.noteList}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
-            //console.log("item " +item);
-            return <Text style={styles.notes}> {item.title}</Text>;
+            return this.listNotes(item);
           }}
         />
       </View>
