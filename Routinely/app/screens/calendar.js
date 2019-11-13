@@ -24,7 +24,13 @@ import '@react-native-firebase/auth';
 import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 
-const today = new Date().toISOString().split('T')[0];
+
+const today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+const yyyy = today.getFullYear();
+const todayfull = yyyy + '-' + mm + '-' + dd;
+
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
@@ -52,6 +58,11 @@ const tasksRef = firestore()
   .collection('users')
   .doc(user.email)
   .collection('tasks');
+
+const alarmsRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('alarms');
 
 //const eventsRef = eRef.collection('event');
 
@@ -85,6 +96,8 @@ class CalendarScreen extends Component {
       taskList: [],
       setEvent: '',
       editting: '',
+      todayevent: [],
+      alarmList: [],
     };
   }
   /*state = {
@@ -123,6 +136,23 @@ class CalendarScreen extends Component {
     }
   };
 
+  getAlarms = async alarmRetrieved =>{
+    try {
+      alarmsRef.onSnapshot(querySnapshot => {
+        this.setState({alarmList: []});
+        querySnapshot.forEach(alarms => {
+          this.state.alarmList.push(alarms.data());
+          //console.log("this is the event " +event.get('chosenDate').toDate());
+        });
+        alarmRetrieved(this.state.alarmList);
+        console.log("GETTING ALARMS");
+      });
+    } catch (error) {
+      console.log('problem retrieving tasks');
+    }
+  };
+
+
   onEventsRetrieved = eventList => {
     //console.log("event list:" +eventList);
     this.setState(prevState => ({
@@ -137,9 +167,18 @@ class CalendarScreen extends Component {
     }));
   };
 
+  onAlarmsRetrieved = alarmList => {
+    //console.log("event list:" +eventList);
+    this.setState(prevState => ({
+      alarmList: (prevState.alarmList = alarmList),
+    }));
+  };
+
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
+    this.getAlarms(this.onAlarmsRetrieved);    
+
   }
   //TODO: need to figure out how to properly do this
   buttonPressed(id) {
@@ -149,6 +188,30 @@ class CalendarScreen extends Component {
   itemPressed(id) {
     Alert.alert(id);
   }
+
+  getTodaysEvents(){
+    const todayevent = this.state.eventList;
+    console.log("today: "+todayfull);
+    
+    todayevent.forEach(event => {
+      const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
+      const day = event.chosenDate.toDate().getUTCDate();
+      const year = event.chosenDate.toDate().getUTCFullYear();
+
+      const markdate = year + '-' + month + '-' + day;
+      console.log(markdate);
+      if (markdate == todayfull){
+        this.state.todayevent.push(event);
+        console.log("added to today");
+        //this.state.eventList.pop(event);
+        //console.log("removed from original");
+      }
+      console.log("before"+this.state.eventList);
+      //const groupedList = this.state.eventList.groupBy(event.chosenDate);
+      //console.log("after"+groupedList);
+    })
+  }
+
 
   renderEmptyItem() {
     return (
@@ -174,6 +237,37 @@ class CalendarScreen extends Component {
     });
     //console.log('Marked:' +marked);
     return marked;
+  };
+
+  edittingAlarm = item => {
+    const index = this.state.alarmList.indexOf(item);
+    console.log('item:' + item);
+    this.state.alarmList.splice(index, 1);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('alarms')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('alarms')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    //const events = firestore().collection('users').doc(user.email).collection('events').doc(item.title).delete();
+    this.props.navigation.navigate('Alarm', {alarm: item});
   };
 
   edittingEvent = item => {
@@ -338,6 +432,62 @@ class CalendarScreen extends Component {
     );
   };
 
+  listAlarms = item => {
+    const swipeBtns = [
+      {
+        onPress: item => {
+          this.editAlarms(item);
+        },
+        text: 'Edit',
+        backgroundColor: '#166EE5',
+      },
+      {
+        onPress: () => {
+          Alert.alert('Delete?', 'Are you sure you want to delete this item?', [
+            {
+              text: 'No',
+              onPress: () => console.log('cancelled'),
+            },
+            {
+              text: 'Yes',
+              onPress: () => this.deleteAlarms(item),
+            },
+          ]);
+        },
+        text: 'Delete',
+        backgroundColor: '#F0050F',
+      },
+    ];
+
+    return (
+      <Swipeout
+        right={swipeBtns}
+        autoClose="true"
+        backgroundColor="transparent"
+        sensitivity={100}
+        buttonWidth={50}>
+        <View style={styles.item}>
+          <Text style={styles.itemTitleText}> {item.title} </Text>
+          <Text style={styles.itemHourText}>
+            {' '}
+            {item.notes}
+            {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
+            {item.chosenDate.toDate().getUTCDate()} -{' '}
+            {item.chosenDate.toDate().getUTCFullYear()}{' '}
+            {item.chosenDate.toDate().getHours() > 12
+              ? item.chosenDate.toDate().getHours() - 12
+              : item.chosenDate.toDate().getHours()}
+            :
+            {item.chosenDate.toDate().getMinutes() < 10
+              ? '0' + item.chosenDate.toDate().getMinutes()
+              : item.chosenDate.toDate().getMinutes()}{' '}
+            {item.chosenDate.toDate().getHours() > 12 ? 'pm' : 'am'}
+          </Text>
+        </View>
+      </Swipeout>
+    );
+  };
+
   deleteEvent = item => {
     const index = this.state.eventList.indexOf(item);
     //console.log(index);
@@ -395,6 +545,38 @@ class CalendarScreen extends Component {
             .collection('users')
             .doc(user.email)
             .collection('tasks')
+            .doc(doc.id)
+            .delete();
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+    console.log('success');
+  };
+
+  deleteAlarms = item => {
+    const index = this.state.alarmList.indexOf(item);
+    //console.log(index);
+    console.log(item);
+    this.state.taskList.splice(index, 1);
+    //console.log("deleting:" +item.title);
+    let query = firestore()
+      .collection('users')
+      .doc(user.email)
+      .collection('alarms')
+      .where('title', '==', item.title)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          return;
+        }
+        snapshot.forEach(doc => {
+          firestore()
+            .collection('users')
+            .doc(user.email)
+            .collection('alarms')
             .doc(doc.id)
             .delete();
         });
@@ -496,6 +678,13 @@ class CalendarScreen extends Component {
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listTasks(item);
+              }}
+            />
+            <FlatList
+              data={this.state.alarmList}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => {
+                return this.listAlarms(item);
               }}
             />
           </View>
