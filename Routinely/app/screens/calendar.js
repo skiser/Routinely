@@ -695,7 +695,8 @@ class CalendarScreen extends Component {
         autoClose="true"
         backgroundColor="transparent"
         sensitivity={100}
-        buttonWidth={50}>
+        buttonWidth={50}
+        borderRadius={10}>
         <View style={styles.item}>
           <Text style={styles.itemTitleText}> {item.title} </Text>
           <Text style={{marginLeft: 5}}>{item.notes} </Text>
@@ -889,26 +890,26 @@ class CalendarScreen extends Component {
         disabledOpacity={0.6}
         // todayBottomMargin={16}
       >
-        <ExpandableCalendar
-          // horizontal={false}
-          // hideArrows
-          // disablePan
-          // hideKnob
-          // initialPosition={ExpandableCalendar.positions.OPEN}
-          firstDay={1}
-          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
-          theme={this.getTheme()}
-          leftArrowImageSource={require('../components/img/previous.png')}
-          rightArrowImageSource={require('../components/img/next.png')}
-          calendarStyle={styles.calendar}
-          headerStyle={styles.calendar} // for horizontal only
-        />
         <View style={styles.greyBackground}>
+          <ExpandableCalendar
+            // horizontal={false}
+            // hideArrows
+            // disablePan
+            // hideKnob
+            // initialPosition={ExpandableCalendar.positions.OPEN}
+            firstDay={1}
+            markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+            theme={this.getTheme()}
+            leftArrowImageSource={require('../components/img/previous.png')}
+            rightArrowImageSource={require('../components/img/next.png')}
+            calendarStyle={styles.calendar}
+            headerStyle={styles.calendar} // for horizontal only
+          />
           <View style={styles.container}>
             <Notes />
             <FlatList
               data={this.state.wholeList}
-              style={{borderRadius: 10}}
+              style={{}}
               renderItem={({item}) => {
                 //console.log("what: "+ item.title);
                 return this.listDay(item);
@@ -925,7 +926,7 @@ class CalendarScreen extends Component {
             {/*/>*/}
             <FlatList
               data={this.state.taskList}
-              style={{borderRadius: 10, paddingTop:15}}
+              style={{borderRadius: 10, marginTop: 15}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listTasks(item);
@@ -934,7 +935,7 @@ class CalendarScreen extends Component {
 
             <FlatList
               data={this.state.alarmList}
-              style={{borderRadius: 10}}
+              style={{borderRadius: 10, marginTop: 15}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listAlarms(item);
@@ -991,6 +992,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     backgroundColor: 'white',
     borderBottomWidth: 1,
+    borderRadius: 10,
     borderBottomColor: '#e8ecf0',
     flexDirection: 'row',
   },
