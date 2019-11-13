@@ -4,16 +4,15 @@
 
 import 'react-native';
 import React from 'react';
-import Login from '../../app/screens/login';
+import Note from '../../app/screens/note';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-test('Login Screenshot', () => {
-    //const snap = renderer.create(<Login/>).toJSON();
+test('Note Screenshot', () => {
+    //const snap = renderer.create(<Note/>).toJSON();
     //expect(snap).toMatchSnapshot();
 });
 it('renders correctly', () => {
-    const login = renderer.create(<Login />).getInstance();
-
+    const note = renderer.create(<Note />).getInstance();
 });
