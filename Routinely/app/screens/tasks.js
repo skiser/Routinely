@@ -26,6 +26,17 @@ const ref = firestore()
     .collection('users')
     .doc(user.email)
     .collection('tasks');
+const date = new Date();
+
+const dayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
 
 class tasks extends React.Component {
   state = {
@@ -33,16 +44,39 @@ class tasks extends React.Component {
     taskList: [],
     setTask: '',
     task: '',
+    sortedDates:[],
+    createdAt: date,
+  };
+  date_sort_asc =  (date1, date2) =>{
+    if (date1 > date2) return 1;
+    if (date1 < date2) return -1;
+    return 0;
+  };
+
+  sortTasks =  (date1, date2) =>{
+    if (date1.createdAt.toDate() > date2.createdAt.toDate()) return -1;
+    if (date1.createdAt.toDate() < date2.createdAt.toDate()) return 1;
+    return 0;
   };
 
   getTasks = async taskRetrieved => {
     try {
       ref.onSnapshot(querySnapshot => {
         this.setState({taskList: []});
+        this.setState({sortedDates: []});
         querySnapshot.forEach(tasks => {
-          console.log("data: " +tasks.data());
           this.state.taskList.push(tasks.data());
         });
+        this.state.taskList.forEach(task => {
+            this.state.sortedDates.push(task.createdAt.toDate());}
+        );
+        this.state.taskList.sort(this.sortTasks);
+        this.state.sortedDates.sort(this.date_sort_asc);
+
+        this.state.sortedDates.forEach(date => {
+          console.log("sorted: "+ dayNames[date.getDay()]);
+        });
+
         taskRetrieved(this.state.taskList);
       });
     } catch (error) {
