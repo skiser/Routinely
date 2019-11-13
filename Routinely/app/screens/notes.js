@@ -173,7 +173,7 @@ class notes extends React.Component {
         sensitivity={100}
         buttonWidth={50}>
         <View style={styles.item}>
-          <Text style={styles.itemTitleText}> {item.title} </Text>
+          <Text style={styles.notes}> {item.title} </Text>
         </View>
       </Swipeout>
     );
