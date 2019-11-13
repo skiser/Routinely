@@ -52,6 +52,17 @@ class MenuScreen extends Component {
             </TouchableHighlight>
           </View>
         </View>
+        <View style={styles.row}>
+          <View>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate('Weather')}>
+              <Image
+                style={styles.icon}
+                source={require('../components/img/DailyToDoButton.png')}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
       </View>
     );
   }

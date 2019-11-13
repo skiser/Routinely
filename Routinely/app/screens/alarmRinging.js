@@ -118,14 +118,14 @@ class AlarmRingingScreen extends Component {
           </View>
         </View>
         <AwesomeButtonRick
-          width={200}
+          width={250}
           title="DisableAlarm"
           style={styles.TurnOff}
           onPress={() => this.props.navigation.navigate('Calendar')}>
           Turn Off
         </AwesomeButtonRick>
         <AwesomeButtonBlue
-          width={200}
+          width={250}
           title="DisableAlarm"
           style={styles.TurnOff}
           onPress={() => this.props.navigation.navigate('Alarm')}>
@@ -143,30 +143,34 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     textAlign: 'center',
+    marginLeft: 30,
+    marginRight: 30,
   },
   forecast: {
     textAlign: 'center',
     flexDirection: 'column',
     padding: 5,
-    margin: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 10,
     borderWidth: 1,
     borderRadius: 15,
   },
   time: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
   },
   temp: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: 16,
   },
   rain: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: 16,
   },
   conditions: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
     paddingBottom: 3,
   },
   img: {
