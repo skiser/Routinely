@@ -235,6 +235,18 @@ class CalendarScreen extends Component {
       marked[markdate] = {marked: true};
       console.log('successfully added');
     });
+    const alarm = this.state.alarmList;
+    alarm.forEach(event => {
+      // only mark dates with data
+      const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
+      const day = event.chosenDate.toDate().getUTCDate();
+      const year = event.chosenDate.toDate().getUTCFullYear();
+
+      const markdate = year + '-' + month + '-' + day;
+
+      marked[markdate] = {marked: true};
+      console.log('successfully added');
+    });
     //console.log('Marked:' +marked);
     return marked;
   };
@@ -436,7 +448,7 @@ class CalendarScreen extends Component {
     const swipeBtns = [
       {
         onPress: item => {
-          this.editAlarms(item);
+          this.edittingAlarm(item);
         },
         text: 'Edit',
         backgroundColor: '#166EE5',
