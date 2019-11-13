@@ -23,6 +23,7 @@ import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
+import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -274,7 +275,7 @@ class CalendarScreen extends Component {
         buttonWidth={50}>
         <View style={styles.item}>
           <Text style={styles.itemTitleText}>{item.title}</Text>
-          <Text>{item.note}</Text>
+          <Text style={{}}>{item.note}</Text>
         </View>
       </Swipeout>
     );
@@ -475,15 +476,7 @@ class CalendarScreen extends Component {
         />
         <View style={styles.greyBackground}>
           <View style={styles.container}>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('Notes')}
-              underlayColor={'#ededed'}>
-              <Image
-                style={styles.icon}
-                source={require('../components/img/NotesHome.png')}
-              />
-            </TouchableHighlight>
-            <Divider />
+            <Notes/>
             <FlatList
               data={this.state.eventList}
               keyExtractor={item => item.id}
@@ -544,7 +537,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   item: {
-    padding: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 5,
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#e8ecf0',
@@ -561,7 +556,6 @@ const styles = StyleSheet.create({
   },
   itemTitleText: {
     color: 'black',
-    marginLeft: 16,
     fontWeight: 'bold',
     fontSize: 16,
   },
