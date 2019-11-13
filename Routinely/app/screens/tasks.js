@@ -122,7 +122,7 @@ class tasks extends React.Component {
   };
 
   addTasks(){
-    this.props.navigation.navigate('Task');
+    this.props.navigation.navigate('Calendar');
   }
 
   listTasks = item =>  {

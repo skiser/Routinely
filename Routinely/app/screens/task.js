@@ -50,7 +50,7 @@ class task extends React.Component {
         }
         this.setState({title: ''});
         this.setState( {note: ''});
-        this.props.navigation.navigate('Tasks');
+        this.props.navigation.navigate('Calendar');
 
     };
 

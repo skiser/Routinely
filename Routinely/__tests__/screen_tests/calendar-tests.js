@@ -10,19 +10,22 @@ import Calendar from '../../app/screens/calendar';
 import renderer from 'react-test-renderer';
 
 test('Calendar Screenshot', () => {
-    //const snap = renderer.create(<Calendar/>).toJSON();
-    //expect(snap).toMatchSnapshot();
+  //const snap = renderer.create(<Calendar/>).toJSON();
+  //expect(snap).toMatchSnapshot();
 });
 it('renders correctly', () => {
-    const cal = renderer.create(<Calendar/>).getInstance();
-    const data= [{chosenDate: new Date("Tue Feb 23 2016 20:11:42 GMT+0200 (EET)")} ,
-        {chosenDate: new Date("Fri Feb 26 2016 20:11:42 GMT+0200 (EET)")},
-        {chosenDate: new Date("Thurs Feb 25 2016 20:11:42 GMT+0200 (EET)")},
-        {chosenDate: new Date("Wed Feb 24 2016 20:11:42 GMT+0200 (EET)")}];
-    data.sort(cal.sortEvents());
-    expect(data).toEqual([{chosenDate: new Date("Tue Feb 23 2016 20:11:42 GMT+0200 (EET)")} ,
-        {chosenDate: new Date("Wed Feb 24 2016 20:11:42 GMT+0200 (EET)")},
-        {chosenDate: new Date("Thurs Feb 25 2016 20:11:42 GMT+0200 (EET)")},
-        {chosenDate: new Date("Fri Feb 26 2016 20:11:42 GMT+0200 (EET)")}])
-
+  const cal = renderer.create(<Calendar />).getInstance();
+  const data = [
+    {chosenDate: new Date('Tue Feb 23 2016 20:11:42 GMT+0200 (EET)')},
+    {chosenDate: new Date('Fri Feb 26 2016 20:11:42 GMT+0200 (EET)')},
+    {chosenDate: new Date('Thurs Feb 25 2016 20:11:42 GMT+0200 (EET)')},
+    {chosenDate: new Date('Wed Feb 24 2016 20:11:42 GMT+0200 (EET)')},
+  ];
+  data.sort(cal.sortEvents());
+  expect(data).toEqual([
+    {chosenDate: new Date('Tue Feb 23 2016 20:11:42 GMT+0200 (EET)')},
+    {chosenDate: new Date('Wed Feb 24 2016 20:11:42 GMT+0200 (EET)')},
+    {chosenDate: new Date('Thurs Feb 25 2016 20:11:42 GMT+0200 (EET)')},
+    {chosenDate: new Date('Fri Feb 26 2016 20:11:42 GMT+0200 (EET)')},
+  ]);
 });

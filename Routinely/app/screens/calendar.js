@@ -54,7 +54,7 @@ const monthNames = [
   'Nov',
   'Dec',
 ];
-
+console.disableYellowBox = true;
 const fastDate = getPastDate(3);
 const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
@@ -502,7 +502,7 @@ class CalendarScreen extends Component {
         buttonWidth={50}>
         <View style={styles.item}>
           <Text style={styles.itemTitleText}>{item.title}</Text>
-          <Text style={{}}>{item.note}</Text>
+          <Text style={{marginLeft: 15}}>{item.note}</Text>
         </View>
       </Swipeout>
     );
@@ -925,7 +925,7 @@ class CalendarScreen extends Component {
             {/*/>*/}
             <FlatList
               data={this.state.taskList}
-              style={{borderRadius: 10}}
+              style={{borderRadius: 10, paddingTop:15}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listTasks(item);
