@@ -64,3 +64,6 @@ Routinely/package-lock.json
 
 #xcode
 /Routinely/ios/Routinely.xcodeproj/project.pbxproj
+
+#tests
+/Routinely/__tests__/screen_tests/__snapshots__/
