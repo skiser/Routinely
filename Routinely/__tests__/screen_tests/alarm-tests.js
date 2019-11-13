@@ -14,6 +14,8 @@ test('Alarm Screenshot', () => {
     //expect(snap).toMatchSnapshot();
 });
 it('renders correctly', () => {
+    expect(4).toEqual(4)
     const alarm = renderer.create(<Alarm />).getInstance();
+
 
 });
