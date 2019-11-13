@@ -444,6 +444,7 @@ class CalendarScreen extends Component {
           <Text style={styles.itemHourText}>
             {' '}
             {item.notes}
+            {' '}
             {item.chosenDate.toDate().getUTCMonth() + 1} -{' '}
             {item.chosenDate.toDate().getUTCDate()} -{' '}
             {item.chosenDate.toDate().getUTCFullYear()}{' '}
