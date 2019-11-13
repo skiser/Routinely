@@ -22,7 +22,7 @@ const AuthStack = createStackNavigator(
     initialRouteName: 'Login',
   },
 );
-
+console.disableYellowBox = true;
 const AppStack = createStackNavigator(
   {
     Alarm: AlarmScreen,

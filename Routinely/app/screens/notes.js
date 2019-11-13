@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
-import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
+import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/c137';
 import {
   Alert,
   TextInput,
@@ -26,9 +26,9 @@ if (firebase.auth().currentUser !== null) {
 }
 
 const notesRef = firestore()
-      .collection('users')
-      .doc(user.email)
-      .collection('notes');
+  .collection('users')
+  .doc(user.email)
+  .collection('notes');
 
 class notes extends React.Component {
   state = {
@@ -45,14 +45,14 @@ class notes extends React.Component {
 
   componentDidMount() {
     this.getNotes(this.onNotesRetrieved);
-  };
+  }
 
-  addNote(){
+  addNote() {
     console.log('here');
     this.props.navigation.navigate('Note');
   }
   getNotes = noteRetrieved => {
-    try { 
+    try {
       //this.state.noteList=[];
       notesRef.onSnapshot(querySnapshot => {
         this.setState({noteList: []});
@@ -133,7 +133,7 @@ class notes extends React.Component {
   listNotes = item => {
     const swipeBtns = [
       {
-        onPress:  () => {
+        onPress: () => {
           Alert.alert('Edit?', 'Are you sure you want to edit this item?', [
             {
               text: 'No',
@@ -185,7 +185,9 @@ class notes extends React.Component {
       <View style={styles.container}>
         <View style={styles.inputRow}>
           <AwesomeButtonBlue
-            width={70}
+            width={360}
+            backgroundColor={'#268E1E'}
+            textSize={20}
             title="addTitle"
             onPress={() => this.addNote()}>
             Add A Note
@@ -212,6 +214,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
     marginTop: 25,
+    marginLeft: 20,
   },
   card1: {
     paddingVertical: 16,
