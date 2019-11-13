@@ -187,7 +187,7 @@ class MenuScreen extends Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.props.navigation.navigate('Task')}>
+                onPress={() => this.props.navigation.navigate('Alarm')}>
                 <Image
                   style={{
                     width: 50,
