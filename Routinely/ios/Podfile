@@ -34,7 +34,8 @@ target 'Routinely' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKCoreKit', '~> 5.2.3'
+  pod 'FBSDKLoginKit', '~> 5.2.3'
 
   pod 'GoogleSignIn', '~> 5.0.0'
 
