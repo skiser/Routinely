@@ -914,15 +914,6 @@ class CalendarScreen extends Component {
                 return this.listDay(item);
               }}
             />
-
-            {/*    <FlatList*/}
-            {/*  data={this.state.eventList}*/}
-            {/*  keyExtractor={item => item.id}*/}
-            {/*  renderItem={({item}) => {*/}
-            {/*    return (this.listEvents(item)*/}
-            {/*    );*/}
-            {/*  }}*/}
-            {/*/>*/}
             <FlatList
               data={this.state.taskList}
               style={{borderRadius: 10, paddingTop:15}}
