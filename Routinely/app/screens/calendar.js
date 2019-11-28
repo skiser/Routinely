@@ -180,40 +180,6 @@ class CalendarScreen extends Component {
             });
           }
         });
-        /* this.state.alarmList.forEach(alarm => {
-          if (this.state.wholeList.length > this.state.alarmList.length) {
-            return;
-          } else if (this.state.wholeList.length === 0) {
-            const date = alarm.chosenDate.toDate();
-            console.log('date: ' + date);
-            this.state.wholeList.push({
-              title: alarm.chosenDate.toDate().toDateString(),
-              data: [alarm],
-            });
-            console.log('title: ' + alarm.chosenDate.toDate().toDateString());
-          } else if (
-            this.state.wholeList.every(
-              item => item.title !== alarm.chosenDate.toDate().toDateString(),
-            )
-          ) {
-            console.log('added');
-            this.state.wholeList.push({
-              title: alarm.chosenDate.toDate().toDateString(),
-              data: [alarm],
-            });
-            console.log('title: ' + alarm.chosenDate.toDate().toDateString());
-          } else {
-            this.state.wholeList.forEach(item => {
-              if (item.title === alarm.chosenDate.toDate().toDateString()) {
-                console.log(
-                  'title: ' + item.title + ', ' + 'event: ' + item.title,
-                );
-                item.data.push(alarm);
-              }
-            });
-          }
-        });
-        */
         this.state.wholeList.forEach(item => {
           console.log(item);
         });
