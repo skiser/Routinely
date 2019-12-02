@@ -313,7 +313,7 @@ class CalendarScreen extends Component {
 
       const markdate = year + '-' + month + '-' + day;
 
-      marked[markdate] = {marked: true};
+      marked[markdate] = {marked: true, dotColor: '#6096FD'};
       console.log('successfully added');
     });
     const alarm = this.state.alarmList;
@@ -325,7 +325,7 @@ class CalendarScreen extends Component {
 
       const markdate = year + '-' + month + '-' + day;
 
-      marked[markdate] = {marked: true};
+      marked[markdate] = {marked: true, dotColor: '#F3AE42'};
       console.log('successfully added');
     });
     //console.log('Marked:' +marked);
@@ -864,7 +864,7 @@ class CalendarScreen extends Component {
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
           firstDay={1}
-          markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};
+          markedDates={this.getMarkedDates()}
           theme={this.getTheme()}
           leftArrowImageSource={require('../components/img/previous.png')}
           rightArrowImageSource={require('../components/img/next.png')}
