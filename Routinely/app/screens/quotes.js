@@ -14,10 +14,12 @@ import {
     ListRenderItem,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
-import { useMyuseQuoteOfTheDayHook } from '@uhl7792/react-use-quote-of-the-day'
- 
 
 const user = [{"email": ''}];
+if (firebase.auth().currentUser !== null) {
+  const currentUser = firebase.auth().currentUser;
+  user.email = currentUser.email;
+}
 
 const date = new Date();
 const month = date.getMonth() + 1; //months from 1-12
@@ -28,59 +30,88 @@ const originaldate = year + '-' + month + '-' + day;
 
 const quote = iquotes.random();
 
+const quotesRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('quotes');
+
 class quoteScreen extends React.Component {
-    
-    
 
     constructor(props) {
     super(props);
     this.state = {
-      quotes: quote,
-      original: originaldate,
+      quoteList: [],
+      todaysquote: '',
+      todaysauthor: '',
+      date: originaldate,
+      quote: quote,
     };
     }
-    
 
-    /* getQuotes = () => {
-        const month = this.state.quotes.date.getMonth() + 1; //months from 1-12
-            const day = this.state.quotes.date.getDate();
-            const year = this.state.quotes.date.getFullYear();
-            const quotedate = year + '-' + month + '-' + day;
-            console.log(quotedate+" and "+this.state.today);
-            if (quotedate == this.state.today){
-                return;
-            }
-            else{
-                this.setState(this.state.quotes = iquotes.random());
-                console.log(this.state.quotes);
-                this.state.quotes.date = new Date();
+    writeQuote = () =>{
+        try{
+        quotesRef.doc().set({
+            quote: this.state.quote,
+            date: this.state.date,
+        })
+        }
+        catch(error){
+            console.log('addQuote failed');
+        }
+    };
 
-            }
-    
+    getQuoteList = async QuoteRetrieved =>{
+        quotesRef.onSnapshot(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                this.writeQuote();
+                this.getQuoteList();
+            } 
+            snapshot.forEach(doc => {
+                this.state.quoteList.push(doc.data());
+            });
+            QuoteRetrieved(this.state.quoteList);
+            console.log(this.state.quoteList);
+
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+
     }
 
+    onQuoteRetrieved = quoteList => {
+        //console.log("event list:" +eventList);
+        this.setState(prevState => ({
+            quoteList: (prevState.quoteList = quoteList),
+        }));
+    };
+
     componentDidMount() {
-        this.getQuotes();
+        this.getQuoteList(this.onQuoteRetrieved);
+    }
+
+    getTodaysquote(){
+        this.state.quoteList.forEach(item => {
+              if (item.date === this.state.date) {
+                  this.state.todaysquote = item.quote;
+                  console.log("this is the quote for today"+this.state.todaysquote.author);
+                  this.state.todaysauthor = item.quote.author;
+              }
+              else{
+                  this.writeQuote();
+              }
+            });
+    }
     
-    }*/
 
-    render() {
-        const today = new Date();
-        const month = today.getMonth() + 1; //months from 1-12
-        const day = today.getDate();
-        const year = today.getFullYear();
-        const newdate = year + '-' + month + '-' + day;
-        console.log(newdate+" and "+this.state.original);
-        
-        if (newdate != this.state.original){
-            this.state.quote = iquotes.random();
-        }
-
+    render() { 
+        this.getTodaysquote();
         return (
             <View>
                 <Text style={styles.tasks}> Quote of the Day:</Text>
-                <Text style={styles.tasks}> {this.state.quotes.quote} </Text>
-                <Text style={styles.tasks}> Author: {this.state.quotes.author} </Text>
+                <Text style={styles.tasks}> {this.state.todaysquote.quote} </Text>
+                <Text style={styles.tasks}> Author: {this.state.todaysquote.author} </Text>
             </View>
         );
     }
