@@ -283,59 +283,6 @@ class MenuScreen extends Component {
               </Text>
             </TouchableHighlight>
             </View>
-            <View
-            style={{
-              backgroundColor: '#268E1E',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
-              marginLeft: 10,
-              marginTop: 10,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.props.navigation.navigate('Quotes')}>
-                <Image
-                  style={{
-                    width: 50,
-                    height: 50,
-                    marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
-                  }}
-                  source={require('../components/img/alarm-clock.png')}
-                />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.props.navigation.navigate('Quotes')}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
-              </TouchableHighlight>
-            </View>
-            <TouchableHighlight
-              underlayColor={'grey'}
-              onPress={() => this.props.navigation.navigate('Quotes')}>
-              <Text
-                style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 24,
-                }}>
-                {'Quotes'}
-              </Text>
-            </TouchableHighlight>
-          </View>
           </View>
         </View>
       

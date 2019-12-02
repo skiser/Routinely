@@ -24,6 +24,8 @@ import '@react-native-firebase/auth';
 import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
+import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
+
 
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
@@ -872,6 +874,7 @@ class CalendarScreen extends Component {
         <View style={styles.greyBackground}>
           <View style={styles.container}>
             <Notes />
+            <Quotes />
             <FlatList
               data={this.state.wholeList}
               style={{borderRadius: 10}}
