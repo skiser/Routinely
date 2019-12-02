@@ -61,7 +61,9 @@ class quoteScreen extends React.Component {
     };
 
     getQuoteList = async QuoteRetrieved =>{
+       try{ 
         quotesRef.onSnapshot(snapshot => {
+            this.setState({quoteList: []});
             if (snapshot.empty) {
                 console.log('No matching documents.');
                 this.writeQuote();
@@ -73,10 +75,10 @@ class quoteScreen extends React.Component {
             QuoteRetrieved(this.state.quoteList);
             console.log(this.state.quoteList);
 
-        })
-        .catch(err => {
-            console.log('Error getting documents', err);
         });
+        }catch(err) {
+            console.log('Error getting documents', err);
+        };
 
     }
 
@@ -93,15 +95,15 @@ class quoteScreen extends React.Component {
 
     getTodaysquote(){
         this.state.quoteList.forEach(item => {
-              if (item.date === this.state.date) {
-                  this.state.todaysquote = item.quote;
-                  console.log("this is the quote for today"+this.state.todaysquote.author);
-                  this.state.todaysauthor = item.quote.author;
-              }
-              else{
-                  this.writeQuote();
-              }
-            });
+            if (item.date === this.state.date) {
+                this.state.todaysquote = item.quote;
+                console.log("this is the quote for today"+this.state.todaysquote.author);
+                this.state.todaysauthor = item.quote.author;
+            }
+            else{
+                this.writeQuote();
+            }
+        });
     }
     
 
@@ -109,9 +111,10 @@ class quoteScreen extends React.Component {
         this.getTodaysquote();
         return (
             <View>
-                <Text style={styles.tasks}> Quote of the Day:</Text>
-                <Text style={styles.tasks}> {this.state.todaysquote.quote} </Text>
-                <Text style={styles.tasks}> Author: {this.state.todaysquote.author} </Text>
+                <Text style={styles.quoteTitle}> Quote of the Day:</Text>
+                <Text style={styles.quote}> {this.state.todaysquote.quote} </Text>
+                <Text style={styles.quoteTitle}> Author: </Text>
+                <Text style={styles.quote}> {this.state.todaysquote.author} </Text>
             </View>
         );
     }
@@ -119,23 +122,17 @@ class quoteScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        paddingLeft: 10,
-        paddingRight: 10,
-    },
-    inputRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-        marginTop: 25,
-    },
-    card1: {
-        paddingVertical: 16,
-        width: 275,
-    },
-    tasks: {
+    quoteTitle: {
         fontSize: 25,
         marginTop: 15,
+        paddingRight: 10,
+        paddingLeft: 10,
+    },
+    quote: {
+        fontSize: 20,
+        marginTop: 15,
+        paddingRight: 10,
+        paddingLeft: 10,
     },
 });
 
