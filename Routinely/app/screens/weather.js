@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Button, Text, Image} from 'react-native';
-import DisplayTime from '../components/alarmRinging_components/DisplayTime';
-import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/c137';
-import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
 
 class WeatherScreen extends Component {
   constructor(props) {
@@ -35,6 +32,8 @@ class WeatherScreen extends Component {
           dataSource: responseJson,
           city: responseJson.city_name,
           state: responseJson.state_code,
+          temperature1Date: responseJson.data[0].datetime,
+          //dateMoment: moment.format(),
           temperature1Day: responseJson.data[0].temp,
           temperature1Night: responseJson.data[3].temp,
           precipitation1: responseJson.data[0].precip,
@@ -84,27 +83,26 @@ class WeatherScreen extends Component {
       })
       .catch(error => console.log(error)); //to catch the errors if any
   }
+
   render() {
     return (
       <View>
         <View style={styles.row}>
+          <Text style={styles.date}>{this.state.temperature1Date}</Text>
           <Image
             style={styles.img}
             source={{uri: this.state.weather1IconLink}}
           />
-          <View>
+          <View style={{flexDirection: 'row'}}>
             <Text style={styles.conditions}>
               {this.state.weatherConditions1}
             </Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <Text style={styles.temp}>Day: {this.state.temperature1Day}</Text>
-              <Text style={styles.temp}>
-                Night: {this.state.temperature1Night}
-              </Text>
-              <Text style={styles.rain}>
-                Rain: {this.state.precipitation1}%
-              </Text>
-            </View>
+            <Text style={styles.tempHL}>
+              H <Text style={styles.temp}>{this.state.temperature1Day}</Text>
+            </Text>
+            <Text style={styles.tempHL}>
+              L <Text style={styles.temp}>{this.state.temperature1Night}</Text>
+            </Text>
           </View>
         </View>
         <View style={styles.row}>
@@ -203,12 +201,26 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 10,
     borderWidth: 1,
-    borderRadius: 15,
+    borderRadius: 5,
   },
   forecast: {},
+  date: {
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 5,
+  },
   temp: {
     fontSize: 16,
-    paddingLeft: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 5,
+  },
+  tempHL: {
+    fontSize: 14,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 5,
   },
   rain: {
     fontSize: 16,
@@ -217,13 +229,14 @@ const styles = StyleSheet.create({
   conditions: {
     fontSize: 16,
     fontStyle: 'italic',
-    marginTop: 5,
-    paddingLeft: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 5,
   },
   img: {
     marginTop: 5,
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
   },
 });
 
