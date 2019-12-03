@@ -637,8 +637,14 @@ class CalendarScreen extends Component {
     const date = new Date(item.title);
     return (
       <View>
-        <Text style={{marginBottom: 5, marginTop: 2}}>
-          {monthNames[date.getMonth()]} {date.getDate()}-{' '}
+        <Text
+          style={{
+            marginBottom: 5,
+            marginTop: 5,
+            paddingTop: 5,
+            backgroundColor: '#FFFFFF',
+          }}>
+          {monthNames[date.getMonth()]} {date.getDate()}{' '}
           {dayNames[date.getDay()]}
         </Text>
         <FlatList
@@ -926,7 +932,6 @@ class CalendarScreen extends Component {
             {/*/>*/}
             <FlatList
               data={this.state.taskList}
-              style={{borderRadius: 10, marginTop: 15}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listTasks(item);
@@ -935,7 +940,6 @@ class CalendarScreen extends Component {
 
             <FlatList
               data={this.state.alarmList}
-              style={{borderRadius: 10, marginTop: 15}}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return this.listAlarms(item);
@@ -992,7 +996,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderRadius: 10,
+    borderRadius: 0,
     borderBottomColor: '#e8ecf0',
     flexDirection: 'row',
   },
