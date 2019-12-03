@@ -12,6 +12,7 @@ import EditEventScreen from './screens/editEvent';
 import NotesScreen from './screens/notes';
 import WeatherScreen from './screens/weather';
 import NoteScreen from './screens/note';
+import QuoteScreen from './screens/quotes';
 
 const AuthStack = createStackNavigator(
   {
@@ -36,6 +37,7 @@ const AppStack = createStackNavigator(
     Notes: NotesScreen,
     Note: NoteScreen,
     Weather: WeatherScreen,
+    Quotes: QuoteScreen,
   },
   {
     initialRouteName: 'Calendar',

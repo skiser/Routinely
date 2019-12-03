@@ -28,6 +28,7 @@ import AppContainer from './app/navigation';
 import React from 'react';
 export default class App extends React.Component {
   render() {
+    console.disableYellowBox = true;
     return (
       <AppContainer />
     )

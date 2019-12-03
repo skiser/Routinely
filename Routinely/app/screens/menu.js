@@ -282,9 +282,10 @@ class MenuScreen extends Component {
                 {'Weather'}
               </Text>
             </TouchableHighlight>
+            </View>
           </View>
         </View>
-      </View>
+      
     );
   }
 }

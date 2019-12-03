@@ -24,6 +24,8 @@ import '@react-native-firebase/auth';
 import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
+import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
+
 
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
@@ -180,40 +182,6 @@ class CalendarScreen extends Component {
             });
           }
         });
-        /* this.state.alarmList.forEach(alarm => {
-          if (this.state.wholeList.length > this.state.alarmList.length) {
-            return;
-          } else if (this.state.wholeList.length === 0) {
-            const date = alarm.chosenDate.toDate();
-            console.log('date: ' + date);
-            this.state.wholeList.push({
-              title: alarm.chosenDate.toDate().toDateString(),
-              data: [alarm],
-            });
-            console.log('title: ' + alarm.chosenDate.toDate().toDateString());
-          } else if (
-            this.state.wholeList.every(
-              item => item.title !== alarm.chosenDate.toDate().toDateString(),
-            )
-          ) {
-            console.log('added');
-            this.state.wholeList.push({
-              title: alarm.chosenDate.toDate().toDateString(),
-              data: [alarm],
-            });
-            console.log('title: ' + alarm.chosenDate.toDate().toDateString());
-          } else {
-            this.state.wholeList.forEach(item => {
-              if (item.title === alarm.chosenDate.toDate().toDateString()) {
-                console.log(
-                  'title: ' + item.title + ', ' + 'event: ' + item.title,
-                );
-                item.data.push(alarm);
-              }
-            });
-          }
-        });
-        */
         this.state.wholeList.forEach(item => {
           console.log(item);
         });
@@ -345,7 +313,7 @@ class CalendarScreen extends Component {
 
       const markdate = year + '-' + month + '-' + day;
 
-      marked[markdate] = {marked: true};
+      marked[markdate] = {marked: true, dotColor: '#6096FD'};
       console.log('successfully added');
     });
     const alarm = this.state.alarmList;
@@ -357,7 +325,7 @@ class CalendarScreen extends Component {
 
       const markdate = year + '-' + month + '-' + day;
 
-      marked[markdate] = {marked: true};
+      marked[markdate] = {marked: true, dotColor: '#F3AE42'};
       console.log('successfully added');
     });
     //console.log('Marked:' +marked);
@@ -913,6 +881,7 @@ class CalendarScreen extends Component {
           />
           <View style={styles.container}>
             <Notes />
+            <Quotes />
             <FlatList
               data={this.state.wholeList}
               style={{}}
@@ -921,15 +890,6 @@ class CalendarScreen extends Component {
                 return this.listDay(item);
               }}
             />
-
-            {/*    <FlatList*/}
-            {/*  data={this.state.eventList}*/}
-            {/*  keyExtractor={item => item.id}*/}
-            {/*  renderItem={({item}) => {*/}
-            {/*    return (this.listEvents(item)*/}
-            {/*    );*/}
-            {/*  }}*/}
-            {/*/>*/}
             <FlatList
               data={this.state.taskList}
               keyExtractor={item => item.id}
