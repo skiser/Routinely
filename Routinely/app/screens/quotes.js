@@ -60,7 +60,7 @@ class quoteScreen extends React.Component {
         }
     };
 
-    getQuoteList = async QuoteRetrieved =>{
+    getQuoteList = async QuoteRetrieved => {
        try{ 
         quotesRef.onSnapshot(snapshot => {
             this.setState({quoteList: []});
@@ -74,7 +74,16 @@ class quoteScreen extends React.Component {
             });
             QuoteRetrieved(this.state.quoteList);
             console.log(this.state.quoteList);
-
+            this.state.quoteList.forEach(item => {
+                if (item.date === this.state.date) {
+                    console.log("matches date");
+                }
+                else{
+                    console.log("no quote");
+                    this.writeQuote();
+                    this.getQuoteList();
+                }
+            });
         });
         }catch(err) {
             console.log('Error getting documents', err);
@@ -101,6 +110,7 @@ class quoteScreen extends React.Component {
                 this.state.todaysauthor = item.quote.author;
             }
             else{
+                console.log("no quote");
                 this.writeQuote();
             }
         });
@@ -137,5 +147,3 @@ const styles = StyleSheet.create({
 });
 
 export default quoteScreen;
-
-
