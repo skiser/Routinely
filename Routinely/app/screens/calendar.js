@@ -9,7 +9,6 @@ import '@react-native-firebase/auth';
 import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
-import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
 import iquotes from 'iquotes';
 
 
@@ -914,8 +913,12 @@ class CalendarScreen extends Component {
         this.state.quoteList.forEach(item => {
             if (item.date === this.state.date) {
                 this.state.todaysquote = item.quote;
-                console.log("this is the quote for today"+this.state.todaysquote.author);
+                //console.log("this is the quote for today"+this.state.todaysquote.author);
                 this.state.todaysauthor = item.quote.author;
+            }
+            else{
+              this.state.todaysquote = this.state.quote;
+              this.state.todaysauthor = this.state.quote.author;
             }
         });
   }
