@@ -10,6 +10,7 @@ import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
+import iquotes from 'iquotes';
 
 
 const today = new Date();
@@ -48,6 +49,9 @@ const dates = [fastDate, today].concat(futureDates);
 
 var events = [];
 
+const quote = iquotes.random();
+
+
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -79,6 +83,10 @@ const signRef = firestore()
   .collection('users')
   .doc(user.email);
 
+const quotesRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('quotes');
 
 //const eventsRef = eRef.collection('event');
 
@@ -121,6 +129,11 @@ class CalendarScreen extends Component {
       sign: '',
       isLoading: true,
       data: '',
+      quoteList: [],
+      todaysquote: '',
+      todaysauthor: '',
+      date: todayfull,
+      quote: quote,
     };
   }
   sortEvents = (date1, date2) => {
@@ -217,7 +230,6 @@ class CalendarScreen extends Component {
     }
   };
 
-
   getSign = async signRetrieved=> {
     let getSign = signRef.get()
       .then(doc => {
@@ -234,9 +246,9 @@ class CalendarScreen extends Component {
       .catch(err => {
         console.log('Error getting document', err);
       });
-    };
+  };
 
-   getHoroscope = () =>{
+  getHoroscope = () =>{
     fetch('https://horoscope-free-api.herokuapp.com/?time=today&sign='+this.state.sign.sign)
         .then((response) => response.json())
         .then((responseJson) => {
@@ -253,7 +265,7 @@ class CalendarScreen extends Component {
             console.error(error);
         });
 
-  }
+  };
 
   onEventsRetrieved = eventList => {
     this.setState(prevState => ({
@@ -279,12 +291,54 @@ class CalendarScreen extends Component {
     }));
   };
 
+  writeQuote = () =>{
+    try{
+    quotesRef.doc().set({
+        quote: this.state.quote,
+        date: this.state.date,
+    })
+    }
+    catch(error){
+        console.log('addQuote failed');
+    }
+  };
+
+  getQuoteList = async quoteRetrieved => {
+    try{ 
+    quotesRef.onSnapshot(snapshot => {
+        this.setState({quoteList: []});
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            this.writeQuote();
+            this.getQuoteList();
+        } 
+        snapshot.forEach(doc => {
+            this.state.quoteList.push(doc.data());
+        });
+        quoteRetrieved(this.state.quoteList);
+        console.log(this.state.quoteList);
+    });
+    }catch(err) {
+        console.log('Error getting documents', err);
+    };
+
+  };
+
+  onQuoteRetrieved = quoteList => {
+    //console.log("event list:" +eventList);
+    this.setState(prevState => ({
+        quoteList: (prevState.quoteList = quoteList),
+    }));
+  };
+
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
     this.getSign(this.onSignRetrieved);
-  }
+    this.getQuoteList(this.onQuoteRetrieved);
+  };
+
   buttonPressed(id) {
     Alert.alert(id);
   }
@@ -613,6 +667,7 @@ class CalendarScreen extends Component {
 
   listDay = item => {
     const date = new Date(item.title);
+    this.getTodaysquote();
     return (
       <View>
         <Text
@@ -627,6 +682,11 @@ class CalendarScreen extends Component {
         </Text>
         <Text style={styles.quoteTitle}> Your Horoscope of the Day:</Text>
         <Text style={styles.quote}> {JSON.stringify(this.state.data)} </Text>
+
+        <Text style={styles.quoteTitle}> Quote of the Day:</Text>
+        <Text style={styles.quote}> {this.state.todaysquote.quote} </Text>
+        <Text style={styles.quoteTitle}> Author: </Text>
+        <Text style={styles.quote}> {this.state.todaysquote.author} </Text>
         <FlatList
           style={{borderRadius: 10}}
           data={item.data}
@@ -849,6 +909,17 @@ class CalendarScreen extends Component {
     };
   };
 
+  
+  getTodaysquote(){
+        this.state.quoteList.forEach(item => {
+            if (item.date === this.state.date) {
+                this.state.todaysquote = item.quote;
+                console.log("this is the quote for today"+this.state.todaysquote.author);
+                this.state.todaysauthor = item.quote.author;
+            }
+        });
+  }
+
   render() {
     return (
       <CalendarProvider
@@ -877,7 +948,6 @@ class CalendarScreen extends Component {
           />
           <View style={styles.container}>
             <Notes />
-            <Quotes />
             <FlatList
               data={this.state.wholeList}
               style={{}}
