@@ -1,21 +1,6 @@
 import React, {Component} from 'react';
-import {
-  Alert,
-  Button,
-  FlatList,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  AgendaList,
-  CalendarProvider,
-  ExpandableCalendar,
-} from 'react-native-calendars';
+import {Alert, Button, FlatList, Image, Platform, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View,} from 'react-native';
+import {AgendaList, CalendarProvider, ExpandableCalendar,} from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
 import firebase from '@react-native-firebase/app';
@@ -90,6 +75,11 @@ const alarmsRef = firestore()
   .doc(user.email)
   .collection('alarms');
 
+const signRef = firestore()
+  .collection('users')
+  .doc(user.email);
+
+
 //const eventsRef = eRef.collection('event');
 
 function getFutureDates(days) {
@@ -128,6 +118,9 @@ class CalendarScreen extends Component {
       chosenDate: date,
       week: [],
       wholeList: [{title: date, data: []}],
+      sign: '',
+      isLoading: true,
+      data: '',
     };
   }
   sortEvents = (date1, date2) => {
@@ -154,39 +147,29 @@ class CalendarScreen extends Component {
             return;
           } else if (this.state.wholeList.length === 0) {
             const date = event.chosenDate.toDate();
-            console.log('date: ' + date);
             this.state.wholeList.push({
               title: event.chosenDate.toDate().toDateString(),
               data: [event],
             });
-            console.log('title: ' + event.chosenDate.toDate().toDateString());
           } else if (
             this.state.wholeList.every(
               item => item.title !== event.chosenDate.toDate().toDateString(),
             )
           ) {
-            console.log('added');
             this.state.wholeList.push({
               title: event.chosenDate.toDate().toDateString(),
               data: [event],
             });
-            console.log('title: ' + event.chosenDate.toDate().toDateString());
           } else {
             this.state.wholeList.forEach(item => {
               if (item.title === event.chosenDate.toDate().toDateString()) {
-                console.log(
-                  'title: ' + item.title + ', ' + 'event: ' + item.title,
-                );
                 item.data.push(event);
               }
             });
           }
         });
         this.state.wholeList.forEach(item => {
-          console.log(item);
         });
-
-        console.log('whole: ' + this.state.wholeList);
         this.state.eventList.sort(this.sortEvents);
         eventRetrieved(this.state.eventList);
       });
@@ -211,7 +194,6 @@ class CalendarScreen extends Component {
         this.setState({taskList: []});
         querySnapshot.forEach(tasks => {
           this.state.taskList.push(tasks.data());
-          //console.log("this is the event " +event.get('chosenDate').toDate());
         });
         this.state.taskList.sort(this.sortTasks);
         taskRetrieved(this.state.taskList);
@@ -227,34 +209,73 @@ class CalendarScreen extends Component {
         this.setState({alarmList: []});
         querySnapshot.forEach(alarms => {
           this.state.alarmList.push(alarms.data());
-          //console.log("this is the event " +event.get('chosenDate').toDate());
         });
         alarmRetrieved(this.state.alarmList);
-        console.log('GETTING ALARMS');
       });
     } catch (error) {
       console.log('problem retrieving tasks');
     }
   };
 
+
+  getSign = async signRetrieved=> {
+    let getSign = signRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          console.log('Document data:', doc.data());
+          console.log(doc.data());
+          this.setState({sign:doc.data()})
+          console.log(this.state.sign.sign);
+          this.getHoroscope();
+         }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
+    };
+
+   getHoroscope = () =>{
+    fetch('https://horoscope-free-api.herokuapp.com/?time=today&sign='+this.state.sign.sign)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                isLoading:false,
+                data:responseJson.data
+            }, function(){
+        
+            });
+            console.log("horoscope: " +this.state.data + " sign: " + this.state.sign.sign);
+            //oroscopeRetrieved(this.state.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+  }
+
   onEventsRetrieved = eventList => {
-    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       eventList: (prevState.eventList = eventList),
     }));
   };
 
   onTasksRetrieved = taskList => {
-    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       taskList: (prevState.taskList = taskList),
     }));
   };
 
   onAlarmsRetrieved = alarmList => {
-    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       alarmList: (prevState.alarmList = alarmList),
+    }));
+  };
+
+  onSignRetrieved = sign => {
+    this.setState(prevState => ({
+      sign: (prevState.sign = sign),
     }));
   };
 
@@ -262,6 +283,7 @@ class CalendarScreen extends Component {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
+    this.getSign(this.onSignRetrieved);
   }
   buttonPressed(id) {
     Alert.alert(id);
@@ -273,7 +295,6 @@ class CalendarScreen extends Component {
 
   getTodays() {
     const todayevent = this.state.eventList;
-    console.log('today: ' + todayfull);
 
     todayevent.forEach(event => {
       const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
@@ -281,16 +302,9 @@ class CalendarScreen extends Component {
       const year = event.chosenDate.toDate().getUTCFullYear();
 
       const markdate = year + '-' + month + '-' + day;
-      console.log(markdate);
       if (markdate == todayfull) {
         this.state.todayevent.push(event);
-        console.log('added to today');
-        //this.state.eventList.pop(event);
-        //console.log("removed from original");
       }
-      console.log('before' + this.state.eventList);
-      //const groupedList = this.state.eventList.groupBy(event.chosenDate);
-      //console.log("after"+groupedList);
     });
   }
 
@@ -328,13 +342,11 @@ class CalendarScreen extends Component {
       marked[markdate] = {marked: true, dotColor: '#F3AE42'};
       console.log('successfully added');
     });
-    //console.log('Marked:' +marked);
     return marked;
   };
 
   edittingAlarm = item => {
     const index = this.state.alarmList.indexOf(item);
-    console.log('item:' + item);
     this.state.alarmList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -365,7 +377,6 @@ class CalendarScreen extends Component {
 
   edittingEvent = item => {
     const index = this.state.eventList.indexOf(item);
-    console.log('event:' + item);
     this.state.eventList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -396,7 +407,6 @@ class CalendarScreen extends Component {
 
   edittingTask = item => {
     const index = this.state.taskList.indexOf(item);
-    console.log('task:' + item);
     this.state.taskList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -615,6 +625,8 @@ class CalendarScreen extends Component {
           {monthNames[date.getMonth()]} {date.getDate()}{' '}
           {dayNames[date.getDay()]}
         </Text>
+        <Text style={styles.quoteTitle}> Your Horoscope of the Day:</Text>
+        <Text style={styles.quote}> {JSON.stringify(this.state.data)} </Text>
         <FlatList
           style={{borderRadius: 10}}
           data={item.data}
@@ -691,10 +703,7 @@ class CalendarScreen extends Component {
 
   deleteEvent = item => {
     const index = this.state.eventList.indexOf(item);
-    //console.log(index);
-    console.log(item);
     this.state.eventList.splice(index, 1);
-    //console.log("deleting:" +item.title);
     let query = firestore()
       .collection('users')
       .doc(user.email)
@@ -718,18 +727,11 @@ class CalendarScreen extends Component {
       .catch(err => {
         console.log('Error getting documents', err);
       });
-    //const events = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get();
-    console.log(events);
-    //this.getEvents(this.onEventsRetrieved);
-    console.log('success');
   };
 
   deleteTask = item => {
     const index = this.state.taskList.indexOf(item);
-    //console.log(index);
-    console.log(item);
     this.state.taskList.splice(index, 1);
-    //console.log("deleting:" +item.title);
     let query = firestore()
       .collection('users')
       .doc(user.email)
@@ -758,10 +760,7 @@ class CalendarScreen extends Component {
 
   deleteAlarm = item => {
     const index = this.state.alarmList.indexOf(item);
-    //console.log(index);
-    console.log(item);
     this.state.taskList.splice(index, 1);
-    //console.log("deleting:" +item.title);
     let query = firestore()
       .collection('users')
       .doc(user.email)
@@ -785,7 +784,6 @@ class CalendarScreen extends Component {
       .catch(err => {
         console.log('Error getting documents', err);
       });
-    console.log('success');
   };
 
   showWeek = item => {
@@ -801,8 +799,6 @@ class CalendarScreen extends Component {
       today++;
     }
     const index = dayNames.indexOf(item);
-    console.log(this.state.week);
-
     return (
       <View>
         <Text> {this.state.week[index]} </Text>
@@ -886,7 +882,6 @@ class CalendarScreen extends Component {
               data={this.state.wholeList}
               style={{}}
               renderItem={({item}) => {
-                //console.log("what: "+ item.title);
                 return this.listDay(item);
               }}
             />
