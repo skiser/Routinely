@@ -21,12 +21,11 @@ if (firebase.auth().currentUser !== null) {
   user.email = currentUser.email;
 }
 
-const date = new Date();
-const month = date.getMonth() + 1; //months from 1-12
-const day = date.getDate();
-const year = date.getFullYear();
-
-const originaldate = year + '-' + month + '-' + day;
+const today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+const yyyy = today.getFullYear();
+const todayfull = yyyy + '-' + mm + '-' + dd;
 
 const quote = iquotes.random();
 
@@ -43,7 +42,7 @@ class quoteScreen extends React.Component {
       quoteList: [],
       todaysquote: '',
       todaysauthor: '',
-      date: originaldate,
+      date: todayfull,
       quote: quote,
     };
     }
@@ -60,7 +59,7 @@ class quoteScreen extends React.Component {
         }
     };
 
-    getQuoteList = async QuoteRetrieved => {
+    getQuoteList = async quoteRetrieved => {
        try{ 
         quotesRef.onSnapshot(snapshot => {
             this.setState({quoteList: []});
@@ -72,18 +71,8 @@ class quoteScreen extends React.Component {
             snapshot.forEach(doc => {
                 this.state.quoteList.push(doc.data());
             });
-            QuoteRetrieved(this.state.quoteList);
+            quoteRetrieved(this.state.quoteList);
             console.log(this.state.quoteList);
-            this.state.quoteList.forEach(item => {
-                if (item.date === this.state.date) {
-                    console.log("matches date");
-                }
-                else{
-                    console.log("no quote");
-                    this.writeQuote();
-                    this.getQuoteList();
-                }
-            });
         });
         }catch(err) {
             console.log('Error getting documents', err);
@@ -109,15 +98,12 @@ class quoteScreen extends React.Component {
                 console.log("this is the quote for today"+this.state.todaysquote.author);
                 this.state.todaysauthor = item.quote.author;
             }
-            else{
-                console.log("no quote");
-                this.writeQuote();
-            }
         });
     }
     
 
     render() { 
+        console.log("were here");
         this.getTodaysquote();
         return (
             <View>
