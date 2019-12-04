@@ -19,6 +19,7 @@
     "@uhl7792/react-use-quote-of-the-day": "^1.0.0",
     "iquotes": "^1.0.5",
     "moment": "^2.24.0",
+    "native-base": "^2.13.8",
     "react": "16.9.0",
     "react-digital-clock": "^0.1.2",
     "react-dom": "^16.10.2",

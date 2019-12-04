@@ -14,6 +14,7 @@ import WeatherScreen from './screens/weather';
 import NoteScreen from './screens/note';
 import QuoteScreen from './screens/quotes';
 import HoroscopeScreen from './screens/horoscope';
+import NewsScreen from './screens/news'
 
 const AuthStack = createStackNavigator(
   {
@@ -37,6 +38,7 @@ const AppStack = createStackNavigator(
     EditEvent: EditEventScreen,
     Notes: NotesScreen,
     Note: NoteScreen,
+    News: NewsScreen,
     Weather: WeatherScreen,
     Quotes: QuoteScreen,
     Horoscope: HoroscopeScreen,
@@ -53,7 +55,7 @@ export default createAppContainer(
       Auth: AuthStack,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: 'App',
     },
   ),
 );
