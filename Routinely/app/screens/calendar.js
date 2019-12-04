@@ -25,6 +25,7 @@ import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
+import WeatherToday from "../components/weatherToday";
 
 
 const today = new Date();
@@ -880,6 +881,7 @@ class CalendarScreen extends Component {
             headerStyle={styles.calendar} // for horizontal only
           />
           <View style={styles.container}>
+            <WeatherToday />
             <Notes />
             <Quotes />
             <FlatList
