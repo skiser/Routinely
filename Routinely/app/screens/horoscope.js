@@ -11,6 +11,8 @@ import {
     View,
     StyleSheet,
     ListRenderItem,
+    TouchableHighlight,
+    Image,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
@@ -33,23 +35,6 @@ class horoscopeScreen extends React.Component {
         relativePath: 'https://horoscope-free-api.herokuapp.com',
     };
     }
-    
-    /*(): void {
-        fetch('https://horoscope-free-api.herokuapp.com/?time=today&sign='+this.state.sign)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
-                isLoading:false,
-                data:responseJson.data
-            }, function(){
-
-            });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
-    }*/
 
     addHoroscope = () => {
     //const title = this.state.title.toString();
@@ -73,71 +58,613 @@ class horoscopeScreen extends React.Component {
 
     render() { 
         return (
-            <View>
-                <AwesomeButtonBlue
-                width={250}
+          <View>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+              backgroundColor: '#6096FD',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Aries'})}>
-                Aries (March 21 - April 19)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/alarm.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Aries'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Aries'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Aries (March 21 - April 19)'}
+              </Text>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              backgroundColor: '#268E1E',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Taurus'})}>
-                Taurus (April 20 - May 20)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/Notes.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Taurus'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Taurus'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Taurus (April 20 - May 20)'}
+              </Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#E14628',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Gemini'})}>
-                Gemini (May 21 - Jun 20)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/toDo.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Gemini'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Gemini'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Gemini (May 21 - Jun 20)'}
+              </Text>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              backgroundColor: '#F3AE42',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Cancer'})}>
-                Cancer (Jun 21 - Jul 22)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/alarm-clock.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Cancer'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Cancer'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Cancer (Jun 21 - Jul 22)'}
+              </Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Virgo'})}>
-                Virgo (Aug 23 - Sept 22)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Virgo'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Virgo'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Virgo (Aug 23 - Sept 22)'}
+              </Text>
+            </TouchableHighlight>
+            </View>      
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Libra'})}>
-                Libra (Sept 23 - Oct 22)
-                </AwesomeButtonBlue><AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Libra'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Libra'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Libra (Sept 23 - Oct 22)'}
+              </Text>
+            </TouchableHighlight>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Scorpio'})}>
-                Scorpio (Oct 23 - Nov 21)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Scorpio'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Scorpio'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Scorpio (Oct 23 - Nov 21)'}
+              </Text>
+            </TouchableHighlight>
+            </View>      
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Sagittarius'})}>
-                Sagittarius (Nov 22 - Dec 21)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Sagittarius'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Sagittarius'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Sagittarius (Nov 22 - Dec 21)'}
+              </Text>
+            </TouchableHighlight>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Capricorn'})}>
-                Capricorn (Dec 22 - Jan 19)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Capricorn'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Capricorn'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Capricorn (Dec 22 - Jan 19)'}
+              </Text>
+            </TouchableHighlight>
+            </View>      
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Aquarius'})}>
-                Aquarius (Jan 20 - Feb 18)
-                </AwesomeButtonBlue>
-                <AwesomeButtonBlue
-                width={250}
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Aquarius'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Aquarius'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Aquarius (Jan 20 - Feb 18)'}
+              </Text>
+            </TouchableHighlight>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Pisces'})}>
-                Pisces (Feb 19 - March 20)
-                </AwesomeButtonBlue>
-
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Pisces'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Pisces'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Pisces (Feb 19 - March 20'}
+              </Text>
+            </TouchableHighlight>
+            </View>
+            </View>      
+            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row'}}>
                 <AwesomeButtonBlue
                 width={250}
                 onPress={() => this.addHoroscope()}>
                 Set Horoscope
                 </AwesomeButtonBlue>
-
-                {/* <Text style={styles.quoteTitle}> Your Horoscope of the Day:</Text>
-                <Text style={styles.quote}> {JSON.stringify(this.state.data)} </Text> */}
             </View>
+            </View>
+            </View>
+
         );
     }
     
