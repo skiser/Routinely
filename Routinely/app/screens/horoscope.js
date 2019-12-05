@@ -288,6 +288,59 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Leo'})}>
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.setState({sign:'Leo'})}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Leo'})}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 14,
+                }}>
+                {'Leo (June 21 - July 22)'}
+              </Text>
+            </TouchableHighlight>
+            </View>      
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
                 onPress={() => this.setState({sign:'Virgo'})}>
                 <Image
                   style={{
@@ -328,7 +381,9 @@ class horoscopeScreen extends React.Component {
                 {'Virgo (Aug 23 - Sept 22)'}
               </Text>
             </TouchableHighlight>
-            </View>      
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
           <View
             style={{
               backgroundColor: '#7BD5F5',
@@ -381,9 +436,7 @@ class horoscopeScreen extends React.Component {
                 {'Libra (Sept 23 - Oct 22)'}
               </Text>
             </TouchableHighlight>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
+            </View>      
           <View
             style={{
               backgroundColor: '#7BD5F5',
@@ -436,7 +489,9 @@ class horoscopeScreen extends React.Component {
                 {'Scorpio (Oct 23 - Nov 21)'}
               </Text>
             </TouchableHighlight>
-            </View>      
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
           <View
             style={{
               backgroundColor: '#7BD5F5',
@@ -489,9 +544,7 @@ class horoscopeScreen extends React.Component {
                 {'Sagittarius (Nov 22 - Dec 21)'}
               </Text>
             </TouchableHighlight>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
+            </View>      
           <View
             style={{
               backgroundColor: '#7BD5F5',
@@ -544,7 +597,9 @@ class horoscopeScreen extends React.Component {
                 {'Capricorn (Dec 22 - Jan 19)'}
               </Text>
             </TouchableHighlight>
-            </View>      
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
           <View
             style={{
               backgroundColor: '#7BD5F5',
@@ -598,9 +653,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-          <View
+            <View
             style={{
               backgroundColor: '#7BD5F5',
               width: 190,
@@ -655,7 +708,6 @@ class horoscopeScreen extends React.Component {
             </View>
             </View>      
             <View style={{flexDirection: 'row'}}>
-            <View style={{flexDirection: 'row'}}>
                 <AwesomeButtonBlue
                 width={250}
                 onPress={() => this.addHoroscope()}>
@@ -663,8 +715,6 @@ class horoscopeScreen extends React.Component {
                 </AwesomeButtonBlue>
             </View>
             </View>
-            </View>
-
         );
     }
     
