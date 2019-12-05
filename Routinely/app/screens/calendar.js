@@ -10,6 +10,8 @@ import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 import iquotes from 'iquotes';
+import DropdownMenu from 'react-native-dropdown-menu';
+import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
 
 
 const today = new Date();
@@ -133,6 +135,7 @@ class CalendarScreen extends Component {
       todaysauthor: '',
       date: todayfull,
       quote: quote,
+      text: '',
     };
   }
   sortEvents = (date1, date2) => {
@@ -679,13 +682,26 @@ class CalendarScreen extends Component {
           {monthNames[date.getMonth()]} {date.getDate()}{' '}
           {dayNames[date.getDay()]}
         </Text>
-        <Text style={styles.quoteTitle}> Your Horoscope of the Day:</Text>
-        <Text style={styles.quote}> {JSON.stringify(this.state.data)} </Text>
 
-        <Text style={styles.quoteTitle}> Quote of the Day:</Text>
-        <Text style={styles.quote}> {this.state.todaysquote.quote} </Text>
-        <Text style={styles.quoteTitle}> Author: </Text>
-        <Text style={styles.quote}> {this.state.todaysquote.author} </Text>
+        <MenuProvider style={{ flexDirection: "column", padding: 5 }}>
+        <Menu onSelect={value => alert(`${value}`)}>
+          <MenuTrigger  >
+          <Text style={styles.headerText}>Todays Quote/Horoscope</Text>
+          </MenuTrigger  >
+
+          <MenuOptions>
+            <MenuOption value={this.state.todaysquote.quote}>
+              <Text style={styles.menuContent}>Quote</Text>
+            </MenuOption>
+            <MenuOption value={this.state.data}>
+              <Text style={styles.menuContent}>Horoscope</Text>
+            </MenuOption>
+          </MenuOptions>
+
+        </Menu>
+        </MenuProvider>
+        
+
         <FlatList
           style={{borderRadius: 10}}
           data={item.data}
@@ -1071,6 +1087,19 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
   },
+  headerText: {
+    fontSize: 15,
+    margin: 10,
+    fontWeight: "bold",
+    height: 50,
+    bottom: 5,
+  },
+  menuContent: {
+    color: "#000",
+    padding: 2,
+    fontSize: 10,
+    width: 400,
+  }
 });
 
 export default CalendarScreen;
