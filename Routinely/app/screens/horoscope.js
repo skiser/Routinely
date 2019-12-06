@@ -63,11 +63,11 @@ class horoscopeScreen extends React.Component {
             <View
               style={{
               backgroundColor: '#6096FD',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+              marginTop: 5,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -75,27 +75,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Aries'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
                   source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Aries'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -103,24 +90,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Aries'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 45,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Aries (March 21 - April 19)'}
+                {'Aries'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 5,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(March 21 - April 19)'}
               </Text>
             </TouchableHighlight>
           </View>
           <View
             style={{
               backgroundColor: '#268E1E',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+              margin: 10,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -128,27 +128,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Taurus'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
+                    marginLeft: 35,
                     marginBottom: 10,
                   }}
                   source={require('../components/img/Notes.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Taurus'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -156,26 +143,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Taurus'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 35,
+                  paddingBottom: 0,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Taurus (April 20 - May 20)'}
+                {'Taurus'}
+              </Text>
+            </TouchableHighlight>
+            <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 10,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(April 20 - May 20)'}
               </Text>
             </TouchableHighlight>
           </View>
-        </View>
-        <View style={{flexDirection: 'row'}}>
           <View
-            style={{
-              backgroundColor: '#E14628',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
-              marginLeft: 10,
+              style={{
+              backgroundColor: '#6096FD',
               marginTop: 10,
+              width: 125,
+              height: 150,
+              marginLeft: 5,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -183,27 +181,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Gemini'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/toDo.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Gemini'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -211,24 +196,41 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Gemini'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 35,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Gemini (May 21 - Jun 20)'}
+                {'Gemini'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Gemini'})}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 10,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(May 21 - June 20)'}
               </Text>
             </TouchableHighlight>
           </View>
-          <View
-            style={{
-              backgroundColor: '#F3AE42',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+              backgroundColor: '#6096FD',
+              marginTop: 5,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -236,27 +238,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Cancer'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm-clock.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Cancer'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -264,26 +253,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Cancer'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 35,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Cancer (Jun 21 - Jul 22)'}
+                {'Cancer'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 10,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(June 21 - July 22)'}
               </Text>
             </TouchableHighlight>
           </View>
-        </View>
-        <View style={{flexDirection: 'row'}}>
           <View
             style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+              backgroundColor: '#268E1E',
+              margin: 10,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -291,27 +291,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Leo'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
+                    marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/Notes.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Leo'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -319,24 +306,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Leo'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 45,
+                  paddingBottom: 0,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Leo (June 21 - July 22)'}
+                {'Leo'}
               </Text>
             </TouchableHighlight>
-            </View>      
+            <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 12,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(July 23 - Aug 22)'}
+              </Text>
+            </TouchableHighlight>
+          </View>
           <View
-            style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
-              marginLeft: 10,
+              style={{
+              backgroundColor: '#6096FD',
               marginTop: 10,
+              width: 125,
+              height: 150,
+              marginLeft: 5,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -344,27 +344,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Virgo'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Virgo'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -372,26 +359,39 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Virgo'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 40,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Virgo (Aug 23 - Sept 22)'}
+                {'Virgo'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 12,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Aug 23 - Sept 22)'}
               </Text>
             </TouchableHighlight>
-            </View>
+          </View>
           </View>
           <View style={{flexDirection: 'row'}}>
-          <View
-            style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+            <View
+              style={{
+              backgroundColor: '#6096FD',
+              marginTop: 5,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -399,27 +399,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Libra'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Libra'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -427,24 +414,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Libra'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 45,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Libra (Sept 23 - Oct 22)'}
+                {'Libra'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 12,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Sept 23 - Oct 22)'}
               </Text>
             </TouchableHighlight>
-            </View>      
+          </View>
           <View
             style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+              backgroundColor: '#268E1E',
+              margin: 10,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -452,27 +452,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Scorpio'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
+                    marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/Notes.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Scorpio'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -480,26 +467,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Scorpio'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 35,
+                  paddingBottom: 0,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Scorpio (Oct 23 - Nov 21)'}
+                {'Scorpio'}
               </Text>
             </TouchableHighlight>
-            </View>
+            <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 14,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Oct 23 - Nov 21)'}
+              </Text>
+            </TouchableHighlight>
           </View>
-          <View style={{flexDirection: 'row'}}>
           <View
-            style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
-              marginLeft: 10,
+              style={{
+              backgroundColor: '#6096FD',
               marginTop: 10,
+              width: 125,
+              height: 150,
+              marginLeft: 5,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -507,27 +505,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Sagittarius'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Sagittarius'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -535,24 +520,41 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Sagittarius'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 25,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Sagittarius (Nov 22 - Dec 21)'}
+                {'Sagittarius'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign:'Sagittarius'})}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 14,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Nov 22 - Dec 21)'}
               </Text>
             </TouchableHighlight>
-            </View>      
-          <View
-            style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+          </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+              backgroundColor: '#6096FD',
+              marginTop: 5,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -560,27 +562,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Capricorn'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Capricorn'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -588,26 +577,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Capricorn'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 25,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Capricorn (Dec 22 - Jan 19)'}
+                {'Capricorn'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 14,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Dec 22 - Jan 19)'}
               </Text>
             </TouchableHighlight>
-            </View>
           </View>
-          <View style={{flexDirection: 'row'}}>
           <View
             style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
+              backgroundColor: '#268E1E',
+              margin: 10,
+              width: 125,
+              height: 150,
               marginLeft: 10,
-              marginTop: 10,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -615,27 +615,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Aquarius'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
+                    marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/Notes.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Aquarius'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -643,24 +630,37 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Aquarius'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 30,
+                  paddingBottom: 0,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Aquarius (Jan 20 - Feb 18)'}
+                {'Aquarius'}
               </Text>
             </TouchableHighlight>
-            </View>
-            <View
-            style={{
-              backgroundColor: '#7BD5F5',
-              width: 190,
-              height: 100,
-              borderRadius: 10,
-              marginLeft: 10,
+            <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 15,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Jan 20 - Feb 18)'}
+              </Text>
+            </TouchableHighlight>
+          </View>
+          <View
+              style={{
+              backgroundColor: '#6096FD',
               marginTop: 10,
+              width: 125,
+              height: 150,
+              marginLeft: 5,
+              borderRadius: 100,
             }}>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -668,27 +668,14 @@ class horoscopeScreen extends React.Component {
                 onPress={() => this.setState({sign:'Pisces'})}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    marginLeft: 35,
+                    marginBottom: 5,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/alarm.png')}
                 />
-              </TouchableHighlight>
-              <TouchableHighlight
-                underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Pisces'})}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    marginLeft: 90,
-                    fontWeight: 'normal',
-                  }}>
-                  {' + '}
-                </Text>
               </TouchableHighlight>
             </View>
             <TouchableHighlight
@@ -696,43 +683,57 @@ class horoscopeScreen extends React.Component {
               onPress={() => this.setState({sign:'Pisces'})}>
               <Text
                 style={{
-                  paddingLeft: 10,
-                  paddingBottom: 5,
+                  paddingLeft: 40,
+                  paddingBottom: 1,
                   color: 'white',
                   fontWeight: 'normal',
-                  fontSize: 14,
+                  fontSize: 18,
                 }}>
-                {'Pisces (Feb 19 - March 20'}
+                {'Pisces'}
+              </Text>
+              </TouchableHighlight>
+              <TouchableHighlight>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  paddingLeft: 8,
+                  paddingBottom: 0,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 12,
+                }}>
+                {'(Feb 19 - March 20)'}
               </Text>
             </TouchableHighlight>
-            </View>
-            </View>      
-            <View style={{flexDirection: 'row'}}>
-                <AwesomeButtonBlue
-                width={250}
-                onPress={() => this.addHoroscope()}>
-                Set Horoscope
-                </AwesomeButtonBlue>
-            </View>
-            </View>
+          </View>
+          </View>
+          <View style={{paddingLeft: 35}}>
+           <AwesomeButtonBlue
+          width={350}
+          title="add Horoscope"
+          onPress={() => this.addHoroscope()}>
+          Edit Horoscope
+        </AwesomeButtonBlue>
+        </View>
+          </View>
         );
     }
     
 }
 
 const styles = StyleSheet.create({
-    quoteTitle: {
-        fontSize: 25,
-        marginTop: 15,
-        paddingRight: 10,
-        paddingLeft: 10,
-    },
-    quote: {
-        fontSize: 20,
-        marginTop: 15,
-        paddingRight: 10,
-        paddingLeft: 10,
-    },
+  quoteTitle: {
+    fontSize: 25,
+    marginTop: 15,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  quote: {
+    fontSize: 20,
+    marginTop: 15,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
 });
 
 export default horoscopeScreen;
