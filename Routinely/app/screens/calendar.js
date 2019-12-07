@@ -136,6 +136,7 @@ class CalendarScreen extends Component {
       date: todayfull,
       quote: quote,
       text: '',
+      ofday: true,
     };
   }
   sortEvents = (date1, date2) => {
@@ -232,14 +233,12 @@ class CalendarScreen extends Component {
     }
   };
 
-  getSign = async signRetrieved=> {
+  getSign = ()=> {
     let getSign = signRef.get()
       .then(doc => {
         if (!doc.exists) {
           console.log('No such document!');
         } else {
-          console.log('Document data:', doc.data());
-          console.log(doc.data());
           this.setState({sign:doc.data()})
           console.log(this.state.sign.sign);
           this.getHoroscope();
@@ -305,7 +304,7 @@ class CalendarScreen extends Component {
     }
   };
 
-  getQuoteList = async quoteRetrieved => {
+  getQuoteList = () => {
     try{ 
     quotesRef.onSnapshot(snapshot => {
         this.setState({quoteList: []});
@@ -317,7 +316,6 @@ class CalendarScreen extends Component {
         snapshot.forEach(doc => {
             this.state.quoteList.push(doc.data());
         });
-        quoteRetrieved(this.state.quoteList);
         console.log(this.state.quoteList);
     });
     }catch(err) {
@@ -337,7 +335,7 @@ class CalendarScreen extends Component {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
-    this.getSign(this.onSignRetrieved);
+    this.getSign();
     this.getQuoteList(this.onQuoteRetrieved);
   };
 
@@ -667,23 +665,27 @@ class CalendarScreen extends Component {
     );
   };
 
+
+
   listDay = item => {
     const date = new Date(item.title);
-    this.getTodaysquote();
-    return (
-      <View>
-        <Text
-          style={{
-            marginBottom: 5,
-            marginTop: 5,
-            paddingTop: 5,
-            backgroundColor: '#FFFFFF',
-          }}>
-          {monthNames[date.getMonth()]} {date.getDate()}{' '}
-          {dayNames[date.getDay()]}
-        </Text>
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = date.getFullYear();
+    const eventdate = yyyy + '-' + mm + '-' + dd;
 
-        <MenuProvider style={{ flexDirection: "column", padding: 5 }}>
+
+    this.getTodaysquote();
+    
+    const today = new Date();
+    const dd2 = String(today.getDate()).padStart(2, '0');
+    const mm2 = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy2 = today.getFullYear();
+    const todayfull = yyyy2 + '-' + mm2 + '-' + dd2;
+
+    console.log(eventdate);
+
+    const daily = <MenuProvider style={{ flexDirection: "column", padding: 5 }}>
         <Menu onSelect={value => alert(`${value}`)}>
           <MenuTrigger  >
           <Text style={styles.headerText}>Todays Quote/Horoscope</Text>
@@ -699,7 +701,32 @@ class CalendarScreen extends Component {
           </MenuOptions>
 
         </Menu>
-        </MenuProvider>
+        </MenuProvider>;
+
+    let message = null; 
+    if(eventdate === todayfull){
+      message = daily;
+    }
+    else{
+      message = null;
+    }
+
+
+    return (
+      <View>
+        <Text
+          style={{
+            marginBottom: 5,
+            marginTop: 5,
+            paddingTop: 5,
+            backgroundColor: '#FFFFFF',
+          }}>
+          {monthNames[date.getMonth()]} {date.getDate()}{' '}
+          {dayNames[date.getDay()]}
+        </Text>
+        <View>
+          {message}
+        </View>
         
 
         <FlatList
