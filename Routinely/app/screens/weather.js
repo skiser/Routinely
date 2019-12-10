@@ -29,13 +29,13 @@ class WeatherScreen extends Component {
       boolean: '',
     };
   }
-  switch1Value = toggleRef.get().then(doc => {
+
+  setToggleState = toggleRef.get().then(doc => {
     if (!doc.exists) {
       console.log('No such document!');
     } else {
       console.log('Document data:', doc.data());
       this.state.ToggleState = doc.data().boolean;
-      console.log('Switch Value:', this.state.ToggleState);
     }
   });
   catch(error) {
@@ -43,9 +43,10 @@ class WeatherScreen extends Component {
   }
 
   toggleSwitch1 = value => {
-    console.log('Toggle Value:', this.state.ToggleState);
-    console.log('Value:', this.switch1Value);
-    if (this.state.ToggleState === this.switch1Value) {
+    this.setState({switch1Value: value});
+    console.log('Toggle Firebase Value:', this.state.ToggleState);
+    console.log('Button State:', value);
+    if (value === false) {
       try {
         toggleRef.set({
           boolean: false,
@@ -56,18 +57,18 @@ class WeatherScreen extends Component {
         console.log(error);
       }
     }
-    if (this.state.ToggleState === false) {
+    if (value === true) {
       try {
         toggleRef.set({
           boolean: true,
         });
+
         console.log('WeatherToggle Added');
       } catch (error) {
         console.log('WeatherToggle failed');
         console.log(error);
       }
     }
-    this.setState({switch1Value: value});
   };
   componentDidMount(): void {
     fetch(
@@ -83,7 +84,7 @@ class WeatherScreen extends Component {
     )
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson.city_name);
+        //console.log(responseJson.city_name);
         this.setState({
           loading: false,
           dataSource: responseJson,

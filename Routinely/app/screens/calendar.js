@@ -25,8 +25,8 @@ import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
-import WeatherToday from "../components/weatherToday";
-
+import WeatherToday from '../components/weatherToday';
+import WeatherToggle from '../components/WeatherToggle';
 
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
@@ -91,6 +91,12 @@ const alarmsRef = firestore()
   .doc(user.email)
   .collection('alarms');
 
+const weatherTodayRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('dailyWeather')
+  .doc('SwitchState');
+
 //const eventsRef = eRef.collection('event');
 
 function getFutureDates(days) {
@@ -129,6 +135,8 @@ class CalendarScreen extends Component {
       chosenDate: date,
       week: [],
       wholeList: [{title: date, data: []}],
+      weatherTodayState: '',
+      todayS: false,
     };
   }
   sortEvents = (date1, date2) => {
@@ -140,7 +148,7 @@ class CalendarScreen extends Component {
     }
     return 0;
   };
-
+  //Get Events
   getEvents = async eventRetrieved => {
     try {
       eventsRef.onSnapshot(querySnapshot => {
@@ -259,10 +267,18 @@ class CalendarScreen extends Component {
     }));
   };
 
+  onWeatherStateRetrieved = weatherTodayState => {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + weatherTodayState);
+    this.setState(prevState => ({
+      weatherTodayState: (prevState.weatherTodayState = weatherTodayState),
+    }));
+  };
+
   componentDidMount() {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
+    this.getWeatherTodayState(this.onWeatherStateRetrieved);
   }
   buttonPressed(id) {
     Alert.alert(id);
@@ -811,6 +827,39 @@ class CalendarScreen extends Component {
     );
   };
 
+  //Get State of Weather
+  getWeatherTodayState = WeatherStateRetrieved => {
+    this.state.weatherTodayState = weatherTodayRef.get().then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        console.log('Document data:', doc.data());
+        this.state.weatherTodayState = doc.data().boolean;
+        console.log('Top data:', doc.data().boolean);
+        console.log('Document data:', this.state.weatherTodayState);
+        WeatherStateRetrieved(this.state.weatherTodayState);
+        this.state.todayS = doc.data().boolean;
+        console.log('?????', this.state.todayS);
+        // if (doc.data().boolean === true) {
+        //   var todayState= return (
+        //     <View>
+        //       <WeatherToday />
+        //       <Text>WeatherToday is Hidden</Text>
+        //     </View>
+        //   );
+        // } else if (doc.data().boolean === false) {
+        //   var todayState= return (
+        //     <View>
+        //       <Text>WeatherToday is Hidden</Text>
+        //     </View>
+        //   );
+        // }
+      }
+    });
+  };
+  catch(error) {
+    console.log('problem retrieving switch value');
+  }
   getTheme = () => {
     const themeColor = '#0059ff';
     const lightThemeColor = '#e6efff';
@@ -855,6 +904,18 @@ class CalendarScreen extends Component {
   };
 
   render() {
+    console.log('!!!!?' + this.state.todayS);
+    let todayState = this.state.todayS ? (
+      <View>
+        <WeatherToday />
+        <Text>!!!!!!!!!!!!WeatherToday!!!!!!!!!!</Text>
+      </View>
+    ) : (
+      <View>
+        <Text>WeatherToday is Hidden</Text>
+      </View>
+    );
+    console.log(todayState);
     return (
       <CalendarProvider
         date={today}
@@ -881,7 +942,7 @@ class CalendarScreen extends Component {
             headerStyle={styles.calendar} // for horizontal only
           />
           <View style={styles.container}>
-            <WeatherToday />
+            <View>{todayState}</View>
             <Notes />
             <Quotes />
             <FlatList
