@@ -329,43 +329,6 @@ class CalendarScreen extends Component {
     }));
   };
 
-  writeQuote = () => {
-    try {
-      quotesRef.doc().set({
-        quote: this.state.quote,
-        date: this.state.date,
-      });
-    } catch (error) {
-      console.log('addQuote failed');
-    }
-  };
-
-  getQuoteList = () => {
-    try {
-      quotesRef.onSnapshot(snapshot => {
-        this.setState({quoteList: []});
-        if (snapshot.empty) {
-          console.log('No matching documents.');
-          this.writeQuote();
-          this.getQuoteList();
-        }
-        snapshot.forEach(doc => {
-          this.state.quoteList.push(doc.data());
-        });
-        console.log(this.state.quoteList);
-      });
-    } catch (err) {
-      console.log('Error getting documents', err);
-    }
-  };
-
-  onQuoteRetrieved = quoteList => {
-    //console.log("event list:" +eventList);
-    this.setState(prevState => ({
-      alarmList: (prevState.alarmList = alarmList),
-    }));
-  };
-
   onWeatherStateRetrieved = weatherTodayState => {
     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + weatherTodayState);
     this.setState(prevState => ({
@@ -379,7 +342,6 @@ class CalendarScreen extends Component {
     this.getAlarms(this.onAlarmsRetrieved);
     this.getWeatherTodayState(this.onWeatherStateRetrieved);
     this.getSign();
-    this.getQuoteList(this.onQuoteRetrieved);
   }
 
   buttonPressed(id) {
@@ -715,8 +677,6 @@ class CalendarScreen extends Component {
     const yyyy = date.getFullYear();
     const eventdate = yyyy + '-' + mm + '-' + dd;
 
-    this.getTodaysquote();
-
     const today = new Date();
     const dd2 = String(today.getDate()).padStart(2, '0');
     const mm2 = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -725,31 +685,6 @@ class CalendarScreen extends Component {
 
     console.log(eventdate);
 
-    const daily = (
-      <MenuProvider style={{flexDirection: 'column', padding: 5}}>
-        <Menu onSelect={value => alert(`${value}`)}>
-          <MenuTrigger>
-            <Text style={styles.headerText}>Todays Quote/Horoscope</Text>
-          </MenuTrigger>
-
-          <MenuOptions>
-            <MenuOption value={this.state.todaysquote.quote}>
-              <Text style={styles.menuContent}>Quote</Text>
-            </MenuOption>
-            <MenuOption value={this.state.data}>
-              <Text style={styles.menuContent}>Horoscope</Text>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
-      </MenuProvider>
-    );
-
-    let message = null;
-    if (eventdate === todayfull) {
-      message = daily;
-    } else {
-      message = null;
-    }
 
     return (
       <View>
@@ -763,7 +698,6 @@ class CalendarScreen extends Component {
           {monthNames[date.getMonth()]} {date.getDate()}{' '}
           {dayNames[date.getDay()]}
         </Text>
-        <View>{message}</View>
 
         <FlatList
           style={{borderRadius: 10}}
@@ -1020,18 +954,6 @@ class CalendarScreen extends Component {
     };
   };
 
-  getTodaysquote() {
-    this.state.quoteList.forEach(item => {
-      if (item.date === this.state.date) {
-        this.state.todaysquote = item.quote;
-        //console.log("this is the quote for today"+this.state.todaysquote.author);
-        this.state.todaysauthor = item.quote.author;
-      } else {
-        this.state.todaysquote = this.state.quote;
-        this.state.todaysauthor = this.state.quote.author;
-      }
-    });
-  }
 
   render() {
     console.log('!!!!?' + this.state.todayS);
@@ -1074,6 +996,7 @@ class CalendarScreen extends Component {
           <View style={styles.container}>
             <View>{todayState}</View>
             <Notes />
+            <Quotes />
             <FlatList
               data={this.state.wholeList}
               style={{}}
