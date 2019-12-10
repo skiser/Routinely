@@ -73,7 +73,6 @@ const futureDates = getFutureDates(9);
 const dates = [fastDate, today].concat(futureDates);
 
 var events = [];
-
 const quote = iquotes.random();
 
 const utcDateToString = (momentInUTC: moment): string => {
@@ -485,6 +484,9 @@ class CalendarScreen extends Component {
         sensitivity={100}
         buttonWidth={50}>
         <View style={styles.item}>
+          <View style={styles.dotTask}>
+            <Text> </Text>
+          </View>
           <Text style={styles.itemTitleText}>{item.title}</Text>
           <Text style={{marginLeft: 15}}>{item.note}</Text>
         </View>
@@ -535,6 +537,9 @@ class CalendarScreen extends Component {
         sensitivity={100}
         buttonWidth={50}>
         <View style={styles.item}>
+          <View style={styles.dotEvent}>
+            <Text> </Text>
+          </View>
           <Text style={styles.itemHourText}>{item.hour}</Text>
           <Text style={styles.itemDurationText}>{item.duration}</Text>
           <Text style={styles.itemTitleText}> {item.title} </Text>
@@ -598,6 +603,9 @@ class CalendarScreen extends Component {
         sensitivity={100}
         buttonWidth={50}>
         <View style={styles.item}>
+          <View style={styles.dotEvent}>
+            <Text> </Text>
+          </View>
           <Text style={styles.itemHourText}>{item.hour}</Text>
           <Text style={styles.itemDurationText}>{item.duration}</Text>
           <Text style={styles.itemTitleText}> {item.title} </Text>
@@ -632,14 +640,13 @@ class CalendarScreen extends Component {
 
     console.log(eventdate);
 
-
     return (
       <View>
         <Text
           style={{
             marginBottom: 5,
             marginTop: 5,
-            paddingTop: 5,
+            padding: 5,
             backgroundColor: '#FFFFFF',
           }}>
           {monthNames[date.getMonth()]} {date.getDate()}{' '}
@@ -703,6 +710,9 @@ class CalendarScreen extends Component {
         buttonWidth={50}
         borderRadius={10}>
         <View style={styles.item}>
+          <View style={styles.dotAlarms}>
+            <Text> </Text>
+          </View>
           <Text style={styles.itemTitleText}> {item.title} </Text>
           <Text style={{marginLeft: 5}}>{item.notes} </Text>
           <Text style={styles.itemHourText}>
@@ -902,6 +912,7 @@ class CalendarScreen extends Component {
   };
 
 
+
   render() {
     console.log('!!!!?' + this.state.todayS);
     let todayState = this.state.todayS ? (
@@ -1077,6 +1088,29 @@ const styles = StyleSheet.create({
     padding: 2,
     fontSize: 10,
     width: 400,
+  },
+  dotEvent: {
+    backgroundColor: '#6096FD',
+    width: 10,
+    height: 10,
+    paddingTop: 20,
+    borderRadius: 5,
+  },
+  dotAlarms: {
+    backgroundColor: '#F3AE42',
+    width: 10,
+    height: 10,
+    paddingTop: 20,
+    marginRight: 5,
+    borderRadius: 5,
+  },
+  dotTasks: {
+    backgroundColor: '#E14628',
+    width: 10,
+    height: 10,
+    paddingTop: 20,
+    marginRight: 5,
+    borderRadius: 5,
   },
 });
 
