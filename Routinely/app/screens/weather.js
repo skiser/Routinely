@@ -1,17 +1,75 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {View, StyleSheet, Button, Text, Image} from 'react-native';
+import WeatherToggle from 'Routinely/app/components/WeatherToggle.js';
+import {Divider} from 'react-native-elements';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+
+const user = [{email: ''}];
+if (firebase.auth().currentUser !== null) {
+  const currentUser = firebase.auth().currentUser;
+  user.email = currentUser.email;
+}
+
+const toggleRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('dailyWeather')
+  .doc('SwitchState');
 
 class WeatherScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOnDefaultToggleSwitch: true,
       dataSource: [],
       loading: true,
       relativePath: 'https://www.weatherbit.io/static/img/icons/',
       png: '.png',
+      boolean: '',
     };
   }
 
+  setToggleState = toggleRef.get().then(doc => {
+    if (!doc.exists) {
+      console.log('No such document!');
+    } else {
+      console.log('Document data:', doc.data());
+      this.state.ToggleState = doc.data().boolean;
+    }
+  });
+  catch(error) {
+    console.log('problem retrieving switch value');
+  }
+
+  toggleSwitch1 = value => {
+    this.setState({switch1Value: value});
+    console.log('Toggle Firebase Value:', this.state.ToggleState);
+    console.log('Button State:', value);
+    if (value === false) {
+      try {
+        toggleRef.set({
+          boolean: false,
+        });
+        console.log('WeatherToggle Added');
+      } catch (error) {
+        console.log('WeatherToggle failed');
+        console.log(error);
+      }
+    }
+    if (value === true) {
+      try {
+        toggleRef.set({
+          boolean: true,
+        });
+
+        console.log('WeatherToggle Added');
+      } catch (error) {
+        console.log('WeatherToggle failed');
+        console.log(error);
+      }
+    }
+  };
   componentDidMount(): void {
     fetch(
       'https://weatherbit-v1-mashape.p.rapidapi.com/forecast/3hourly?units=I&lang=en&lat=39.9625984&lon=-76.727745',
@@ -26,14 +84,12 @@ class WeatherScreen extends Component {
     )
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson.city_name);
+        //console.log(responseJson.city_name);
         this.setState({
           loading: false,
           dataSource: responseJson,
           city: responseJson.city_name,
           state: responseJson.state_code,
-          temperature1Date: responseJson.data[0].datetime,
-          //dateMoment: moment.format(),
           temperature1Day: responseJson.data[0].temp,
           temperature1Night: responseJson.data[3].temp,
           precipitation1: responseJson.data[0].precip,
@@ -87,101 +143,135 @@ class WeatherScreen extends Component {
   render() {
     return (
       <View>
-        <View style={styles.row}>
-          <Text style={styles.date}>{this.state.temperature1Date}</Text>
-          <Image
-            style={styles.img}
-            source={{uri: this.state.weather1IconLink}}
+        <View style={{margin: 15, flexDirection: 'row'}}>
+          <Text style={{marginTop: 5, marginRight: 5, fontSize: 16}}>
+            Enable to view today's weather in the calendar
+          </Text>
+          <WeatherToggle
+            toggleSwitch1={this.toggleSwitch1}
+            switch1Value={this.state.switch1Value}
           />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={styles.conditions}>
-              {this.state.weatherConditions1}
-            </Text>
-            <Text style={styles.tempHL}>
-              H <Text style={styles.temp}>{this.state.temperature1Day}</Text>
-            </Text>
-            <Text style={styles.tempHL}>
-              L <Text style={styles.temp}>{this.state.temperature1Night}</Text>
-            </Text>
-          </View>
         </View>
-        <View style={styles.row}>
-          <Image
-            style={styles.img}
-            source={{uri: this.state.weather2IconLink}}
-          />
-          <View>
-            <Text style={styles.conditions}>
-              {this.state.weatherConditions2}
-            </Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <Text style={styles.temp}>Day: {this.state.temperature2Day}</Text>
-              <Text style={styles.temp}>
-                Night: {this.state.temperature2Night}
+        <View>
+          <Divider />
+          <Text
+            style={{
+              marginTop: 5,
+              marginRight: 5,
+              marginLeft: 15,
+              fontSize: 16,
+              fontWeight: 'bold',
+            }}>
+            5-Day Forecast
+          </Text>
+          <View style={styles.row}>
+            <Image
+              style={styles.img}
+              source={{uri: this.state.weather1IconLink}}
+            />
+            <View>
+              <Text style={styles.conditions}>
+                {this.state.weatherConditions1}
               </Text>
-              <Text style={styles.rain}>
-                Rain: {this.state.precipitation2}%
-              </Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.temp}>
+                  Day: {this.state.temperature1Day}
+                </Text>
+                <Text style={styles.temp}>
+                  Night: {this.state.temperature1Night}
+                </Text>
+                <Text style={styles.rain}>
+                  Rain: {this.state.precipitation1}%
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <Image
-            style={styles.img}
-            source={{uri: this.state.weather3IconLink}}
-          />
-          <View>
-            <Text style={styles.conditions}>
-              {this.state.weatherConditions3}
-            </Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <Text style={styles.temp}>Day: {this.state.temperature3Day}</Text>
-              <Text style={styles.temp}>
-                Night: {this.state.temperature3Night}
+          <View style={styles.row}>
+            <Image
+              style={styles.img}
+              source={{uri: this.state.weather2IconLink}}
+            />
+            <View>
+              <Text style={styles.conditions}>
+                {this.state.weatherConditions2}
               </Text>
-              <Text style={styles.rain}>
-                Rain: {this.state.precipitation3}%
-              </Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.temp}>
+                  Day: {this.state.temperature2Day}
+                </Text>
+                <Text style={styles.temp}>
+                  Night: {this.state.temperature2Night}
+                </Text>
+                <Text style={styles.rain}>
+                  Rain: {this.state.precipitation2}%
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <Image
-            style={styles.img}
-            source={{uri: this.state.weather4IconLink}}
-          />
-          <View>
-            <Text style={styles.conditions}>
-              {this.state.weatherConditions4}
-            </Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <Text style={styles.temp}>Day: {this.state.temperature4Day}</Text>
-              <Text style={styles.temp}>
-                Night: {this.state.temperature4Night}
+          <View style={styles.row}>
+            <Image
+              style={styles.img}
+              source={{uri: this.state.weather3IconLink}}
+            />
+            <View>
+              <Text style={styles.conditions}>
+                {this.state.weatherConditions3}
               </Text>
-              <Text style={styles.rain}>
-                Rain: {this.state.precipitation4}%
-              </Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.temp}>
+                  Day: {this.state.temperature3Day}
+                </Text>
+                <Text style={styles.temp}>
+                  Night: {this.state.temperature3Night}
+                </Text>
+                <Text style={styles.rain}>
+                  Rain: {this.state.precipitation3}%
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.row}>
-          <Image
-            style={styles.img}
-            source={{uri: this.state.weather5IconLink}}
-          />
-          <View>
-            <Text style={styles.conditions}>
-              {this.state.weatherConditions5}
-            </Text>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <Text style={styles.temp}>Day: {this.state.temperature5Day}</Text>
-              <Text style={styles.temp}>
-                Night: {this.state.temperature5Night}
+          <View style={styles.row}>
+            <Image
+              style={styles.img}
+              source={{uri: this.state.weather4IconLink}}
+            />
+            <View>
+              <Text style={styles.conditions}>
+                {this.state.weatherConditions4}
               </Text>
-              <Text style={styles.rain}>
-                Rain: {this.state.precipitation5}%
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.temp}>
+                  Day: {this.state.temperature4Day}
+                </Text>
+                <Text style={styles.temp}>
+                  Night: {this.state.temperature4Night}
+                </Text>
+                <Text style={styles.rain}>
+                  Rain: {this.state.precipitation4}%
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <Image
+              style={styles.img}
+              source={{uri: this.state.weather5IconLink}}
+            />
+            <View>
+              <Text style={styles.conditions}>
+                {this.state.weatherConditions5}
               </Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.temp}>
+                  Day: {this.state.temperature5Day}
+                </Text>
+                <Text style={styles.temp}>
+                  Night: {this.state.temperature5Night}
+                </Text>
+                <Text style={styles.rain}>
+                  Rain: {this.state.precipitation5}%
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -201,26 +291,12 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 10,
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 15,
   },
   forecast: {},
-  date: {
-    fontSize: 16,
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 5,
-  },
   temp: {
     fontSize: 16,
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 5,
-  },
-  tempHL: {
-    fontSize: 14,
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 5,
+    paddingLeft: 20,
   },
   rain: {
     fontSize: 16,
@@ -229,14 +305,15 @@ const styles = StyleSheet.create({
   conditions: {
     fontSize: 16,
     fontStyle: 'italic',
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 5,
+    marginTop: 5,
+    paddingLeft: 20,
   },
   img: {
-    marginTop: 5,
-    width: 30,
-    height: 30,
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 5,
+    width: 60,
+    height: 60,
   },
 });
 

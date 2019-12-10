@@ -1,6 +1,21 @@
 import React, {Component} from 'react';
-import {Alert, Button, FlatList, Image, Platform, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View,} from 'react-native';
-import {AgendaList, CalendarProvider, ExpandableCalendar,} from 'react-native-calendars';
+import {
+  Alert,
+  Button,
+  FlatList,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  AgendaList,
+  CalendarProvider,
+  ExpandableCalendar,
+} from 'react-native-calendars';
 import _ from 'lodash';
 import moment from 'moment';
 import firebase from '@react-native-firebase/app';
@@ -9,10 +24,18 @@ import '@react-native-firebase/auth';
 import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
+import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
+import WeatherToday from '../components/weatherToday';
+import WeatherToggle from '../components/WeatherToggle';
 import iquotes from 'iquotes';
 import DropdownMenu from 'react-native-dropdown-menu';
-import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
-
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
@@ -52,7 +75,6 @@ var events = [];
 
 const quote = iquotes.random();
 
-
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -88,6 +110,12 @@ const quotesRef = firestore()
   .collection('users')
   .doc(user.email)
   .collection('quotes');
+
+const weatherTodayRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('dailyWeather')
+  .doc('SwitchState');
 
 //const eventsRef = eRef.collection('event');
 
@@ -137,6 +165,8 @@ class CalendarScreen extends Component {
       quote: quote,
       text: '',
       ofday: true,
+      weatherTodayState: '',
+      todayS: false,
     };
   }
   sortEvents = (date1, date2) => {
@@ -148,7 +178,7 @@ class CalendarScreen extends Component {
     }
     return 0;
   };
-
+  //Get Events
   getEvents = async eventRetrieved => {
     try {
       eventsRef.onSnapshot(querySnapshot => {
@@ -184,8 +214,7 @@ class CalendarScreen extends Component {
             });
           }
         });
-        this.state.wholeList.forEach(item => {
-        });
+        this.state.wholeList.forEach(item => {});
         this.state.eventList.sort(this.sortEvents);
         eventRetrieved(this.state.eventList);
       });
@@ -210,6 +239,7 @@ class CalendarScreen extends Component {
         this.setState({taskList: []});
         querySnapshot.forEach(tasks => {
           this.state.taskList.push(tasks.data());
+          //console.log("this is the event " +event.get('chosenDate').toDate());
         });
         this.state.taskList.sort(this.sortTasks);
         taskRetrieved(this.state.taskList);
@@ -233,39 +263,45 @@ class CalendarScreen extends Component {
     }
   };
 
-  getSign = ()=> {
-    let getSign = signRef.get()
+  getSign = () => {
+    let getSign = signRef
+      .get()
       .then(doc => {
         if (!doc.exists) {
           console.log('No such document!');
         } else {
-          this.setState({sign:doc.data()})
+          this.setState({sign: doc.data()});
           console.log(this.state.sign.sign);
           this.getHoroscope();
-         }
+        }
       })
       .catch(err => {
         console.log('Error getting document', err);
       });
   };
 
-  getHoroscope = () =>{
-    fetch('https://horoscope-free-api.herokuapp.com/?time=today&sign='+this.state.sign.sign)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            this.setState({
-                isLoading:false,
-                data:responseJson.data
-            }, function(){
-        
-            });
-            console.log("horoscope: " +this.state.data + " sign: " + this.state.sign.sign);
-            //oroscopeRetrieved(this.state.data);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
+  getHoroscope = () => {
+    fetch(
+      'https://horoscope-free-api.herokuapp.com/?time=today&sign=' +
+        this.state.sign.sign,
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            data: responseJson.data,
+          },
+          function() {},
+        );
+        console.log(
+          'horoscope: ' + this.state.data + ' sign: ' + this.state.sign.sign,
+        );
+        //oroscopeRetrieved(this.state.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   onEventsRetrieved = eventList => {
@@ -275,6 +311,7 @@ class CalendarScreen extends Component {
   };
 
   onTasksRetrieved = taskList => {
+    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       taskList: (prevState.taskList = taskList),
     }));
@@ -292,42 +329,47 @@ class CalendarScreen extends Component {
     }));
   };
 
-  writeQuote = () =>{
-    try{
-    quotesRef.doc().set({
+  writeQuote = () => {
+    try {
+      quotesRef.doc().set({
         quote: this.state.quote,
         date: this.state.date,
-    })
-    }
-    catch(error){
-        console.log('addQuote failed');
+      });
+    } catch (error) {
+      console.log('addQuote failed');
     }
   };
 
   getQuoteList = () => {
-    try{ 
-    quotesRef.onSnapshot(snapshot => {
+    try {
+      quotesRef.onSnapshot(snapshot => {
         this.setState({quoteList: []});
         if (snapshot.empty) {
-            console.log('No matching documents.');
-            this.writeQuote();
-            this.getQuoteList();
-        } 
+          console.log('No matching documents.');
+          this.writeQuote();
+          this.getQuoteList();
+        }
         snapshot.forEach(doc => {
-            this.state.quoteList.push(doc.data());
+          this.state.quoteList.push(doc.data());
         });
         console.log(this.state.quoteList);
-    });
-    }catch(err) {
-        console.log('Error getting documents', err);
-    };
-
+      });
+    } catch (err) {
+      console.log('Error getting documents', err);
+    }
   };
 
   onQuoteRetrieved = quoteList => {
     //console.log("event list:" +eventList);
     this.setState(prevState => ({
-        quoteList: (prevState.quoteList = quoteList),
+      alarmList: (prevState.alarmList = alarmList),
+    }));
+  };
+
+  onWeatherStateRetrieved = weatherTodayState => {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + weatherTodayState);
+    this.setState(prevState => ({
+      weatherTodayState: (prevState.weatherTodayState = weatherTodayState),
     }));
   };
 
@@ -335,9 +377,10 @@ class CalendarScreen extends Component {
     this.getEvents(this.onEventsRetrieved);
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
+    this.getWeatherTodayState(this.onWeatherStateRetrieved);
     this.getSign();
     this.getQuoteList(this.onQuoteRetrieved);
-  };
+  }
 
   buttonPressed(id) {
     Alert.alert(id);
@@ -665,8 +708,6 @@ class CalendarScreen extends Component {
     );
   };
 
-
-
   listDay = item => {
     const date = new Date(item.title);
     const dd = String(date.getDate()).padStart(2, '0');
@@ -674,9 +715,8 @@ class CalendarScreen extends Component {
     const yyyy = date.getFullYear();
     const eventdate = yyyy + '-' + mm + '-' + dd;
 
-
     this.getTodaysquote();
-    
+
     const today = new Date();
     const dd2 = String(today.getDate()).padStart(2, '0');
     const mm2 = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -685,11 +725,12 @@ class CalendarScreen extends Component {
 
     console.log(eventdate);
 
-    const daily = <MenuProvider style={{ flexDirection: "column", padding: 5 }}>
+    const daily = (
+      <MenuProvider style={{flexDirection: 'column', padding: 5}}>
         <Menu onSelect={value => alert(`${value}`)}>
-          <MenuTrigger  >
-          <Text style={styles.headerText}>Todays Quote/Horoscope</Text>
-          </MenuTrigger  >
+          <MenuTrigger>
+            <Text style={styles.headerText}>Todays Quote/Horoscope</Text>
+          </MenuTrigger>
 
           <MenuOptions>
             <MenuOption value={this.state.todaysquote.quote}>
@@ -699,18 +740,16 @@ class CalendarScreen extends Component {
               <Text style={styles.menuContent}>Horoscope</Text>
             </MenuOption>
           </MenuOptions>
-
         </Menu>
-        </MenuProvider>;
+      </MenuProvider>
+    );
 
-    let message = null; 
-    if(eventdate === todayfull){
+    let message = null;
+    if (eventdate === todayfull) {
       message = daily;
-    }
-    else{
+    } else {
       message = null;
     }
-
 
     return (
       <View>
@@ -724,10 +763,7 @@ class CalendarScreen extends Component {
           {monthNames[date.getMonth()]} {date.getDate()}{' '}
           {dayNames[date.getDay()]}
         </Text>
-        <View>
-          {message}
-        </View>
-        
+        <View>{message}</View>
 
         <FlatList
           style={{borderRadius: 10}}
@@ -908,6 +944,39 @@ class CalendarScreen extends Component {
     );
   };
 
+  //Get State of Weather
+  getWeatherTodayState = WeatherStateRetrieved => {
+    this.state.weatherTodayState = weatherTodayRef.get().then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        console.log('Document data:', doc.data());
+        this.state.weatherTodayState = doc.data().boolean;
+        console.log('Top data:', doc.data().boolean);
+        console.log('Document data:', this.state.weatherTodayState);
+        WeatherStateRetrieved(this.state.weatherTodayState);
+        this.state.todayS = doc.data().boolean;
+        console.log('?????', this.state.todayS);
+        // if (doc.data().boolean === true) {
+        //   var todayState= return (
+        //     <View>
+        //       <WeatherToday />
+        //       <Text>WeatherToday is Hidden</Text>
+        //     </View>
+        //   );
+        // } else if (doc.data().boolean === false) {
+        //   var todayState= return (
+        //     <View>
+        //       <Text>WeatherToday is Hidden</Text>
+        //     </View>
+        //   );
+        // }
+      }
+    });
+  };
+  catch(error) {
+    console.log('problem retrieving switch value');
+  }
   getTheme = () => {
     const themeColor = '#0059ff';
     const lightThemeColor = '#e6efff';
@@ -951,22 +1020,32 @@ class CalendarScreen extends Component {
     };
   };
 
-  
-  getTodaysquote(){
-        this.state.quoteList.forEach(item => {
-            if (item.date === this.state.date) {
-                this.state.todaysquote = item.quote;
-                //console.log("this is the quote for today"+this.state.todaysquote.author);
-                this.state.todaysauthor = item.quote.author;
-            }
-            else{
-              this.state.todaysquote = this.state.quote;
-              this.state.todaysauthor = this.state.quote.author;
-            }
-        });
+  getTodaysquote() {
+    this.state.quoteList.forEach(item => {
+      if (item.date === this.state.date) {
+        this.state.todaysquote = item.quote;
+        //console.log("this is the quote for today"+this.state.todaysquote.author);
+        this.state.todaysauthor = item.quote.author;
+      } else {
+        this.state.todaysquote = this.state.quote;
+        this.state.todaysauthor = this.state.quote.author;
+      }
+    });
   }
 
   render() {
+    console.log('!!!!?' + this.state.todayS);
+    let todayState = this.state.todayS ? (
+      <View>
+        <WeatherToday />
+        <Text>!!!!!!!!!!!!WeatherToday!!!!!!!!!!</Text>
+      </View>
+    ) : (
+      <View>
+        <Text>WeatherToday is Hidden</Text>
+      </View>
+    );
+    console.log(todayState);
     return (
       <CalendarProvider
         date={today}
@@ -993,6 +1072,7 @@ class CalendarScreen extends Component {
             headerStyle={styles.calendar} // for horizontal only
           />
           <View style={styles.container}>
+            <View>{todayState}</View>
             <Notes />
             <FlatList
               data={this.state.wholeList}
@@ -1117,16 +1197,16 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 15,
     margin: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     height: 50,
     bottom: 5,
   },
   menuContent: {
-    color: "#000",
+    color: '#000',
     padding: 2,
     fontSize: 10,
     width: 400,
-  }
+  },
 });
 
 export default CalendarScreen;
