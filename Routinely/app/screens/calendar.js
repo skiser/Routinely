@@ -25,6 +25,7 @@ import {Divider} from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
+import Horoscope from 'Routinely/app/components/calendar_components/Horoscope.js';
 import WeatherToday from '../components/weatherToday';
 import WeatherToggle from '../components/WeatherToggle';
 import iquotes from 'iquotes';
@@ -155,14 +156,7 @@ class CalendarScreen extends Component {
       chosenDate: date,
       week: [],
       wholeList: [{title: date, data: []}],
-      sign: '',
-      isLoading: true,
-      data: '',
-      quoteList: [],
-      todaysquote: '',
-      todaysauthor: '',
       date: todayfull,
-      quote: quote,
       text: '',
       ofday: true,
       weatherTodayState: '',
@@ -263,47 +257,6 @@ class CalendarScreen extends Component {
     }
   };
 
-  getSign = () => {
-    let getSign = signRef
-      .get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          this.setState({sign: doc.data()});
-          console.log(this.state.sign.sign);
-          this.getHoroscope();
-        }
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
-  };
-
-  getHoroscope = () => {
-    fetch(
-      'https://horoscope-free-api.herokuapp.com/?time=today&sign=' +
-        this.state.sign.sign,
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            data: responseJson.data,
-          },
-          function() {},
-        );
-        console.log(
-          'horoscope: ' + this.state.data + ' sign: ' + this.state.sign.sign,
-        );
-        //oroscopeRetrieved(this.state.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
-
   onEventsRetrieved = eventList => {
     this.setState(prevState => ({
       eventList: (prevState.eventList = eventList),
@@ -323,12 +276,6 @@ class CalendarScreen extends Component {
     }));
   };
 
-  onSignRetrieved = sign => {
-    this.setState(prevState => ({
-      sign: (prevState.sign = sign),
-    }));
-  };
-
   onWeatherStateRetrieved = weatherTodayState => {
     console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + weatherTodayState);
     this.setState(prevState => ({
@@ -341,7 +288,6 @@ class CalendarScreen extends Component {
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
     this.getWeatherTodayState(this.onWeatherStateRetrieved);
-    this.getSign();
   }
 
   buttonPressed(id) {
@@ -997,6 +943,7 @@ class CalendarScreen extends Component {
             <View>{todayState}</View>
             <Notes />
             <Quotes />
+            <Horoscope />
             <FlatList
               data={this.state.wholeList}
               style={{}}
