@@ -4,17 +4,19 @@ import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import iquotes from 'iquotes';
 import {
-    TextInput,
-    RefreshControl,
-    Text,
-    FlatList,
-    View,
-    StyleSheet,
-    ListRenderItem,
+  TextInput,
+  RefreshControl,
+  Text,
+  FlatList,
+  View,
+  StyleSheet,
+  ListRenderItem,
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 
-const user = [{"email": ''}];
+const user = [{email: ''}];
 if (firebase.auth().currentUser !== null) {
   const currentUser = firebase.auth().currentUser;
   user.email = currentUser.email;
@@ -35,8 +37,7 @@ const quotesRef = firestore()
   .collection('quotes');
 
 class quoteScreen extends React.Component {
-
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       quoteList: [],
@@ -45,104 +46,129 @@ class quoteScreen extends React.Component {
       date: originaldate,
       quote: quote,
     };
+  }
+
+  writeQuote = () => {
+    try {
+      quotesRef.doc().set({
+        quote: this.state.quote,
+        date: this.state.date,
+      });
+    } catch (error) {
+      console.log('addQuote failed');
     }
+  };
 
-    writeQuote = () =>{
-        try{
-        quotesRef.doc().set({
-            quote: this.state.quote,
-            date: this.state.date,
-        })
+  getQuoteList = async QuoteRetrieved => {
+    try {
+      quotesRef.onSnapshot(snapshot => {
+        this.setState({quoteList: []});
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          this.writeQuote();
+          this.getQuoteList();
         }
-        catch(error){
-            console.log('addQuote failed');
-        }
-    };
-
-    getQuoteList = async QuoteRetrieved => {
-       try{ 
-        quotesRef.onSnapshot(snapshot => {
-            this.setState({quoteList: []});
-            if (snapshot.empty) {
-                console.log('No matching documents.');
-                this.writeQuote();
-                this.getQuoteList();
-            } 
-            snapshot.forEach(doc => {
-                this.state.quoteList.push(doc.data());
-            });
-            QuoteRetrieved(this.state.quoteList);
-            console.log(this.state.quoteList);
-            this.state.quoteList.forEach(item => {
-                if (item.date === this.state.date) {
-                    console.log("matches date");
-                }
-                else{
-                    console.log("no quote");
-                    this.writeQuote();
-                    this.getQuoteList();
-                }
-            });
+        snapshot.forEach(doc => {
+          this.state.quoteList.push(doc.data());
         });
-        }catch(err) {
-            console.log('Error getting documents', err);
-        };
-
-    }
-
-    onQuoteRetrieved = quoteList => {
-        //console.log("event list:" +eventList);
-        this.setState(prevState => ({
-            quoteList: (prevState.quoteList = quoteList),
-        }));
-    };
-
-    componentDidMount() {
-        this.getQuoteList(this.onQuoteRetrieved);
-    }
-
-    getTodaysquote(){
+        QuoteRetrieved(this.state.quoteList);
+        console.log(this.state.quoteList);
         this.state.quoteList.forEach(item => {
-            if (item.date === this.state.date) {
-                this.state.todaysquote = item.quote;
-                console.log("this is the quote for today"+this.state.todaysquote.author);
-                this.state.todaysauthor = item.quote.author;
-            }
-            else{
-                console.log("no quote");
-                this.writeQuote();
-            }
+          if (item.date === this.state.date) {
+            console.log('matches date');
+          } else {
+            console.log('no quote');
+            this.writeQuote();
+            this.getQuoteList();
+          }
         });
+      });
+    } catch (err) {
+      console.log('Error getting documents', err);
     }
-    
+  };
 
-    render() { 
-        this.getTodaysquote();
-        return (
-            <View>
-                <Text style={styles.quoteTitle}> Quote of the Day:</Text>
-                <Text style={styles.quote}> {this.state.todaysquote.quote} </Text>
-                <Text style={styles.quoteTitle}> Author: </Text>
-                <Text style={styles.quote}> {this.state.todaysquote.author} </Text>
-            </View>
+  onQuoteRetrieved = quoteList => {
+    //console.log("event list:" +eventList);
+    this.setState(prevState => ({
+      quoteList: (prevState.quoteList = quoteList),
+    }));
+  };
+
+  componentDidMount() {
+    this.getQuoteList(this.onQuoteRetrieved);
+  }
+
+  getTodaysquote() {
+    this.state.quoteList.forEach(item => {
+      if (item.date === this.state.date) {
+        this.state.todaysquote = item.quote;
+        console.log(
+          'this is the quote for today' + this.state.todaysquote.author,
         );
-    }
-    
+        this.state.todaysauthor = item.quote.author;
+      } else {
+        console.log('no quote');
+        this.writeQuote();
+      }
+    });
+  }
+
+  render() {
+    this.getTodaysquote();
+    return (
+      <View>
+        <Text style={styles.quoteTitle}>Quote of the Day</Text>
+        <View
+          style={{
+            backgroundColor: '#ff7a5c',
+            marginTop: 30,
+            width: 150,
+            height: 150,
+            marginLeft: 125,
+            borderRadius: 100,
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.setState({sign: 'Pisces'})}>
+              <Image
+                style={{
+                  width: 125,
+                  height: 125,
+                  marginTop: 15,
+                  marginLeft: 15,
+                  marginBottom: 15,
+                }}
+                source={require('../components/img/quotes.png')}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
+        <Text style={styles.quote}>{this.state.todaysquote.quote} </Text>
+
+        <Text style={styles.quote}>
+          Written By: {'  '}
+          {this.state.todaysquote.author}
+        </Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    quoteTitle: {
-        fontSize: 25,
-        marginTop: 15,
-        paddingRight: 10,
-        paddingLeft: 10,
-    },
-    quote: {
-        fontSize: 20,
-        marginTop: 15,
-        paddingRight: 10,
-        paddingLeft: 10,
-    },
+  quoteTitle: {
+    fontSize: 25,
+    marginTop: 35,
+    paddingRight: 10,
+    paddingLeft: 100,
+  },
+  quote: {
+    fontSize: 20,
+    marginTop: 55,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
 });
 
 export default quoteScreen;
