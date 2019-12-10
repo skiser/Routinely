@@ -8,6 +8,7 @@ import {
   Platform,
   UIManager,
   DatePickerIOS,
+  NativeModules,
 } from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import moment from 'moment';
@@ -80,6 +81,20 @@ class EventScreen extends Component {
         })
         .then(ref => {
           console.log('Added doc w ID: ', ref.id);
+          var EventNotifManager = NativeModules.EventNotifManager;
+          EventNotifManager.addEvent(
+            ref.id,
+            this.state.title,
+            this.state.notes,
+            this.state.chosenDate,
+            this.state.Sun,
+            this.state.Mon,
+            this.state.Tue,
+            this.state.Wed,
+            this.state.Thu,
+            this.state.Fri,
+            this.state.Sat,
+          );
         });
     } catch (error) {
       console.error(error);

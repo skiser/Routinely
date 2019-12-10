@@ -144,7 +144,6 @@ class EditEventScreen extends Component {
           width={350}
           title="editEvent"
           onPress={() => this.editEvent(event)}>
-          
           Edit Event
         </AwesomeButtonBlue>
       </View>

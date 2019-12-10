@@ -27,6 +27,15 @@ import Notes from 'Routinely/app/components/calendar_components/Notes.js';
 import Quotes from 'Routinely/app/components/calendar_components/Quotes.js';
 import WeatherToday from '../components/weatherToday';
 import WeatherToggle from '../components/WeatherToggle';
+import iquotes from 'iquotes';
+import DropdownMenu from 'react-native-dropdown-menu';
+import {
+  Menu,
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 const today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
@@ -64,6 +73,8 @@ const dates = [fastDate, today].concat(futureDates);
 
 var events = [];
 
+const quote = iquotes.random();
+
 const utcDateToString = (momentInUTC: moment): string => {
   // console.warn(s);
   return moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -90,6 +101,15 @@ const alarmsRef = firestore()
   .collection('users')
   .doc(user.email)
   .collection('alarms');
+
+const signRef = firestore()
+  .collection('users')
+  .doc(user.email);
+
+const quotesRef = firestore()
+  .collection('users')
+  .doc(user.email)
+  .collection('quotes');
 
 const weatherTodayRef = firestore()
   .collection('users')
@@ -135,6 +155,16 @@ class CalendarScreen extends Component {
       chosenDate: date,
       week: [],
       wholeList: [{title: date, data: []}],
+      sign: '',
+      isLoading: true,
+      data: '',
+      quoteList: [],
+      todaysquote: '',
+      todaysauthor: '',
+      date: todayfull,
+      quote: quote,
+      text: '',
+      ofday: true,
       weatherTodayState: '',
       todayS: false,
     };
@@ -163,39 +193,28 @@ class CalendarScreen extends Component {
             return;
           } else if (this.state.wholeList.length === 0) {
             const date = event.chosenDate.toDate();
-            console.log('date: ' + date);
             this.state.wholeList.push({
               title: event.chosenDate.toDate().toDateString(),
               data: [event],
             });
-            console.log('title: ' + event.chosenDate.toDate().toDateString());
           } else if (
             this.state.wholeList.every(
               item => item.title !== event.chosenDate.toDate().toDateString(),
             )
           ) {
-            console.log('added');
             this.state.wholeList.push({
               title: event.chosenDate.toDate().toDateString(),
               data: [event],
             });
-            console.log('title: ' + event.chosenDate.toDate().toDateString());
           } else {
             this.state.wholeList.forEach(item => {
               if (item.title === event.chosenDate.toDate().toDateString()) {
-                console.log(
-                  'title: ' + item.title + ', ' + 'event: ' + item.title,
-                );
                 item.data.push(event);
               }
             });
           }
         });
-        this.state.wholeList.forEach(item => {
-          console.log(item);
-        });
-
-        console.log('whole: ' + this.state.wholeList);
+        this.state.wholeList.forEach(item => {});
         this.state.eventList.sort(this.sortEvents);
         eventRetrieved(this.state.eventList);
       });
@@ -236,18 +255,56 @@ class CalendarScreen extends Component {
         this.setState({alarmList: []});
         querySnapshot.forEach(alarms => {
           this.state.alarmList.push(alarms.data());
-          //console.log("this is the event " +event.get('chosenDate').toDate());
         });
         alarmRetrieved(this.state.alarmList);
-        console.log('GETTING ALARMS');
       });
     } catch (error) {
       console.log('problem retrieving tasks');
     }
   };
 
+  getSign = () => {
+    let getSign = signRef
+      .get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          this.setState({sign: doc.data()});
+          console.log(this.state.sign.sign);
+          this.getHoroscope();
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
+  };
+
+  getHoroscope = () => {
+    fetch(
+      'https://horoscope-free-api.herokuapp.com/?time=today&sign=' +
+        this.state.sign.sign,
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            data: responseJson.data,
+          },
+          function() {},
+        );
+        console.log(
+          'horoscope: ' + this.state.data + ' sign: ' + this.state.sign.sign,
+        );
+        //oroscopeRetrieved(this.state.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   onEventsRetrieved = eventList => {
-    //console.log("event list:" +eventList);
     this.setState(prevState => ({
       eventList: (prevState.eventList = eventList),
     }));
@@ -261,6 +318,48 @@ class CalendarScreen extends Component {
   };
 
   onAlarmsRetrieved = alarmList => {
+    this.setState(prevState => ({
+      alarmList: (prevState.alarmList = alarmList),
+    }));
+  };
+
+  onSignRetrieved = sign => {
+    this.setState(prevState => ({
+      sign: (prevState.sign = sign),
+    }));
+  };
+
+  writeQuote = () => {
+    try {
+      quotesRef.doc().set({
+        quote: this.state.quote,
+        date: this.state.date,
+      });
+    } catch (error) {
+      console.log('addQuote failed');
+    }
+  };
+
+  getQuoteList = () => {
+    try {
+      quotesRef.onSnapshot(snapshot => {
+        this.setState({quoteList: []});
+        if (snapshot.empty) {
+          console.log('No matching documents.');
+          this.writeQuote();
+          this.getQuoteList();
+        }
+        snapshot.forEach(doc => {
+          this.state.quoteList.push(doc.data());
+        });
+        console.log(this.state.quoteList);
+      });
+    } catch (err) {
+      console.log('Error getting documents', err);
+    }
+  };
+
+  onQuoteRetrieved = quoteList => {
     //console.log("event list:" +eventList);
     this.setState(prevState => ({
       alarmList: (prevState.alarmList = alarmList),
@@ -279,7 +378,10 @@ class CalendarScreen extends Component {
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
     this.getWeatherTodayState(this.onWeatherStateRetrieved);
+    this.getSign();
+    this.getQuoteList(this.onQuoteRetrieved);
   }
+
   buttonPressed(id) {
     Alert.alert(id);
   }
@@ -290,7 +392,6 @@ class CalendarScreen extends Component {
 
   getTodays() {
     const todayevent = this.state.eventList;
-    console.log('today: ' + todayfull);
 
     todayevent.forEach(event => {
       const month = event.chosenDate.toDate().getUTCMonth() + 1; //months from 1-12
@@ -298,16 +399,9 @@ class CalendarScreen extends Component {
       const year = event.chosenDate.toDate().getUTCFullYear();
 
       const markdate = year + '-' + month + '-' + day;
-      console.log(markdate);
       if (markdate == todayfull) {
         this.state.todayevent.push(event);
-        console.log('added to today');
-        //this.state.eventList.pop(event);
-        //console.log("removed from original");
       }
-      console.log('before' + this.state.eventList);
-      //const groupedList = this.state.eventList.groupBy(event.chosenDate);
-      //console.log("after"+groupedList);
     });
   }
 
@@ -345,13 +439,11 @@ class CalendarScreen extends Component {
       marked[markdate] = {marked: true, dotColor: '#F3AE42'};
       console.log('successfully added');
     });
-    //console.log('Marked:' +marked);
     return marked;
   };
 
   edittingAlarm = item => {
     const index = this.state.alarmList.indexOf(item);
-    console.log('item:' + item);
     this.state.alarmList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -382,7 +474,6 @@ class CalendarScreen extends Component {
 
   edittingEvent = item => {
     const index = this.state.eventList.indexOf(item);
-    console.log('event:' + item);
     this.state.eventList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -413,7 +504,6 @@ class CalendarScreen extends Component {
 
   edittingTask = item => {
     const index = this.state.taskList.indexOf(item);
-    console.log('task:' + item);
     this.state.taskList.splice(index, 1);
     let query = firestore()
       .collection('users')
@@ -620,6 +710,47 @@ class CalendarScreen extends Component {
 
   listDay = item => {
     const date = new Date(item.title);
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = date.getFullYear();
+    const eventdate = yyyy + '-' + mm + '-' + dd;
+
+    this.getTodaysquote();
+
+    const today = new Date();
+    const dd2 = String(today.getDate()).padStart(2, '0');
+    const mm2 = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy2 = today.getFullYear();
+    const todayfull = yyyy2 + '-' + mm2 + '-' + dd2;
+
+    console.log(eventdate);
+
+    const daily = (
+      <MenuProvider style={{flexDirection: 'column', padding: 5}}>
+        <Menu onSelect={value => alert(`${value}`)}>
+          <MenuTrigger>
+            <Text style={styles.headerText}>Todays Quote/Horoscope</Text>
+          </MenuTrigger>
+
+          <MenuOptions>
+            <MenuOption value={this.state.todaysquote.quote}>
+              <Text style={styles.menuContent}>Quote</Text>
+            </MenuOption>
+            <MenuOption value={this.state.data}>
+              <Text style={styles.menuContent}>Horoscope</Text>
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
+      </MenuProvider>
+    );
+
+    let message = null;
+    if (eventdate === todayfull) {
+      message = daily;
+    } else {
+      message = null;
+    }
+
     return (
       <View>
         <Text
@@ -632,6 +763,8 @@ class CalendarScreen extends Component {
           {monthNames[date.getMonth()]} {date.getDate()}{' '}
           {dayNames[date.getDay()]}
         </Text>
+        <View>{message}</View>
+
         <FlatList
           style={{borderRadius: 10}}
           data={item.data}
@@ -708,10 +841,7 @@ class CalendarScreen extends Component {
 
   deleteEvent = item => {
     const index = this.state.eventList.indexOf(item);
-    //console.log(index);
-    console.log(item);
     this.state.eventList.splice(index, 1);
-    //console.log("deleting:" +item.title);
     let query = firestore()
       .collection('users')
       .doc(user.email)
@@ -735,18 +865,11 @@ class CalendarScreen extends Component {
       .catch(err => {
         console.log('Error getting documents', err);
       });
-    //const events = firestore().collection('users').doc(user.email).collection('events').where('title', '==', item.title).get();
-    console.log(events);
-    //this.getEvents(this.onEventsRetrieved);
-    console.log('success');
   };
 
   deleteTask = item => {
     const index = this.state.taskList.indexOf(item);
-    //console.log(index);
-    console.log(item);
     this.state.taskList.splice(index, 1);
-    //console.log("deleting:" +item.title);
     let query = firestore()
       .collection('users')
       .doc(user.email)
@@ -775,10 +898,7 @@ class CalendarScreen extends Component {
 
   deleteAlarm = item => {
     const index = this.state.alarmList.indexOf(item);
-    //console.log(index);
-    console.log(item);
     this.state.taskList.splice(index, 1);
-    //console.log("deleting:" +item.title);
     let query = firestore()
       .collection('users')
       .doc(user.email)
@@ -802,7 +922,6 @@ class CalendarScreen extends Component {
       .catch(err => {
         console.log('Error getting documents', err);
       });
-    console.log('success');
   };
 
   showWeek = item => {
@@ -818,8 +937,6 @@ class CalendarScreen extends Component {
       today++;
     }
     const index = dayNames.indexOf(item);
-    console.log(this.state.week);
-
     return (
       <View>
         <Text> {this.state.week[index]} </Text>
@@ -903,6 +1020,19 @@ class CalendarScreen extends Component {
     };
   };
 
+  getTodaysquote() {
+    this.state.quoteList.forEach(item => {
+      if (item.date === this.state.date) {
+        this.state.todaysquote = item.quote;
+        //console.log("this is the quote for today"+this.state.todaysquote.author);
+        this.state.todaysauthor = item.quote.author;
+      } else {
+        this.state.todaysquote = this.state.quote;
+        this.state.todaysauthor = this.state.quote.author;
+      }
+    });
+  }
+
   render() {
     console.log('!!!!?' + this.state.todayS);
     let todayState = this.state.todayS ? (
@@ -944,12 +1074,10 @@ class CalendarScreen extends Component {
           <View style={styles.container}>
             <View>{todayState}</View>
             <Notes />
-            <Quotes />
             <FlatList
               data={this.state.wholeList}
               style={{}}
               renderItem={({item}) => {
-                //console.log("what: "+ item.title);
                 return this.listDay(item);
               }}
             />
@@ -1065,6 +1193,19 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 25,
+  },
+  headerText: {
+    fontSize: 15,
+    margin: 10,
+    fontWeight: 'bold',
+    height: 50,
+    bottom: 5,
+  },
+  menuContent: {
+    color: '#000',
+    padding: 2,
+    fontSize: 10,
+    width: 400,
   },
 });
 

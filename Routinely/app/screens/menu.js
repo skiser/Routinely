@@ -282,9 +282,118 @@ class MenuScreen extends Component {
                 {'Weather'}
               </Text>
             </TouchableHighlight>
+            </View>      
+          <View
+            style={{
+              backgroundColor: '#7BD5F5',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.props.navigation.navigate('Horoscope')}>
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/weather.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.props.navigation.navigate('Horoscope')}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
             </View>
-          </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.props.navigation.navigate('Horoscope')}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 24,
+                }}>
+                {'Horoscope'}
+              </Text>
+            </TouchableHighlight>
+            </View>
         </View>
+        <View style={{flexDirection: 'row'}}>
+              <View
+                  style={{
+                      backgroundColor: '#7BD5F5',
+                      width: 190,
+                      height: 100,
+                      borderRadius: 10,
+                      marginLeft: 10,
+                      marginTop: 10,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                      <TouchableHighlight
+                          underlayColor={'grey'}
+                          onPress={() => this.props.navigation.navigate('News')}>
+                          <Image
+                              style={{
+                                  width: 50,
+                                  height: 50,
+                                  marginTop: 10,
+                                  marginLeft: 10,
+                                  marginBottom: 10,
+                              }}
+                              source={require('../components/img/weather.png')}
+                          />
+                      </TouchableHighlight>
+                      <TouchableHighlight
+                          underlayColor={'grey'}
+                          onPress={() => this.props.navigation.navigate('News')}>
+                          <Text
+                              style={{
+                                  color: 'white',
+                                  fontSize: 30,
+                                  marginLeft: 90,
+                                  fontWeight: 'normal',
+                              }}>
+                              {' + '}
+                          </Text>
+                      </TouchableHighlight>
+                  </View>
+                  <TouchableHighlight
+                      underlayColor={'grey'}
+                      onPress={() => this.props.navigation.navigate('News')}>
+                      <Text
+                          style={{
+                              paddingLeft: 10,
+                              paddingBottom: 5,
+                              color: 'white',
+                              fontWeight: 'normal',
+                              fontSize: 24,
+                          }}>
+                          {'News'}
+                      </Text>
+                  </TouchableHighlight>
+              </View>
+
+        </View>
+      </View>
       
     );
   }
