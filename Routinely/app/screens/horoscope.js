@@ -1,46 +1,43 @@
-
 import React from 'react';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import '@react-native-firebase/auth';
 import {
-    TextInput,
-    RefreshControl,
-    Text,
-    FlatList,
-    View,
-    StyleSheet,
-    ListRenderItem,
-    TouchableHighlight,
-    Image,
+  TextInput,
+  RefreshControl,
+  Text,
+  FlatList,
+  View,
+  StyleSheet,
+  ListRenderItem,
+  TouchableHighlight,
+  Image,
 } from 'react-native';
 import {Hoshi} from 'react-native-textinput-effects';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/blue';
 
-
-const user = [{"email": ''}];
+const user = [{email: ''}];
 if (firebase.auth().currentUser !== null) {
   const currentUser = firebase.auth().currentUser;
   user.email = currentUser.email;
 }
 
 class horoscopeScreen extends React.Component {
-
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
-        isLoading: true,
-        data: '',
-        sign: '',
-        relativePath: 'https://horoscope-free-api.herokuapp.com',
+      isLoading: true,
+      data: '',
+      sign: '',
+      relativePath: 'https://horoscope-free-api.herokuapp.com',
     };
-    }
+  }
 
-    addHoroscope = () => {
+  addHoroscope = () => {
     //const title = this.state.title.toString();
     const addHoroscope = firestore()
       .collection('users')
-      .doc(user.email)
+      .doc(user.email);
 
     try {
       addHoroscope
@@ -56,13 +53,13 @@ class horoscopeScreen extends React.Component {
     this.props.navigation.navigate('Calendar');
   };
 
-    render() { 
-        return (
-          <View>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-              backgroundColor: '#6096FD',
+  render() {
+    return (
+      <View>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#621055',
               marginTop: 5,
               width: 125,
               height: 150,
@@ -72,7 +69,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Aries'})}>
+                onPress={() => this.setState({sign: 'Aries'})}>
                 <Image
                   style={{
                     width: 60,
@@ -81,13 +78,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/aries.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Aries'})}>
+              onPress={() => this.setState({sign: 'Aries'})}>
               <Text
                 style={{
                   paddingLeft: 45,
@@ -98,8 +95,8 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Aries'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight>
+            </TouchableHighlight>
+            <TouchableHighlight>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -115,7 +112,7 @@ class horoscopeScreen extends React.Component {
           </View>
           <View
             style={{
-              backgroundColor: '#268E1E',
+              backgroundColor: '#b52b65',
               margin: 10,
               width: 125,
               height: 150,
@@ -125,7 +122,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Taurus'})}>
+                onPress={() => this.setState({sign: 'Taurus'})}>
                 <Image
                   style={{
                     width: 60,
@@ -134,13 +131,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/Notes.png')}
+                  source={require('../components/img/taurus.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Taurus'})}>
+              onPress={() => this.setState({sign: 'Taurus'})}>
               <Text
                 style={{
                   paddingLeft: 35,
@@ -167,8 +164,8 @@ class horoscopeScreen extends React.Component {
             </TouchableHighlight>
           </View>
           <View
-              style={{
-              backgroundColor: '#6096FD',
+            style={{
+              backgroundColor: '#ed6663',
               marginTop: 10,
               width: 125,
               height: 150,
@@ -178,7 +175,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Gemini'})}>
+                onPress={() => this.setState({sign: 'Gemini'})}>
                 <Image
                   style={{
                     width: 60,
@@ -187,13 +184,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/gemini.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Gemini'})}>
+              onPress={() => this.setState({sign: 'Gemini'})}>
               <Text
                 style={{
                   paddingLeft: 35,
@@ -204,10 +201,10 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Gemini'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
+            </TouchableHighlight>
+            <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Gemini'})}>
+              onPress={() => this.setState({sign: 'Gemini'})}>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -221,11 +218,11 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
           </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-              backgroundColor: '#6096FD',
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#ffa372',
               marginTop: 5,
               width: 125,
               height: 150,
@@ -235,7 +232,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Cancer'})}>
+                onPress={() => this.setState({sign: 'Cancer'})}>
                 <Image
                   style={{
                     width: 60,
@@ -244,13 +241,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/cancer.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Cancer'})}>
+              onPress={() => this.setState({sign: 'Cancer'})}>
               <Text
                 style={{
                   paddingLeft: 35,
@@ -261,8 +258,8 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Cancer'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight>
+            </TouchableHighlight>
+            <TouchableHighlight>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -278,7 +275,7 @@ class horoscopeScreen extends React.Component {
           </View>
           <View
             style={{
-              backgroundColor: '#268E1E',
+              backgroundColor: '#413c69',
               margin: 10,
               width: 125,
               height: 150,
@@ -288,7 +285,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Leo'})}>
+                onPress={() => this.setState({sign: 'Leo'})}>
                 <Image
                   style={{
                     width: 60,
@@ -297,13 +294,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/Notes.png')}
+                  source={require('../components/img/leo.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Leo'})}>
+              onPress={() => this.setState({sign: 'Leo'})}>
               <Text
                 style={{
                   paddingLeft: 45,
@@ -330,8 +327,8 @@ class horoscopeScreen extends React.Component {
             </TouchableHighlight>
           </View>
           <View
-              style={{
-              backgroundColor: '#6096FD',
+            style={{
+              backgroundColor: '#4a47a3',
               marginTop: 10,
               width: 125,
               height: 150,
@@ -341,7 +338,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Virgo'})}>
+                onPress={() => this.setState({sign: 'Virgo'})}>
                 <Image
                   style={{
                     width: 60,
@@ -350,13 +347,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/virgo.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Virgo'})}>
+              onPress={() => this.setState({sign: 'Virgo'})}>
               <Text
                 style={{
                   paddingLeft: 40,
@@ -367,8 +364,8 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Virgo'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight>
+            </TouchableHighlight>
+            <TouchableHighlight>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -382,11 +379,11 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
           </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-              backgroundColor: '#6096FD',
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#ad62aa',
               marginTop: 5,
               width: 125,
               height: 150,
@@ -396,7 +393,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Libra'})}>
+                onPress={() => this.setState({sign: 'Libra'})}>
                 <Image
                   style={{
                     width: 60,
@@ -405,13 +402,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/libra.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Libra'})}>
+              onPress={() => this.setState({sign: 'Libra'})}>
               <Text
                 style={{
                   paddingLeft: 45,
@@ -422,8 +419,8 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Libra'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight>
+            </TouchableHighlight>
+            <TouchableHighlight>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -439,7 +436,7 @@ class horoscopeScreen extends React.Component {
           </View>
           <View
             style={{
-              backgroundColor: '#268E1E',
+              backgroundColor: '#f4b0c7',
               margin: 10,
               width: 125,
               height: 150,
@@ -449,7 +446,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Scorpio'})}>
+                onPress={() => this.setState({sign: 'Scorpio'})}>
                 <Image
                   style={{
                     width: 60,
@@ -458,13 +455,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/Notes.png')}
+                  source={require('../components/img/scorpio.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Scorpio'})}>
+              onPress={() => this.setState({sign: 'Scorpio'})}>
               <Text
                 style={{
                   paddingLeft: 35,
@@ -491,8 +488,8 @@ class horoscopeScreen extends React.Component {
             </TouchableHighlight>
           </View>
           <View
-              style={{
-              backgroundColor: '#6096FD',
+            style={{
+              backgroundColor: '#6807f9',
               marginTop: 10,
               width: 125,
               height: 150,
@@ -502,7 +499,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Sagittarius'})}>
+                onPress={() => this.setState({sign: 'Sagittarius'})}>
                 <Image
                   style={{
                     width: 60,
@@ -511,13 +508,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/sagitarius.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Sagittarius'})}>
+              onPress={() => this.setState({sign: 'Sagittarius'})}>
               <Text
                 style={{
                   paddingLeft: 25,
@@ -528,10 +525,10 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Sagittarius'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
+            </TouchableHighlight>
+            <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Sagittarius'})}>
+              onPress={() => this.setState({sign: 'Sagittarius'})}>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -545,11 +542,11 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
           </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-              backgroundColor: '#6096FD',
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              backgroundColor: '#9852f9',
               marginTop: 5,
               width: 125,
               height: 150,
@@ -559,7 +556,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Capricorn'})}>
+                onPress={() => this.setState({sign: 'Capricorn'})}>
                 <Image
                   style={{
                     width: 60,
@@ -568,13 +565,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/capricorn.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Capricorn'})}>
+              onPress={() => this.setState({sign: 'Capricorn'})}>
               <Text
                 style={{
                   paddingLeft: 25,
@@ -585,8 +582,8 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Capricorn'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight>
+            </TouchableHighlight>
+            <TouchableHighlight>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -602,7 +599,7 @@ class horoscopeScreen extends React.Component {
           </View>
           <View
             style={{
-              backgroundColor: '#268E1E',
+              backgroundColor: '#c299fc',
               margin: 10,
               width: 125,
               height: 150,
@@ -612,7 +609,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Aquarius'})}>
+                onPress={() => this.setState({sign: 'Aquarius'})}>
                 <Image
                   style={{
                     width: 60,
@@ -621,13 +618,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 10,
                   }}
-                  source={require('../components/img/Notes.png')}
+                  source={require('../components/img/aquarius.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Aquarius'})}>
+              onPress={() => this.setState({sign: 'Aquarius'})}>
               <Text
                 style={{
                   paddingLeft: 30,
@@ -654,8 +651,8 @@ class horoscopeScreen extends React.Component {
             </TouchableHighlight>
           </View>
           <View
-              style={{
-              backgroundColor: '#6096FD',
+            style={{
+              backgroundColor: '#db75c5',
               marginTop: 10,
               width: 125,
               height: 150,
@@ -665,7 +662,7 @@ class horoscopeScreen extends React.Component {
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 underlayColor={'grey'}
-                onPress={() => this.setState({sign:'Pisces'})}>
+                onPress={() => this.setState({sign: 'Pisces'})}>
                 <Image
                   style={{
                     width: 60,
@@ -674,13 +671,13 @@ class horoscopeScreen extends React.Component {
                     marginLeft: 35,
                     marginBottom: 5,
                   }}
-                  source={require('../components/img/alarm.png')}
+                  source={require('../components/img/pices.png')}
                 />
               </TouchableHighlight>
             </View>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign:'Pisces'})}>
+              onPress={() => this.setState({sign: 'Pisces'})}>
               <Text
                 style={{
                   paddingLeft: 40,
@@ -691,8 +688,8 @@ class horoscopeScreen extends React.Component {
                 }}>
                 {'Pisces'}
               </Text>
-              </TouchableHighlight>
-              <TouchableHighlight>
+            </TouchableHighlight>
+            <TouchableHighlight>
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -706,19 +703,18 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
           </View>
-          </View>
-          <View style={{paddingLeft: 35}}>
-           <AwesomeButtonBlue
-          width={350}
-          title="add Horoscope"
-          onPress={() => this.addHoroscope()}>
-          Edit Horoscope
-        </AwesomeButtonBlue>
         </View>
-          </View>
-        );
-    }
-    
+        <View style={{paddingLeft: 35}}>
+          <AwesomeButtonBlue
+            width={350}
+            title="add Horoscope"
+            onPress={() => this.addHoroscope()}>
+            Edit Horoscope
+          </AwesomeButtonBlue>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -737,5 +733,3 @@ const styles = StyleSheet.create({
 });
 
 export default horoscopeScreen;
-
-

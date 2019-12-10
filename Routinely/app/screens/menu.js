@@ -282,10 +282,10 @@ class MenuScreen extends Component {
                 {'Weather'}
               </Text>
             </TouchableHighlight>
-            </View>      
+          </View>
           <View
             style={{
-              backgroundColor: '#7BD5F5',
+              backgroundColor: '#9852f9',
               width: 190,
               height: 100,
               borderRadius: 10,
@@ -298,13 +298,13 @@ class MenuScreen extends Component {
                 onPress={() => this.props.navigation.navigate('Horoscope')}>
                 <Image
                   style={{
-                    width: 50,
-                    height: 50,
-                    marginTop: 10,
-                    marginLeft: 10,
-                    marginBottom: 10,
+                    width: 60,
+                    height: 60,
+                    marginTop: 5,
+                    marginLeft: 5,
+                    marginBottom: 0,
                   }}
-                  source={require('../components/img/weather.png')}
+                  source={require('../components/img/gemini.png')}
                 />
               </TouchableHighlight>
               <TouchableHighlight
@@ -335,66 +335,117 @@ class MenuScreen extends Component {
                 {'Horoscope'}
               </Text>
             </TouchableHighlight>
-            </View>
+          </View>
         </View>
         <View style={{flexDirection: 'row'}}>
-              <View
+          <View
+            style={{
+              backgroundColor: '#ff7a5c',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.props.navigation.navigate('Quotes')}>
+                <Image
                   style={{
-                      backgroundColor: '#7BD5F5',
-                      width: 190,
-                      height: 100,
-                      borderRadius: 10,
-                      marginLeft: 10,
-                      marginTop: 10,
+                    width: 60,
+                    height: 60,
+                    marginTop: 5,
+                    marginLeft: 5,
+                    marginBottom: 0,
+                  }}
+                  source={require('../components/img/quotes.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.props.navigation.navigate('Quotes')}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
                   }}>
-                  <View style={{flexDirection: 'row'}}>
-                      <TouchableHighlight
-                          underlayColor={'grey'}
-                          onPress={() => this.props.navigation.navigate('News')}>
-                          <Image
-                              style={{
-                                  width: 50,
-                                  height: 50,
-                                  marginTop: 10,
-                                  marginLeft: 10,
-                                  marginBottom: 10,
-                              }}
-                              source={require('../components/img/weather.png')}
-                          />
-                      </TouchableHighlight>
-                      <TouchableHighlight
-                          underlayColor={'grey'}
-                          onPress={() => this.props.navigation.navigate('News')}>
-                          <Text
-                              style={{
-                                  color: 'white',
-                                  fontSize: 30,
-                                  marginLeft: 90,
-                                  fontWeight: 'normal',
-                              }}>
-                              {' + '}
-                          </Text>
-                      </TouchableHighlight>
-                  </View>
-                  <TouchableHighlight
-                      underlayColor={'grey'}
-                      onPress={() => this.props.navigation.navigate('News')}>
-                      <Text
-                          style={{
-                              paddingLeft: 10,
-                              paddingBottom: 5,
-                              color: 'white',
-                              fontWeight: 'normal',
-                              fontSize: 24,
-                          }}>
-                          {'News'}
-                      </Text>
-                  </TouchableHighlight>
-              </View>
-
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.props.navigation.navigate('Quotes')}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 24,
+                }}>
+                {'Quotes'}
+              </Text>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              backgroundColor: '#1abb9c',
+              width: 190,
+              height: 100,
+              borderRadius: 10,
+              marginLeft: 10,
+              marginTop: 10,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.props.navigation.navigate('News')}>
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  source={require('../components/img/news.png')}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={'grey'}
+                onPress={() => this.props.navigation.navigate('News')}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    marginLeft: 90,
+                    fontWeight: 'normal',
+                  }}>
+                  {' + '}
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <TouchableHighlight
+              underlayColor={'grey'}
+              onPress={() => this.props.navigation.navigate('News')}>
+              <Text
+                style={{
+                  paddingLeft: 10,
+                  paddingBottom: 5,
+                  color: 'white',
+                  fontWeight: 'normal',
+                  fontSize: 24,
+                }}>
+                {'News'}
+              </Text>
+            </TouchableHighlight>
+          </View>
         </View>
       </View>
-      
     );
   }
 }
