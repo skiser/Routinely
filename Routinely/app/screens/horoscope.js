@@ -97,17 +97,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 5,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(March 21 - April 19)'}
-              </Text>
+              <Text style={styles.date}>{'(March 21 - April 19)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -150,17 +140,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 10,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(April 20 - May 20)'}
-              </Text>
+              <Text style={styles.date}>{'(April 20 - May 20)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -205,17 +185,7 @@ class horoscopeScreen extends React.Component {
             <TouchableHighlight
               underlayColor={'grey'}
               onPress={() => this.setState({sign: 'Gemini'})}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 10,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(May 21 - June 20)'}
-              </Text>
+              <Text style={styles.date}>{'(May 21 - June 20)'}</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -260,17 +230,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 10,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(June 21 - July 22)'}
-              </Text>
+              <Text style={styles.date}>{'(June 21 - July 22)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -313,17 +273,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 12,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(July 23 - Aug 22)'}
-              </Text>
+              <Text style={styles.date}>{'(July 23 - Aug 22)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -366,17 +316,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 12,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(Aug 23 - Sept 22)'}
-              </Text>
+              <Text style={styles.date}>{'(Aug 23 - Sept 22)'}</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -421,17 +361,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 12,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(Sept 23 - Oct 22)'}
-              </Text>
+              <Text style={styles.date}>{'(Sept 23 - Oct 22)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -474,17 +404,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 14,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(Oct 23 - Nov 21)'}
-              </Text>
+              <Text style={styles.date}>{'(Oct 23 - Nov 21)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -529,17 +449,7 @@ class horoscopeScreen extends React.Component {
             <TouchableHighlight
               underlayColor={'grey'}
               onPress={() => this.setState({sign: 'Sagittarius'})}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 14,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(Nov 22 - Dec 21)'}
-              </Text>
+              <Text style={styles.date}>{'(Nov 22 - Dec 21)'}</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -584,17 +494,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 14,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(Dec 22 - Jan 19)'}
-              </Text>
+              <Text style={styles.date}>{'(Dec 22 - Jan 19)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -637,17 +537,7 @@ class horoscopeScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 15,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
-                {'(Jan 20 - Feb 18)'}
-              </Text>
+              <Text style={styles.date}>{'(Jan 20 - Feb 18)'}</Text>
             </TouchableHighlight>
           </View>
           <View
@@ -691,14 +581,7 @@ class horoscopeScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight>
               <Text
-                style={{
-                  fontWeight: 'bold',
-                  paddingLeft: 8,
-                  paddingBottom: 0,
-                  color: 'white',
-                  fontWeight: 'normal',
-                  fontSize: 12,
-                }}>
+                style={styles.date}>
                 {'(Feb 19 - March 20)'}
               </Text>
             </TouchableHighlight>
@@ -729,6 +612,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingRight: 10,
     paddingLeft: 10,
+  },
+  date: {
+    paddingLeft: 5,
+    paddingBottom: 0,
+    color: 'white',
+    fontWeight: 'normal',
+    fontSize: 12,
   },
 });
 
