@@ -40,13 +40,6 @@ class EventScreen extends Component {
       title: '',
       notes: '',
       chosenDate: new Date(),
-      Sun: false,
-      Mon: false,
-      Tue: false,
-      Wed: false,
-      Thu: false,
-      Fri: false,
-      Sat: false,
       Pressed: true,
     };
     //this.setDate = this.setDate.bind(this);
@@ -71,13 +64,6 @@ class EventScreen extends Component {
           title: this.state.title,
           notes: this.state.notes,
           chosenDate: this.state.chosenDate,
-          Sun: this.state.Sun,
-          Mon: this.state.Mon,
-          Tue: this.state.Tue,
-          Wed: this.state.Wed,
-          Thu: this.state.Thu,
-          Fri: this.state.Fri,
-          Sat: this.state.Sat,
         })
         .then(ref => {
           console.log('Added doc w ID: ', ref.id);
@@ -87,13 +73,6 @@ class EventScreen extends Component {
             this.state.title,
             this.state.notes,
             this.state.chosenDate,
-            this.state.Sun,
-            this.state.Mon,
-            this.state.Tue,
-            this.state.Wed,
-            this.state.Thu,
-            this.state.Fri,
-            this.state.Sat,
           );
         });
     } catch (error) {
@@ -125,45 +104,6 @@ class EventScreen extends Component {
           <DatePickerIOS
             date={this.state.chosenDate}
             onDateChange={chosenDate => this.setState({chosenDate})}
-          />
-        </View>
-        <RepeatDiv />
-        <Divider />
-        <View style={styles.containerDate}>
-          <Button
-            buttonStyle={styles.dayBox}
-            title="S"
-            onPress={() => this.setState(prevState => ({Sun: !prevState.Sun}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="M"
-            onPress={() => this.setState(prevState => ({Mon: !prevState.Mon}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="T"
-            onPress={() => this.setState(prevState => ({Tue: !prevState.Tue}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="W"
-            onPress={() => this.setState(prevState => ({Wed: !prevState.Wed}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="T"
-            onPress={() => this.setState(prevState => ({Thu: !prevState.Thu}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="F"
-            onPress={() => this.setState(prevState => ({Fri: !prevState.Fri}))}
-          />
-          <Button
-            buttonStyle={styles.dayBox}
-            title="S"
-            onPress={() => this.setState(prevState => ({Sat: !prevState.Sat}))}
           />
         </View>
         <AwesomeButtonBlue

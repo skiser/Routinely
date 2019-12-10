@@ -14,7 +14,9 @@ import WeatherScreen from './screens/weather';
 import NoteScreen from './screens/note';
 import QuoteScreen from './screens/quotes';
 import HoroscopeScreen from './screens/horoscope';
-import NewsScreen from './screens/news'
+import NewsScreen from './screens/news';
+import TodayHoroscopeScreen from './screens/todayHoroscope';
+
 
 const AuthStack = createStackNavigator(
   {
@@ -42,6 +44,7 @@ const AppStack = createStackNavigator(
     Weather: WeatherScreen,
     Quotes: QuoteScreen,
     Horoscope: HoroscopeScreen,
+    TodayHoroscope: TodayHoroscopeScreen,
   },
   {
     initialRouteName: 'Calendar',
