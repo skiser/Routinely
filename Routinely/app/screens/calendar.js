@@ -289,8 +289,6 @@ class CalendarScreen extends Component {
     this.getAlarms(this.onAlarmsRetrieved);
     this.getWeatherTodayState(this.onWeatherStateRetrieved);
     this.forceUpdate(this.getWeatherTodayState);
-    this.getSign();
-    this.getQuoteList(this.onQuoteRetrieved);
   }
 
   buttonPressed(id) {
