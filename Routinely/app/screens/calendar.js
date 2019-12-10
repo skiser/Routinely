@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component as component, Component} from 'react';
 import {
   Alert,
   Button,
@@ -378,6 +378,7 @@ class CalendarScreen extends Component {
     this.getTasks(this.onTasksRetrieved);
     this.getAlarms(this.onAlarmsRetrieved);
     this.getWeatherTodayState(this.onWeatherStateRetrieved);
+    this.forceUpdate(this.getWeatherTodayState);
     this.getSign();
     this.getQuoteList(this.onQuoteRetrieved);
   }
