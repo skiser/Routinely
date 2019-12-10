@@ -25,6 +25,9 @@ class Quotes extends Component {
           marginTop: 5,
           marginBottom: 5,
         }}>
+        <View style={styles.dot}>
+          <Text />
+        </View>
         <TouchableHighlight
           onPress={() => this.props.navigation.navigate('Quotes')}
           title={'Quotes'}>
@@ -34,7 +37,7 @@ class Quotes extends Component {
                 fontSize: 16,
                 fontWeight: 'bold',
                 paddingTop: 15,
-                paddingLeft: 15,
+                paddingLeft: 5,
               }}>
               Quote of the Day
             </Text>
@@ -43,7 +46,7 @@ class Quotes extends Component {
         <TouchableHighlight
           onPress={() => this.props.navigation.navigate('Quotes')}
           title={'Quotes'}
-          style={{paddingLeft: 320, paddingTop: 20}}>
+          style={{paddingLeft: 220, paddingTop: 20}}>
           <View>
             <Image
               style={styles.icon}
@@ -57,5 +60,15 @@ class Quotes extends Component {
 }
 AppRegistry.registerComponent('Quotes', () => Quotes);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  dot: {
+    backgroundColor: '#ff7a5c',
+    width: 10,
+    height: 10,
+    paddingTop: 20,
+    marginTop: 15,
+    marginLeft: 5,
+    borderRadius: 5,
+  },
+});
 export default withNavigation(Quotes);

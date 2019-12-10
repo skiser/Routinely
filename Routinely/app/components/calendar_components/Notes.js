@@ -25,6 +25,9 @@ class Notes extends Component {
           marginTop: 5,
           marginBottom: 5,
         }}>
+        <View style={styles.dot}>
+          <Text />
+        </View>
         <TouchableHighlight
           onPress={() => this.props.navigation.navigate('Notes')}
           title={'Notes'}>
@@ -34,7 +37,7 @@ class Notes extends Component {
                 fontSize: 16,
                 fontWeight: 'bold',
                 paddingTop: 15,
-                paddingLeft: 15,
+                paddingLeft: 5,
               }}>
               Notes
             </Text>
@@ -43,7 +46,7 @@ class Notes extends Component {
         <TouchableHighlight
           onPress={() => this.props.navigation.navigate('Notes')}
           title={'Notes'}
-          style={{paddingLeft: 320, paddingTop: 20}}>
+          style={{paddingLeft: 300, paddingTop: 20}}>
           <View>
             <Image
               style={styles.icon}
@@ -57,5 +60,15 @@ class Notes extends Component {
 }
 AppRegistry.registerComponent('Notes', () => Notes);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  dot: {
+    backgroundColor: '#268E1E',
+    width: 10,
+    height: 10,
+    paddingTop: 20,
+    marginTop: 15,
+    marginLeft: 5,
+    borderRadius: 5,
+  },
+});
 export default withNavigation(Notes);
