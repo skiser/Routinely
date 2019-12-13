@@ -59,7 +59,7 @@ class quoteScreen extends React.Component {
     }
   };
 
-  getQuoteList = async QuoteRetrieved => {
+  getQuoteList = () => {
     try {
       quotesRef.onSnapshot(snapshot => {
         this.setState({quoteList: []});
@@ -71,15 +71,15 @@ class quoteScreen extends React.Component {
         snapshot.forEach(doc => {
           this.state.quoteList.push(doc.data());
         });
-        QuoteRetrieved(this.state.quoteList);
+        //QuoteRetrieved(this.state.quoteList);
         console.log(this.state.quoteList);
         this.state.quoteList.forEach(item => {
           if (item.date === this.state.date) {
             console.log('matches date');
+            return;
           } else {
             console.log('no quote');
             this.writeQuote();
-            this.getQuoteList();
           }
         });
       });

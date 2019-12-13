@@ -134,6 +134,10 @@ function getPastDate(days) {
 }
 const date = new Date();
 
+const num = 5;
+
+const num2 = 4;
+
 class CalendarScreen extends Component {
   onDateChanged = (/* date, updateSource */) => {
     // console.warn('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
@@ -171,6 +175,17 @@ class CalendarScreen extends Component {
     }
     return 0;
   };
+
+  incrementNum = (num, num2) => {
+    if (num > num2) {
+      return -1;
+    }
+    if (num < num2) {
+      return 1;
+    }
+    return 0;
+  };
+
   //Get Events
   getEvents = async eventRetrieved => {
     try {
