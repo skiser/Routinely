@@ -911,19 +911,14 @@ class CalendarScreen extends Component {
     };
   };
 
-
-
   render() {
     console.log('!!!!?' + this.state.todayS);
     let todayState = this.state.todayS ? (
       <View>
         <WeatherToday />
-        <Text>!!!!!!!!!!!!WeatherToday!!!!!!!!!!</Text>
       </View>
     ) : (
-      <View>
-        <Text>WeatherToday is Hidden</Text>
-      </View>
+      <View />
     );
     console.log(todayState);
     return (
