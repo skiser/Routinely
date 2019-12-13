@@ -104,7 +104,7 @@ class todayHoroscopeScreen extends React.Component {
           <View style={{flexDirection: 'row'}}>
             <TouchableHighlight
               underlayColor={'grey'}
-              onPress={() => this.setState({sign: 'Pisces'})}>
+              onPress={() => this.setState({sign: 'Leo'})}>
               <Image
                 style={{
                   width: 100,
@@ -113,22 +113,22 @@ class todayHoroscopeScreen extends React.Component {
                   marginLeft: 25,
                   marginBottom: 0,
                 }}
-                source={require('../components/img/pices.png')}
+                source={require('../components/img/leo.png')}
               />
             </TouchableHighlight>
           </View>
           <TouchableHighlight
             underlayColor={'grey'}
-            onPress={() => this.setState({sign: 'Pisces'})}>
+            onPress={() => this.setState({sign: 'Leo'})}>
             <Text
               style={{
-                paddingLeft: 45,
+                paddingLeft: 50,
                 paddingBottom: 0,
                 color: 'white',
                 fontWeight: 'normal',
                 fontSize: 22,
               }}>
-              {'Pisces'}
+              {'Leo'}
             </Text>
           </TouchableHighlight>
         </View>
