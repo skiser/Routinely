@@ -34,6 +34,7 @@
     "react-native-google-signin": "^2.1.0",
     "react-native-navigation": "^3.5.1",
     "react-native-popup-menu": "^0.15.6",
+    "react-native-read-more-text": "^1.1.0",
     "react-native-really-awesome-button": "^1.4.2",
     "react-native-swipeout": "^2.3.6",
     "react-native-textinput-effects": "^0.5.1",

@@ -3,8 +3,8 @@ import {View, StyleSheet, Button, Text, Image, Alert} from 'react-native';
 import DisplayTime from '../components/alarmRinging_components/DisplayTime';
 import AwesomeButtonBlue from 'react-native-really-awesome-button/src/themes/c137';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
-import {getArticles} from '../services/news-service';
-import {NewsItem} from '../components/newsItem';
+import {getTopArticles} from '../services/news-service';
+import NewsItem from '../components/newsItem';
 import {List} from 'native-base';
 
 class NewsScreen extends Component {
@@ -20,7 +20,7 @@ class NewsScreen extends Component {
     }
 
     componentDidMount(){
-        getArticles().then(data => {
+        getTopArticles().then(data => {
             this.setState({data: data});
             console.log(data);
         }, error => {
